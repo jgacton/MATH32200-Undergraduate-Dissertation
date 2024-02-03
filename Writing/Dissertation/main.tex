@@ -1,0 +1,67 @@
+\documentclass[11pt,twoside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{Algorithmic Market-Making under Inventory Risk}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapter \thechapter}
+\fancyfoot[CO,RE]{Joshua Acton}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[style=numeric-comp,sorting=none]{biblatex}
+\addbibresource{bibliography.bib}
+
+\title{Undergraduate-Project-Joshua-Acton}
+\author{Joshua Acton}
+\date{\today}
+
+\begin{document}
+
+\input{preamble/cover}
+
+\input{frontmatter/declaration}
+
+\input{frontmatter/acknowledgements}
+
+\input{frontmatter/dedication}
+
+\input{frontmatter/abstract}
+
+\tableofcontents
+
+\listoffigures
+
+\chapter{Introduction and background}
+\input{mainbody/1-introduction}
+
+\chapter{Stochastic Optimal Control}
+\input{mainbody/2-stochastic-control}
+
+\chapter{Formalising the Market Making Problem}
+\input{mainbody/3-market-making}
+
+\chapter{The Avellaneda-Stoikov Model}
+\input{mainbody/4-a-s-model}
+
+\chapter{Implementation in Python}
+
+\chapter{Empirical Results}
+
+\chapter{Conclusion}
+
+\appendix
+\chapter{``Delicate measurability questions"}
+\input{endmatter/appendix}
+
+\printbibliography
+
+\end{document}

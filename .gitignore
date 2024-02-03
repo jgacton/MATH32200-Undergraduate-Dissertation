@@ -1,0 +1,15 @@
+/Resources/
+/Presentation/
+/Code/data/
+/Code/project/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.xml
+*.lof
+*.blg
+*.bcf
+*.bbl
+*.toc

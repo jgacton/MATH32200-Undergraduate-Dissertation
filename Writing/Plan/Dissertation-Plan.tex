@@ -1,0 +1,173 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\title{Dissertation-Plan}
+\author{Josh Acton}
+\date{November 2023}
+\geometry{
+top=10mm,
+right=10mm,
+bottom=20mm,
+left=10mm
+}
+
+\begin{document}
+
+\section{Introduction and Background}
+\begin{itemize}
+    \item Order books, order types, inventory risk, market participants, why market making is important
+    \item Probability spaces, martingales
+    \item Continuous-time stochastic processes
+    \item Brownian motion
+    \item Stochastic integration
+    \item It\^{o}'s formula
+    \item Girsanov's theorem?
+    \item SDEs and Feynman-Kac?
+\end{itemize}
+\section{Stochastic Optimal Control}
+\begin{itemize}
+    \item Controlled diffusion
+    \item The Dynamic Programming Principle
+    \item Hamilton-Jacobi-Bellman 
+    \item Verification theorem
+    \item Maybe a simple worked example? e.g. Merton's portfolio optimisation
+\end{itemize}
+\section{Formalising the Market-Making Problem}
+\begin{itemize}
+    \item What are we actually trying to optimise? Define the value function
+    \item Reservation prices accounting for inventory risk
+    \item Market impact of trades
+    \item Trading intensity models
+\end{itemize}
+\section{The Avellaneda-Stoikov Model}
+\begin{itemize}
+    \item Solve the HJB equation for $r^b(s,q,t)$ and $r^a(s,q,t)$
+    \item Obtain the optimal distances $\delta^b(s,q,t)$ and $\delta^a(s,q,t)$
+    \item Derive approximate and more computationally tractable solutions by asymptotic expansion in $q$
+    \item Possible extensions: Options, interest, drift in the stock price, stochastic volatility model/autocorrelation, transaction costs, order sizes $> 1$,
+\end{itemize}
+\section{Implementation in Python}
+\begin{itemize}
+    \item Python code and discussion of implementation methodology e.g. discrete time steps, correction for floating point computation errors with small values
+\end{itemize}
+\section{Empirical Results}
+\begin{itemize}
+    \item Simulate paths of stock price, plot optimal bids/asks 
+    \item Simulate a limit orderbook with orders being placed, can plot inventory over time of the agent, PnL
+    \item Maybe download orderbook data from cryptocurrency exchange API and backtest strategy?
+\end{itemize}
+\break
+\section{Main Results}
+\subsection{Controlled Diffusion}
+$$dX_s=b(X_s,\alpha_s)ds+\sigma(X_s,\alpha_s)dW_s$$
+A strong solution to this SDE starting at time $t$ is a progressively measurable process $X$ such that for $s\leq t$:
+$$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)du+\int_t^s\sigma(X_u,\alpha_u)dW_u$$
+and
+$$\int_t^s|b(X_u,\alpha_u)|du+\int_t^s|\sigma(X_u,\alpha_u)|^2du<\infty$$
+a.s.
+\subsection{Finite-Horizon Problem}
+We say that $\hat{\alpha}$ is an optimal control for a given initial condition $(t,x)\in[0,T)\times\mathbb{R}^n$ if
+$$v(t,x)=J(t,x,\hat{\alpha})$$
+where $J$ is the gain function and $v$ is the associated value function
+$$v(t,x)=\sup\limits_{\alpha\in\mathcal{A}(t,x)}J(t,x,\alpha)$$
+and
+$$J(t,x,\alpha)=\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)ds+g(X_T^{t,x})\right]$$
+and $\mathcal{A}(t,x)\subseteq\mathcal{A}$ such that
+$$\mathbb{E}\left[\int_t^T|f(s,X_s^{t,x},\alpha_s)|ds\right]<\infty$$
+where $\mathcal{A}$ is the set of control processes such that
+$$\mathbb{E}\left[\int_0^T|b(x,\alpha_t)|^2+|\sigma(x,\alpha_t)|^2dt\right]<\infty$$
+and
+$$f:[0,T]\times\mathbb{R}^n\times A\rightarrow\mathbb{R}$$
+is a rolling reward function and 
+$$g:\mathbb{R}^n\rightarrow\mathbb{R}$$
+is the terminal payoff function.
+\subsection{Dynamic Programming Principle}
+$$v(t,x)=\sup\limits_{\alpha\in\mathcal{A}(t,x)}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)ds+v(\theta,X_\theta^{t,x})\right]$$
+for any $\theta\in\mathcal{T}_{t,T}$ where for $0\leq t\leq T\leq\infty$ we denote the set of stopping times valued in $[t,T]$ by $\mathcal{T}_{t,T}$
+\subsection{Hamilton-Jacobi-Bellman Equation}
+$$-\frac{\partial v}{\partial t}(t,x)-H(t,x,D_xv(t,x),D^2_xv(t,x))=0$$
+where
+$$H(t,x,p,M)=\sup\limits_{a\in A}\left[b(x,a)\cdot p+\frac{1}{2}\textrm{tr}(\sigma\sigma'(x,a)M)+f(t,x,a)\right]$$
+is the Hamiltonian of the associated control problem. We have the regular terminal condition of our PDE:
+$$v(T,x)=g(x)$$
+\newpage
+\section{Avellaneda-Stoikov Model}
+\subsection{Assumptions}
+\begin{itemize}
+    \item The dealer being modelled is one of many players in the market
+    \item The 'true' price is given by the market mid-price
+    \item The money-market pays no interest
+    \item The agent has no opinion on drift or autocorrelation of the stock price
+    \item Limit orders can be continuously updated at no cost
+    \item The arrival frequency of market orders to the market is constant
+    \item Limit orders are of fixed size 1
+\end{itemize}
+\subsection{Stock Price Model}
+Assume the stock evolves according to a standard Wiener process with some variance $\sigma^2$: 
+$$dS_u=\sigma dW_u$$
+\subsection{Value Function}
+Consider an inactive trader who holds an inventory of $q$ stocks until the terminal time $T.$ The agent's value function is
+$$v(x,s,q,t)=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)$$
+where $x$ is the initial wealth in dollars, $t$ is the present time and $\gamma$ is a user-defined risk-aversion parameter.
+\subsection{Reservation Prices}
+The reservation price is the price that would make the agent indifferent between his current portfolio and his current portfolio plus one stock. So $r^b$ can be determined from the relation
+$$v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)$$
+and $r^a$ solves
+$$v(x+r^a(s,q,t),s,q-1,t)=v(x,s,q,t).$$
+We solve these to obtain
+$$r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}$$
+and
+$$r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}.$$
+We define the ``reserve" or ``indifference" price to be the average of these two \textit{given} that the agent currently holds q stocks:
+$$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
+\subsection{Limit Orders}
+The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. Let $p^Q$ be the price of the highest limit order executed in this trade. Then $\Delta p=p^Q-s$ is the temporary market impact of the trade of size $Q.$ Then we have that if our $\delta^a < \Delta p$, our agents limit order will be executed. We assume that market orders will fill our limit orders at Poisson rates $\lambda^a(\delta^a)$ and $\lambda^b(\delta^b)$, decreasing functions of $\delta^a$ and $\delta^b$ resp. (further away from midpoint $\rightarrow$ orders hit less often).
+\subsection{Wealth Process}
+We now have stochastic wealth and inventory: Let $N^b_t$ and $N^a_t$ be Poisson processes with intensities $\lambda^b$ and $\lambda^a$ representing the amount of stocks bought/sold by the agent at time t. The inventory at time t is $q_t=N^b_t-N^a_t$ and the wealth process evolves according to
+$$dXt=p^adN^a_t-p^bdN^b_t.$$
+The objective of the agent who sets limit orders is 
+$$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
+\subsection{Trading Intensity}
+Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
+\begin{equation}
+    f^{Q}(x)\propto x^{-1-\alpha}
+\end{equation}
+for large $x$, with $\alpha\in[1.4,1.6].$
+Less consensus on size distribution. Some find change in price $\Delta p$ after market order size $Q$ given by 
+\begin{equation}
+    \Delta p\propto Q^\beta, \beta\in[0.5,0.8]
+\end{equation}
+while others find
+\begin{equation}
+    \Delta p\propto\log(Q)
+\end{equation}
+Using (1) and (3) we can derive the poisson intensity as
+$$\lambda(\delta)=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}$$
+while (1) and (2) yield
+$$\lambda(\delta)=B\delta^{\frac{-\alpha}{\beta}}.$$
+[Need to figure out what B is]. Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
+\subsection{The Solution}
+Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
+\begin{multline*}
+    u_t+\frac{1}{2}\sigma^2u_{ss}+\max\limits_{\delta^b}\lambda^b(\delta^b)[u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)]+\max\limits_{\delta^a}\lambda^a(\delta^a)[u(s,x+s+\delta^a,q-1,t)-u(s,x,q,t)]=0, \\
+    u(s,x,q,T)=-e^{-\gamma(x+qs)}
+\end{multline*}
+but due to our choice of exponential utility we can simplify the problem with the ansatz:
+$$u(s,x,q,t)=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}$$
+and by substitution we find the following equation for $\theta:$
+\begin{multline*}
+    \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{ss}^2+\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
+    \theta(s,q,T)=qs.
+\end{multline*}
+By the definitions of the reserve bid and ask prices we obtain
+$$r^b(s,q,t)=\theta(s,q+1,t)-\theta(s,q,t)$$
+and
+$$r^a(s,q,t)=\theta(s,q,t)-\theta(s,q-1,t)$$
+and then through the following implicit relation we can obtain the optimal distances $\delta^b$ and $\delta^a$:
+$$s-r^b(s,q,t)=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)$$
+and
+$$r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).$$
+\subsection{Asymptotic expansion}
+\end{document}
