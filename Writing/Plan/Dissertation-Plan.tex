@@ -123,14 +123,19 @@ $$r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}.$$
 We define the ``reserve" or ``indifference" price to be the average of these two \textit{given} that the agent currently holds q stocks:
 $$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
 \subsection{Limit Orders}
-The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. Let $p^Q$ be the price of the highest limit order executed in this trade. Then $\Delta p=p^Q-s$ is the temporary market impact of the trade of size $Q.$ Then we have that if our $\delta^a < \Delta p$, our agents limit order will be executed. We assume that market orders will fill our limit orders at Poisson rates $\lambda^a(\delta^a)$ and $\lambda^b(\delta^b)$, decreasing functions of $\delta^a$ and $\delta^b$ resp. (further away from midpoint $\rightarrow$ orders hit less often).
+The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. 
+E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. 
+Let $p^Q$ be the price of the highest limit order executed in this trade. Then $\Delta p=p^Q-s$ is the temporary market impact of the trade of size $Q.$ 
+Then we have that if our $\delta^a < \Delta p$, our agents limit order will be executed. We assume that market orders will fill our limit orders at Poisson rates $\lambda^a(\delta^a)$ and $\lambda^b(\delta^b)$, decreasing functions of $\delta^a$ and $\delta^b$ resp. 
+(further away from midpoint $\rightarrow$ orders hit less often).
 \subsection{Wealth Process}
 We now have stochastic wealth and inventory: Let $N^b_t$ and $N^a_t$ be Poisson processes with intensities $\lambda^b$ and $\lambda^a$ representing the amount of stocks bought/sold by the agent at time t. The inventory at time t is $q_t=N^b_t-N^a_t$ and the wealth process evolves according to
 $$dXt=p^adN^a_t-p^bdN^b_t.$$
 The objective of the agent who sets limit orders is 
 $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
 \subsection{Trading Intensity}
-Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
+Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
+To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
 \begin{equation}
     f^{Q}(x)\propto x^{-1-\alpha}
 \end{equation}
@@ -150,17 +155,18 @@ $$\lambda(\delta)=B\delta^{\frac{-\alpha}{\beta}}.$$
 [Need to figure out what B is]. Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
 \subsection{The Solution}
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
-\begin{multline*}
-    u_t+\frac{1}{2}\sigma^2u_{ss}+\max\limits_{\delta^b}\lambda^b(\delta^b)[u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)]+\max\limits_{\delta^a}\lambda^a(\delta^a)[u(s,x+s+\delta^a,q-1,t)-u(s,x,q,t)]=0, \\
-    u(s,x,q,T)=-e^{-\gamma(x+qs)}
-\end{multline*}
+\begin{align*}
+    &u_t+\frac{1}{2}\sigma^2u_{ss}+\max\limits_{\delta^b}\lambda^b(\delta^b)[u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)]+\max\limits_{\delta^a}\lambda^a(\delta^a)[u(s,x+s+\delta^a,q-1,t)-u(s,x,q,t)]=0, \\
+    &u(s,x,q,T)=-e^{-\gamma(x+qs)}
+\end{align*}
 but due to our choice of exponential utility we can simplify the problem with the ansatz:
 $$u(s,x,q,t)=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}$$
 and by substitution we find the following equation for $\theta:$
-\begin{multline*}
-    \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{ss}^2+\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
-    \theta(s,q,T)=qs.
-\end{multline*}
+\begin{align*}
+    &\theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{ss}^2+\max\limits_{\delta^b}
+    \left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
+    &\theta(s,q,T)=qs.
+\end{align*}
 By the definitions of the reserve bid and ask prices we obtain
 $$r^b(s,q,t)=\theta(s,q+1,t)-\theta(s,q,t)$$
 and
