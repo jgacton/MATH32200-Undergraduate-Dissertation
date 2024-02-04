@@ -13,3 +13,4 @@
 *.bcf
 *.bbl
 *.toc
+.DS_Store
