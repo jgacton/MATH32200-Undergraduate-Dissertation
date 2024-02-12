@@ -1,7 +1,7 @@
 /Resources/
 /Presentation/
 /Code/data/
-/Code/project/
+/.venv
 *.aux
 *.fdb_latexmk
 *.fls
