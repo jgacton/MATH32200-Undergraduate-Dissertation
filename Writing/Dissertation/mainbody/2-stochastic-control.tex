@@ -1,3 +1,35 @@
+%\subsection{Controlled Diffusion}
+$$dX_s=b(X_s,\alpha_s)ds+\sigma(X_s,\alpha_s)dW_s$$
+A strong solution to this SDE starting at time $t$ is a progressively measurable process $X$ such that for $s\leq t$:
+$$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)du+\int_t^s\sigma(X_u,\alpha_u)dW_u$$
+and
+$$\int_t^s|b(X_u,\alpha_u)|du+\int_t^s|\sigma(X_u,\alpha_u)|^2du<\infty$$
+a.s.
+%\subsection{Finite-Horizon Problem}
+We say that $\hat{\alpha}$ is an optimal control for a given initial condition $ (t,x) \in [0,T) \times \mathbb{R}^n $ if
+$$v(t,x)=J(t,x,\hat{\alpha})$$
+where $J$ is the gain function and $v$ is the associated value function
+$$v(t,x)=\sup\limits_{\alpha\in\mathcal{A}(t,x)}J(t,x,\alpha)$$
+and
+$$J(t,x,\alpha)=\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)ds+g(X_T^{t,x})\right]$$
+and $\mathcal{A}(t,x)\subseteq\mathcal{A}$ such that
+$$\mathbb{E}\left[\int_t^T|f(s,X_s^{t,x},\alpha_s)|ds\right]<\infty$$
+where $\mathcal{A}$ is the set of control processes such that
+$$\mathbb{E}\left[\int_0^T|b(x,\alpha_t)|^2+|\sigma(x,\alpha_t)|^2dt\right]<\infty$$
+and
+$$f:[0,T]\times\mathbb{R}^n\times A\rightarrow\mathbb{R}$$
+is a rolling reward function and 
+$$g:\mathbb{R}^n\rightarrow\mathbb{R}$$
+is the terminal payoff function.
+%\subsection{Dynamic Programming Principle}
+$$v(t,x)=\sup\limits_{\alpha\in\mathcal{A}(t,x)}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)ds+v(\theta,X_\theta^{t,x})\right]$$
+for any $\theta\in\mathcal{T}_{t,T}$ where for $0\leq t\leq T\leq\infty$ we denote the set of stopping times valued in $[t,T]$ by $\mathcal{T}_{t,T}$
+%\subsection{Hamilton-Jacobi-Bellman Equation}
+$$-\frac{\partial v}{\partial t}(t,x)-H(t,x,D_xv(t,x),D^2_xv(t,x))=0$$
+where
+$$H(t,x,p,M)=\sup\limits_{a\in A}\left[b(x,a)\cdot p+\frac{1}{2}\textrm{tr}(\sigma\sigma'(x,a)M)+f(t,x,a)\right]$$
+is the Hamiltonian of the associated control problem. We have the regular terminal condition of our PDE:
+$$v(T,x)=g(x)$$
 \section{Controlled Diffusion Processes}
 \section{Dynamic Programming Principle}
 \section{Hamilton-Jacobi-Bellman Equation}

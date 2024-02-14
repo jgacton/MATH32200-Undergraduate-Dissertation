@@ -6,10 +6,13 @@
 \usepackage{subcaption}
 \usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
 \usepackage{fancyhdr}
-\usepackage{lipsum}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[style=numeric-comp,sorting=none]{biblatex}
+
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[RO,LE]{Algorithmic Market-Making under Inventory Risk}
+\fancyhead[RO,LE]{Automated Market-Making under Inventory Risk}
 \fancyfoot{}
 \fancyfoot[LE,RO]{\thepage}
 \fancyfoot[LO,CE]{Chapter \thechapter}
@@ -17,7 +20,6 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 
-\usepackage[style=numeric-comp,sorting=none]{biblatex}
 \addbibresource{bibliography.bib}
 
 \title{Undergraduate-Project-Joshua-Acton}
@@ -46,22 +48,22 @@
 \chapter{Stochastic Optimal Control}
 \input{mainbody/2-stochastic-control}
 
-\chapter{Formalising the Market Making Problem}
-\input{mainbody/3-market-making}
-
 \chapter{The Avellaneda-Stoikov Model}
-\input{mainbody/4-a-s-model}
+\input{mainbody/3-AS-model.tex}
 
-\chapter{Implementation in Python}
+\chapter{Extension and Statistical Analysis of Orderbooks}
+\input{mainbody/4-extensions.tex}
 
-\chapter{Empirical Results}
+\chapter{Numerical Analysis and Simulations}
+\input{mainbody/5-numerical-simulation.tex}
 
 \chapter{Conclusion}
+\input{mainbody/6-conclusion.tex}
 
 \appendix
-\chapter{``Delicate measurability questions"}
+\chapter{``Appendix''}
 \input{endmatter/appendix}
 
-\printbibliography
+\printbibliography[heading=bibintoc]
 
 \end{document}

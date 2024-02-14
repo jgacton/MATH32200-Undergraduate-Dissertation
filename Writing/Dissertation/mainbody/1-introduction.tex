@@ -43,7 +43,7 @@ depending on their needs. Limit orders specify a side (bid or ask, buying or sel
 and a price at which the order should be executed. These enter a queue of limit orders at the particular price level. 
 Market orders specify the same information, but they do not enter a queue: 
 The exchange operates a \textit{matching engine} which takes incoming market orders and attempts to match them to existing limit orders, 
-and if two orders match, they are executed and a trade occurs. For an example, consider the orderbook illustrated by \ref{fig:orderbook}. 
+and if two orders match, they are executed and a trade occurs. For an example, consider the orderbook illustrated by %\ref{fig:orderbook}. 
 If a market order is placed to sell 25 units, then the trade will occur at \$0.99, the dealer will buy and the placer of the market order will sell, 
 and both orders will be removed from the market. However, suppose that a market order is placed to only sell 5 units. 
 In this case, the orders will still be matched, the seller will sell 5 units for \$0.99 apiece but the limit order at \$0.99 will remain on the exchange, 
@@ -86,6 +86,7 @@ For the rest of this paper we will use the midpoint price as our estimator for t
 The aim for the rest of this paper is to build up a model of how a dealer should behave to maximise their returns in the presence of uncertainty: 
 namely, uncertainty about the path that the true value of the stock might take. 
 In order to do this, we will need to make use of some basic results from probability theory and stochastic processes,
-\section{Probability and Stochastic Processes}
+\section{Analysis, Calculus, Measure Theory and Probability}
+\section{Stochastic Processes}
 \section{Stochastic Integration}
 \section{Stochastic Differential Equations}

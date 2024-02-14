@@ -1,0 +1,94 @@
+In this section we will walk through the methodology and theoretical
+results of Avellaneda and Stoikov \cite{as}
+
+\begin{itemize}
+    \item The dealer being modelled is one of many players in the market
+    \item The `true' price is given by the market mid-price
+    \item The money-market pays no interest
+    \item The agent has no opinion on drift or autocorrelation of the stock price
+    \item Limit orders can be continuously updated at no cost
+    \item The arrival frequency of market orders to the market is constant
+    \item Limit orders are of fixed size 1
+\end{itemize}
+
+Assume the stock evolves according to a standard Wiener process with some variance $\sigma^2$: 
+$$dS_u=\sigma dW_u$$
+
+Consider an inactive trader who holds an inventory of $q$ stocks until the terminal time $T.$ The agent's value function is
+$$v(x,s,q,t)=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)$$
+where $x$ is the initial wealth in dollars, $t$ is the present time and $\gamma$ is a user-defined risk-aversion parameter.
+
+The reservation price is the price that would make the agent indifferent between his current portfolio and his current portfolio plus one stock. So $r^b$ can be determined from the relation
+$$v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)$$
+and $r^a$ solves
+$$v(x+r^a(s,q,t),s,q-1,t)=v(x,s,q,t).$$
+We solve these to obtain
+$$r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}$$
+and
+$$r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}.$$
+We define the ``reserve" or ``indifference" price to be the average of these two \textit{given} that the agent currently holds q stocks:
+$$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
+
+The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. 
+E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. 
+Let $p^Q$ be the price of the highest limit order executed in this trade. Then $\Delta p=p^Q-s$ is the temporary market impact of the trade of size $Q.$ 
+Then we have that if our $\delta^a < \Delta p$, our agents limit order will be executed. We assume that market orders will fill our limit orders at Poisson rates $\lambda^a(\delta^a)$ and $\lambda^b(\delta^b)$, decreasing functions of $\delta^a$ and $\delta^b$ resp. 
+(further away from midpoint $\rightarrow$ orders hit less often).
+
+We now have stochastic wealth and inventory: Let $N^b_t$ and $N^a_t$ be Poisson processes with intensities $\lambda^b$ and $\lambda^a$ representing the amount of stocks bought/sold by the agent at time t. The inventory at time t is $q_t=N^b_t-N^a_t$ and the wealth process evolves according to
+$$dXt=p^adN^a_t-p^bdN^b_t.$$
+The objective of the agent who sets limit orders is 
+$$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
+
+Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
+To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
+\begin{equation}
+    f^{Q}(x)\propto x^{-1-\alpha}
+\end{equation}
+for large $x$, with $\alpha\in[1.4,1.6].$
+Less consensus on size distribution. Some find change in price $\Delta p$ after market order size $Q$ given by 
+\begin{equation}
+    \Delta p\propto Q^\beta, \beta\in[0.5,0.8]
+\end{equation}
+while others find
+\begin{equation}
+    \Delta p\propto\log(Q)
+\end{equation}
+Using (1) and (3) we can derive the poisson intensity as
+$$\lambda(\delta)=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}$$
+while (1) and (2) yield
+$$\lambda(\delta)=B\delta^{\frac{-\alpha}{\beta}}.$$
+[Need to figure out what B is]. Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
+
+Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
+\begin{align*}
+    u_t + \frac{1}{2} \sigma^2u_{ss} &+ \max \limits_{ \delta^b } \lambda^b( \delta^b )[ u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)] \\
+    &+\max\limits_{\delta^a}\lambda^a(\delta^a)[u(s,x+s+\delta^a,q-1,t)-u(s,x,q,t)]=0, \\
+    & u(s,x,q,T) = -e^{-\gamma(x+qs)}
+\end{align*}
+but due to our choice of exponential utility we can simplify the problem with the ansatz:
+$$u(s,x,q,t)=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}$$
+and by substitution we find the following equation for $\theta:$
+\begin{align*}
+    \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{ss}^2&+\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]\\
+    &+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
+    &\theta(s,q,T)=qs.
+\end{align*}
+By the definitions of the reserve bid and ask prices we obtain
+$$r^b(s,q,t)=\theta(s,q+1,t)-\theta(s,q,t)$$
+and
+$$r^a(s,q,t)=\theta(s,q,t)-\theta(s,q-1,t)$$
+and then through the following implicit relation we can obtain the optimal distances $\delta^b$ and $\delta^a$:
+$$s-r^b(s,q,t)=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)$$
+and
+$$r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).$$
+
+\section{The Model}
+\section{The Utility Function}
+\section{The Optimising Agent with Finite Horizon}
+\section{The Optimising Agent with Infinite Horizon}
+\section{Modelling Limit Orders}
+\section{Modelling Trading Intensity}
+\section{The HJB}
+\section{Asymptotic Expansion in q}
+\section{Summary}
