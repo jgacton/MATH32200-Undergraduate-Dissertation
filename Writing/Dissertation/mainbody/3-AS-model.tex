@@ -1,6 +1,8 @@
 In this section we will walk through the methodology and theoretical
 results of Avellaneda and Stoikov \cite{as}
 
+\section{Assumptions}
+
 \begin{itemize}
     \item The dealer being modelled is one of many players in the market
     \item The `true' price is given by the market mid-price
@@ -11,23 +13,83 @@ results of Avellaneda and Stoikov \cite{as}
     \item Limit orders are of fixed size 1
 \end{itemize}
 
+\section{Modelling the market midpoint price}
 Assume the stock evolves according to a standard Wiener process with some variance $\sigma^2$: 
 $$dS_u=\sigma dW_u$$
+
+\section{Modelling an inactive trader}
+\subsection{The utility function}
 
 Consider an inactive trader who holds an inventory of $q$ stocks until the terminal time $T.$ The agent's value function is
 $$v(x,s,q,t)=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)$$
 where $x$ is the initial wealth in dollars, $t$ is the present time and $\gamma$ is a user-defined risk-aversion parameter.
+By some simple manipulations, we can write this in a more convenient form as follows:
+\begin{align*}
+    v(x,s,q,t)&=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)\\
+    &=\mathbb{E}\left[-\exp(-\gamma(x+qS_T))|\mathcal{F}_t\right]\\
+    &=-e^{-\gamma x}\mathbb{E}\left[e^{-\gamma q S_T}\right]\\
+    &=-e^{-\gamma x}e^{-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
+    &=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}
+\end{align*}
 
-The reservation price is the price that would make the agent indifferent between his current portfolio and his current portfolio plus one stock. So $r^b$ can be determined from the relation
-$$v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)$$
+\subsection{Reservation prices}
+
+The reservation price is the price that would make the agent indifferent between his current portfolio and his current portfolio $\pm$ one stock. So $r^b$ can be determined from the relation
+\begin{equation} \label{eq:1}
+    v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)
+\end{equation}
 and $r^a$ solves
-$$v(x+r^a(s,q,t),s,q-1,t)=v(x,s,q,t).$$
-We solve these to obtain
-$$r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}$$
-and
-$$r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}.$$
+\begin{equation}
+    v(x+r^a(s,q,t),s,q-1,t)=v(x,s,q,t).
+\end{equation}
+
+We solve for $r^b(s,q,t)$ by plugging \ref{eq:1} in to our expression for the value function as follows:
+
+\begin{align*}
+    v(x-r^b(s,q,t),s,q+1,t)&=v(x,s,q,t)\\
+    -e^{-\gamma(x-r^b(s,q,t))}e^{-\gamma s(q+1)}e^{\frac{\gamma^2(q+1)^2\sigma^2(T-t)}{2}}&=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
+    -\gamma(x-r^b(s,q,t))-\gamma s(q+1) + \frac{\gamma^2(q+1)^2\sigma^2(T-t)}{2} &= -\gamma x-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}\\
+    \gamma r^b(s,q,t)-\gamma s + \frac{\gamma^2(1+2q)\sigma^2(T-t)}{2} &=0,
+\end{align*}
+
+dividing by $\gamma$ and rearranging to obtain
+\begin{equation}
+    r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}
+\end{equation}
+Similarly for $r^a(s,q,t)$:
+\begin{align*}
+    v(x+r^a(s,q,t),s,q-1,t)&=v(x,s,q,t)\\
+    -e^{-\gamma(x+r^a(s,q,t))}e^{-\gamma s(q-1)}e^{\frac{\gamma^2(q-1)^2\sigma^2(T-t)}{2}}&=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
+    -\gamma(x+r^a(s,q,t))-\gamma s(q-1)+\frac{\gamma^2(q-1)^2\sigma^2(T-t)}{2}&=-\gamma x-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}\\
+    -\gamma r^a(s,q,t) + \gamma s + \frac{\gamma^2(1-2q)\sigma^2(T-t)}{2}&=0,
+\end{align*}
+dividing by $\gamma$ and rearranging to obtain
+\begin{equation}
+    r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}
+\end{equation}
 We define the ``reserve" or ``indifference" price to be the average of these two \textit{given} that the agent currently holds q stocks:
 $$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
+
+\section{The Optimising Agent with Infinite Horizon}
+\begin{equation*}
+    \bar v(x,s,q)=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}dt\right]
+\end{equation*}
+\begin{align*}
+    \bar{v}(x-r^b(s,q),s,q+1)&=
+\end{align*}
+\begin{align*}
+    \bar{v}(x+r^a(s,q),s,q-1)&=\bar{v}(x,s,q)\\
+    \mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+r^a(s,q)+(q-1)S_t)}dt\right]&=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}dt\right]\\
+    \int_{0}^{\infty}e^{-\omega t}e^{-\gamma(x+r^a(s,q))}\mathbb{E}\left[e^{-\gamma(q-1)S_t}\right]dt&=\int_{0}^{\infty}e^{-\omega t}e^{-\gamma x}\mathbb{E}\left[e^{-\gamma qS_t}\right]dt\textrm{ (by Tonelli)}\\
+    e^{-\gamma(x+r^a(s,q))}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma(q-1)s+\frac{\gamma^2(q-1)^2\sigma^2t}{2}}dt&=e^{-\gamma x}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma qs+\frac{\gamma^2q^2\sigma^2t}{2}}dt\\
+    e^{-\gamma(x+r^a(s,q))}e^{-\gamma(q-1)s}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2(q-1)^2\sigma^2t}{2}}dt&=e^{-\gamma x}e^{-\gamma qs}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2q^2\sigma^2t}{2}}dt\\
+    e^{-\gamma r^a(s,q)}e^{\gamma s}\int_{0}^{\infty}e^{\left(\frac{\gamma^2(q-1)^2\sigma^2-2\omega}{2}\right)t}dt&=\int_{0}^{\infty}e^{\left(\frac{\gamma^2q^2\sigma^2-2\omega}{2}\right)t}dt\\
+    e^{-\gamma r^a(s,q)}e^{\gamma s}\left(\frac{2}{2\omega-\gamma^2(q-1)^2\sigma^2}\right)&=\left(\frac{2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
+    e^{\gamma(s-r^a(s,q))}&=\frac{2\omega-\gamma^2(q-1)^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
+    e^{\gamma(s-r^a(s,q))}&=1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
+    \gamma s - \gamma r^a(s,q)&=\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
+    r^a(s,q) &= s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
+\end{align*}
 
 The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. 
 E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. 
@@ -83,10 +145,6 @@ $$s-r^b(s,q,t)=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta
 and
 $$r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).$$
 
-\section{The Model}
-\section{The Utility Function}
-\section{The Optimising Agent with Finite Horizon}
-\section{The Optimising Agent with Infinite Horizon}
 \section{Modelling Limit Orders}
 \section{Modelling Trading Intensity}
 \section{The HJB}
