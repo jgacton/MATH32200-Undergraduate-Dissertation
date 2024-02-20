@@ -68,7 +68,12 @@ dividing by $\gamma$ and rearranging to obtain
     r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}
 \end{equation}
 We define the ``reserve" or ``indifference" price to be the average of these two \textit{given} that the agent currently holds q stocks:
-$$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
+\begin{align*}
+    r(s,q,t)&=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}\\
+    &=\frac{s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}+s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}}{2}\\
+    &=\frac{2s-2q\gamma\sigma^2(T-t)}{2}\\
+    &=s-q\gamma\sigma^2(T-t)
+\end{align*}
 
 \section{The Optimising Agent with Infinite Horizon}
 \begin{equation*}
@@ -92,13 +97,20 @@ $$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
 \end{align*}
 
 \section{Modelling Limit Orders}
-The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. 
+The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances 
+$$\delta^b:=s-p^b$$
+and 
+$$\delta^a:=p^a-s$$ 
+determine the priority of execution when large market orders are placed. 
 E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. 
-Let $p^Q$ be the price of the highest limit order executed in this trade. Then $\Delta p=p^Q-s$ is the temporary market impact of the trade of size $Q.$ 
+Let $p^Q$ be the price of the highest limit order executed in this trade. Then 
+$$\Delta p:=p^Q-s$$ 
+is the temporary market impact of the trade of size $Q.$ 
 Then we have that if our $\delta^a < \Delta p$, our agents limit order will be executed. We assume that market orders will fill our limit orders at Poisson rates $\lambda^a(\delta^a)$ and $\lambda^b(\delta^b)$, decreasing functions of $\delta^a$ and $\delta^b$ resp. 
 (further away from midpoint $\rightarrow$ orders hit less often).
 
-We now have stochastic wealth and inventory: Let $N^b_t$ and $N^a_t$ be Poisson processes with intensities $\lambda^b$ and $\lambda^a$ representing the amount of stocks bought/sold by the agent at time t. The inventory at time t is $q_t=N^b_t-N^a_t$ and the wealth process evolves according to
+We now have stochastic wealth and inventory: Let $N^b_t$ and $N^a_t$ be Poisson processes with intensities $\lambda^b$ and $\lambda^a$ representing the amount of stocks bought/sold by the agent at time t. The inventory at time t is 
+$$q_t=N^b_t-N^a_t$$ and the wealth process evolves according to
 $$dXt=p^adN^a_t-p^bdN^b_t.$$
 The objective of the agent who sets limit orders is 
 $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
@@ -106,23 +118,40 @@ $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_
 \section{Modelling Trading Intensity}
 Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
 To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
-\begin{equation}
+\begin{equation}\label{eq:2}
     f^{Q}(x)\propto x^{-1-\alpha}
 \end{equation}
 for large $x$, with $\alpha\in[1.4,1.6].$
 Less consensus on size distribution. Some find change in price $\Delta p$ after market order size $Q$ given by 
-\begin{equation}
+\begin{equation}\label{eq:3}
     \Delta p\propto Q^\beta, \beta\in[0.5,0.8]
 \end{equation}
 while others find
-\begin{equation}
+\begin{equation}\label{eq:4}
     \Delta p\propto\log(Q)
 \end{equation}
-Using (1) and (3) we can derive the poisson intensity as
-$$\lambda(\delta)=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}$$
-while (1) and (2) yield
-$$\lambda(\delta)=B\delta^{\frac{-\alpha}{\beta}}.$$
-[Need to figure out what B is]. Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
+Using \ref{eq:2} and \ref{eq:4} we can derive the poisson intensity as follows:
+\begin{align*}
+    \lambda(\delta)&=\Lambda\mathbb{P}(\delta<\Delta p)\\
+    &=\Lambda\mathbb{P}\left(\delta<\frac{\log Q}{K}\right)\\
+    &=\Lambda\mathbb{P}(K\delta<\log Q)\\
+    &=\Lambda\mathbb{P}\left(e^{K\delta}<Q\right)
+    &=\Lambda\int_{e^{K\delta}}^{\infty}x^{-1-\alpha}dx\\
+    &=\Lambda\left[\frac{-x^{-\alpha}}{\alpha}\right]_{e^{K\delta}}^\infty\\
+    &=\Lambda\left(\lim_{t\rightarrow\infty}\frac{-t^{-\alpha}}{\alpha}+\frac{e^{-K\delta\alpha}}{\alpha}\right)\\
+    &=\frac{\Lambda}{\alpha}\left(e^{-K\delta\alpha}-\lim_{t\rightarrow\infty}\frac{1}{t^\alpha}\right)\\
+    &=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}
+\end{align*}
+while \ref{eq:2} and \ref{eq:3} yield:
+\begin{align*}
+    \lambda(\delta)&=\Lambda\mathbb{P}(\delta<\Delta p)\\
+    &=\Lambda\mathbb{P}(\delta<kQ^\beta)\\
+    &=\Lambda\mathbb{P}\left(Q>\left(\frac{\delta}{k}\right)^{-\beta}\right)\\
+    &=\Lambda\int_{\left(\frac{\delta}{k}\right)^{-\beta}}^\infty x^{-1-\alpha}dx\\
+    &=\Lambda\left[\lim_{t\rightarrow\infty}\frac{-t^{-\alpha}}{\alpha}+\frac{\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}\right]\\
+    &=\frac{\Lambda\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}
+\end{align*}
+Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
 
 \section{The HJB}
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
@@ -140,13 +169,46 @@ and by substitution we find the following equation for $\theta:$
     &\theta(s,q,T)=qs.
 \end{align*}
 By the definitions of the reserve bid and ask prices we obtain
-$$r^b(s,q,t)=\theta(s,q+1,t)-\theta(s,q,t)$$
+\begin{align*}
+    u(s,x-r^b(s,q,t),q+1,t)&=u(s,x,q,t)\\
+    -e^{-\gamma(x-r^b(s,q,t))}e^{-\gamma\theta(s,q+1,t)}&=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}\\
+    -\gamma(x-r^b(s,q,t))-\gamma\theta(s,q+1,t)&=-\gamma x-\gamma\theta(s,q,t)\\
+    x-r^b(s,q,t)+\theta(s,q+1,t)&=x+\theta(s,q,t)\\
+    r^b(s,q,t)&=\theta(s,q+1,t)-\theta(s,q,t)
+\end{align*}
 and
-$$r^a(s,q,t)=\theta(s,q,t)-\theta(s,q-1,t)$$
-and then through the following implicit relation we can obtain the optimal distances $\delta^b$ and $\delta^a$:
-$$s-r^b(s,q,t)=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)$$
+\begin{align*}
+    u(s,x+r^a(s,q,t),q-1,t)&=u(s,x,q,t)\\
+    -e^{-\gamma(x+r^a(s,q,t))}e^{-\gamma\theta(s,q-1,t)}&=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}\\
+    -\gamma(x+r^a(s,q,t))-\gamma\theta(s,q-1,t)&=-\gamma x-\gamma\theta(s,q,t)\\
+    x+r^a(s,q,t)+\theta(s,q-1,t)&=x+\gamma\theta(s,q,t)\\
+    r^a(s,q,t)&=\theta(s,q,t)-\theta(s,q-1,t)
+\end{align*}
+From the first order optimality condition on the maximised terms in the HJB equation, we may obtain as follows some implicit relations
+on the optimal bid and ask spreads $\delta^b$ and $\delta^a$:
+\begin{align*}
+    \frac{\partial}{\partial\delta}\left[\frac{\lambda^b(\delta)}{\gamma}(1-e^{\gamma(s-\delta-r^b(s,q,t))})\right](\delta^b)&=0\\
+    \frac{1}{\gamma}\left[\frac{\partial\lambda^b}{\partial\delta}(\delta^b)-\frac{\partial}{\partial\delta}\lambda^b(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}\right]&=0\\
+    \frac{\partial\lambda^b}{\partial\delta}(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}+\gamma\lambda^b(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}&=0\\
+    \left(\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{\gamma(s-\delta^b-r^b(s,q,t))}&=-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
+    -\left(\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
+    e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\\
+    -\gamma(s-\delta^b-r^b(s,q,t))&=\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+    s-\delta^b-r^b(s,q,t)&=-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+    s-r^b(s,q,t)&=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)
+\end{align*}
 and
-$$r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).$$
+\begin{align*}
+    \frac{\partial}{\partial\delta}\left[\frac{\lambda^a(\delta)}{\gamma}(1-e^{-\gamma(s+\delta-r^a(s,q,t))})\right](\delta^a)&=0\\
+    \frac{1}{\gamma}\left[\frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial}{\partial\delta}\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}\right]&=0\\
+    \frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}-\gamma\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=0\\
+    \left(-\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
+    -\left(\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
+    e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\\
+    -\gamma(s-\delta^b-r^b(s,q,t))&=\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+    s-\delta^b-r^b(s,q,t)&=-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+    r^a(s,q,t)-s&=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)
+\end{align*}
 
 \section{Asymptotic Expansion in q}
 \section{Summary}
