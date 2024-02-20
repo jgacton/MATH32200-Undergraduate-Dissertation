@@ -87,10 +87,11 @@ $$r(s,q,t)=s-q\gamma\sigma^2(T-t)$$
     e^{-\gamma r^a(s,q)}e^{\gamma s}\left(\frac{2}{2\omega-\gamma^2(q-1)^2\sigma^2}\right)&=\left(\frac{2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
     e^{\gamma(s-r^a(s,q))}&=\frac{2\omega-\gamma^2(q-1)^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
     e^{\gamma(s-r^a(s,q))}&=1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
-    \gamma s - \gamma r^a(s,q)&=\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
-    r^a(s,q) &= s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
+    \gamma s - \gamma r^a(s,q)&=\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
+    r^a(s,q) &= s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
 
+\section{Modelling Limit Orders}
 The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances $\delta^b=s-p^b$ and $\delta^a=p^a-s$ determine the priority of execution when large market orders are placed. 
 E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. 
 Let $p^Q$ be the price of the highest limit order executed in this trade. Then $\Delta p=p^Q-s$ is the temporary market impact of the trade of size $Q.$ 
@@ -102,6 +103,7 @@ $$dXt=p^adN^a_t-p^bdN^b_t.$$
 The objective of the agent who sets limit orders is 
 $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
 
+\section{Modelling Trading Intensity}
 Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
 To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
 \begin{equation}
@@ -122,6 +124,7 @@ while (1) and (2) yield
 $$\lambda(\delta)=B\delta^{\frac{-\alpha}{\beta}}.$$
 [Need to figure out what B is]. Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
 
+\section{The HJB}
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
 \begin{align*}
     u_t + \frac{1}{2} \sigma^2u_{ss} &+ \max \limits_{ \delta^b } \lambda^b( \delta^b )[ u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)] \\
@@ -145,8 +148,5 @@ $$s-r^b(s,q,t)=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta
 and
 $$r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).$$
 
-\section{Modelling Limit Orders}
-\section{Modelling Trading Intensity}
-\section{The HJB}
 \section{Asymptotic Expansion in q}
 \section{Summary}
