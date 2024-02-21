@@ -201,12 +201,12 @@ and
 \begin{align*}
     \frac{\partial}{\partial\delta}\left[\frac{\lambda^a(\delta)}{\gamma}(1-e^{-\gamma(s+\delta-r^a(s,q,t))})\right](\delta^a)&=0\\
     \frac{1}{\gamma}\left[\frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial}{\partial\delta}\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}\right]&=0\\
-    \frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}-\gamma\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=0\\
-    \left(-\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
-    -\left(\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
-    e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\\
-    -\gamma(s-\delta^b-r^b(s,q,t))&=\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
-    s-\delta^b-r^b(s,q,t)&=-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+    \frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}+\gamma\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=0\\
+    \left(\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
+    -\left(\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{\gamma(s+\delta^a-r^a(s,q,t))}&=\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
+    e^{\gamma(s+\delta^a-r^a(s,q,t))}&=1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\\
+    \gamma(s+\delta^a-r^a(s,q,t))&=\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
+    s+\delta^a-r^a(s,q,t)&=\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
     r^a(s,q,t)-s&=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)
 \end{align*}
 
