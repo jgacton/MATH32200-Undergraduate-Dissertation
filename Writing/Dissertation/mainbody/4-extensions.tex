@@ -2,9 +2,38 @@
 Consider now an alternative model for the midprice of the security for 
 which we wish to make a market:
 $$dS_u=\sigma S_udW_u$$
-This defines the \textit{Geometric Brownian Motion} (without drift), and
-is the canonical stochastic process used to model asset prices as in
-contrast with the standard Brownian Motion, this process is valued in $\mathbb{R}^+$
+With initial value $S_t=s.$ This defines the \textit{Geometric Brownian Motion} (without drift), and
+is the canonical stochastic process used to model most asset prices, as in
+contrast with the standard Brownian Motion, this process is valued in $\mathbb{R}^+.$
+Analagously to the properties of standard Brownian Motion, we find that $S_t\sim\textrm{LogNorm}(\mu,\sigma^2)$
+where
+\begin{align*}
+    \mathbb{E}[S_t]&=e^{\mu+\frac{1}{2}\sigma^2}\\
+    \textrm{Var}[S_t]&=e^{2\mu+\sigma^2}(e^{\sigma^2}-1)
+\end{align*}
+
+Consider the mean/variance objective
+\begin{equation}
+    V(s,x,q,t)=\mathbb{E}\left[(x+qS_T)-\frac{\gamma}{2}(qS_T-qs)^2|\mathcal{F}_t\right]
+\end{equation}
+which we can simplify using the properties of the lognormal as follows:
+\begin{align*}
+    V(s,x,q,t)&=\mathbb{E}\left[(x+qS_T)-\frac{\gamma}{2}(qS_T-qs)^2|\mathcal{F}_t\right]\\
+    &=x+q\mathbb{E}[S_T|\mathcal{F}_t]-\frac{\gamma q^2}{2}\mathbb{E}[S_T^2|\mathcal{F}_t]+\gamma q^2s\mathbb{E}[S_T|\mathcal{F}_t]-\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2}{2}\left(\textrm{Var}[S_T|\mathcal{F}_t]-\mathbb{E}[S_T|\mathcal{F}_t]^2\right)+\gamma q^2s^2-\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2}{2}\left(s^2\left(e^{\sigma^2(T-t)}-1\right)-s^2\right)+\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{\sigma^2(T-t)}-2\right)+\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2s^2}{2}e^{\sigma^2{T-t}}+\gamma q^2s^2-\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{\sigma^2(T-t)}-1\right)
+\end{align*}
+Using the definition of reserve bid and ask prices we obtain
+\begin{equation}
+    R^a(s,q,t)=s+ \frac{1-2q}{2} \gamma s^2 \left(e^{\sigma^2(T-t)}-1\right)
+\end{equation}
+and
+\begin{equation}
+    R^b(s,q,t)=s+ \frac{-1-2q}{2} \gamma s^2 \left(e^{\sigma^2(T-t)}-1\right)
+\end{equation}
 \section{Estimating the Frequency of Market Orders}
 \section{Estimating the Size Distribution of Market Orders}
 \section{Estimating the Temporary Price Impact of Large Market Orders}

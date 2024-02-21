@@ -1,7 +1,7 @@
 In this section we will walk through the methodology and theoretical
 results of Avellaneda and Stoikov \cite{as}
 
-\section{Assumptions}
+\section{Model assumptions}
 
 \begin{itemize}
     \item The dealer being modelled is one of many players in the market
@@ -13,7 +13,6 @@ results of Avellaneda and Stoikov \cite{as}
     \item Limit orders are of fixed size 1
 \end{itemize}
 
-\section{Modelling the market midpoint price}
 Assume the stock evolves according to a standard Wiener process with some variance $\sigma^2$: 
 $$dS_u=\sigma dW_u$$
 
@@ -117,12 +116,15 @@ $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_
 
 \section{Modelling Trading Intensity}
 Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
-To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. The distribution of size of market orders has been found to obey a power law:
+To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. 
+\subsection{Distribution of the size of market orders}
+The distribution of size of market orders has been found to obey a power law:
 \begin{equation}\label{eq:2}
     f^{Q}(x)\propto x^{-1-\alpha}
 \end{equation}
 for large $x$, with $\alpha\in[1.4,1.6].$
-Less consensus on size distribution. Some find change in price $\Delta p$ after market order size $Q$ given by 
+\subsection{Modelling market impact}
+Less consensus on market impact. Some find change in price $\Delta p$ after market order size $Q$ given by 
 \begin{equation}\label{eq:3}
     \Delta p\propto Q^\beta, \beta\in[0.5,0.8]
 \end{equation}
@@ -153,7 +155,7 @@ while \ref{eq:2} and \ref{eq:3} yield:
 \end{align*}
 Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
 
-\section{The HJB}
+\section{The Hamilton-Jacobi-Bellman Equation}
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
 \begin{align*}
     u_t + \frac{1}{2} \sigma^2u_{ss} &+ \max \limits_{ \delta^b } \lambda^b( \delta^b )[ u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)] \\
@@ -168,6 +170,7 @@ and by substitution we find the following equation for $\theta:$
     &+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
     &\theta(s,q,T)=qs.
 \end{align*}
+\subsection{Relations for the reserve prices}
 By the definitions of the reserve bid and ask prices we obtain
 \begin{align*}
     u(s,x-r^b(s,q,t),q+1,t)&=u(s,x,q,t)\\
