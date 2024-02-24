@@ -8,6 +8,7 @@
 \usepackage{fancyhdr}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage[style=authoryear,sorting=none]{biblatex}
 \usepackage{parskip}
 
@@ -28,6 +29,16 @@
 \title{Undergraduate-Project-Joshua-Acton}
 \author{Joshua Acton}
 \date{\today}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
 
 \begin{document}
 

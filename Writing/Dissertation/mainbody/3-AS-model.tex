@@ -17,7 +17,7 @@ Assume the stock evolves according to a standard Wiener process with some varian
 $$dS_u=\sigma dW_u$$
 
 \section{Modelling an inactive trader}
-\subsection{The utility function}
+\subsection*{The utility function}
 
 Consider an inactive trader who holds an inventory of $q$ stocks until the terminal time $T.$ The agent's value function is
 $$v(x,s,q,t)=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)$$
@@ -31,7 +31,7 @@ By some simple manipulations, we can write this in a more convenient form as fol
     &=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}
 \end{align*}
 
-\subsection{Reservation prices}
+\subsection*{Reservation prices}
 
 The reservation price is the price that would make the agent indifferent between his current portfolio and his current portfolio $\pm$ one stock. So $r^b$ can be determined from the relation
 \begin{equation} \label{eq:1}
@@ -117,13 +117,13 @@ $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_
 \section{Modelling Trading Intensity}
 Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
 To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. 
-\subsection{Distribution of the size of market orders}
+\subsection*{Distribution of the size of market orders}
 The distribution of size of market orders has been found to obey a power law:
 \begin{equation}\label{eq:2}
     f^{Q}(x)\propto x^{-1-\alpha}
 \end{equation}
 for large $x$, with $\alpha\in[1.4,1.6].$
-\subsection{Modelling market impact}
+\subsection*{Modelling market impact}
 Less consensus on market impact. Some find change in price $\Delta p$ after market order size $Q$ given by 
 \begin{equation}\label{eq:3}
     \Delta p\propto Q^\beta, \beta\in[0.5,0.8]
@@ -170,7 +170,7 @@ and by substitution we find the following equation for $\theta:$
     &+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
     &\theta(s,q,T)=qs.
 \end{align*}
-\subsection{Relations for the reserve prices}
+\subsection*{Relations for the reserve prices}
 By the definitions of the reserve bid and ask prices we obtain
 \begin{align*}
     u(s,x-r^b(s,q,t),q+1,t)&=u(s,x,q,t)\\

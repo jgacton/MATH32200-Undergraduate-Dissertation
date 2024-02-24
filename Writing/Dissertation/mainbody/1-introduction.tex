@@ -93,27 +93,94 @@ summarise below. We will also briefly introduce some tools from stochastic calcu
 from a first-year undergraduate level course in real analysis, probability, and statistics is assumed.
 
 \section{Measure Theory and Probability}
-Sigma algebras
-Measurable sets
-Measurable functions
-Measures
-Integration of measurable functions
-Reals, Borel sigma algebra \& lebesgue measure
-Probability spaces
-Random variables
-Tonelli \& Fubini
-Moment generating functions
+\begin{itemize}
+    \item Sigma algebras
+    \item Measurable sets
+    \item Measurable functions
+    \item Measures
+    \item Integration of measurable functions
+    \item Reals, Borel sigma algebra \& lebesgue measure
+    \item Probability spaces
+    \item Random variables
+    \item Tonelli \& Fubini
+    \item Moment generating functions
+\end{itemize}
+
+\begin{definition}[$\sigma$-algebra]
+    A family $\mathcal{F}\subset\subseteq\mathcal{P}(\Omega)$ of sets is called a $\sigma$-algebra if 
+    \begin{itemize}
+        \item $\Omega\in\mathcal{A},$
+        \item for every countable collection of sets $A_1,A_2,...\in\mathcal{F},\;\bigcup_{n}A_n\in\mathcal{F},$
+        \item for every $A\in\mathcal{F}, A^{\mathrm c}\in\mathcal{F}.$
+    \end{itemize}
+\end{definition}
+
+\begin{remark}
+    The pair $(\Omega,\mathcal{F})$ is called a \emph{measurable space}. Any set $A\in\mathcal{F}$
+    is called $\mathcal{F}$-\emph{measurable} or simply \emph{measurable}.
+\end{remark}
+
+\begin{definition}
+    A \emph{measure} $\mu$ on a $\sigma$-algebra $\mathcal{F}$ is a set function
+    $\mu:\mathcal{F}\rightarrow[0,\infty]$ such that $\forall$ mutually disjoint
+    sets $A_1,A_2,...\in\mathcal{A}$ with $\bigcup_nA_n\in\mathcal{A},$
+    \begin{equation}
+        \mu\left(\bigcup_{n=1}^{\infty}A_n\right)=\sum_{n=1}^{\infty}\mu(A_n)
+    \end{equation}
+\end{definition}
+
+\begin{remark}
+    If $\mu(\Omega)=1$ then we call $\mu$ a \emph{probability measure}, and often
+    use $\mathbb{P}$ instead. In this case the triplet $(\Omega,\mathcal{F},\mathbb{P})$
+    is called a \emph{probability space}.
+\end{remark}
+
+\begin{lemma}
+    Let $\mathcal{A}\subseteq\mathcal{P}(\Omega)$ Then $\exists$ a smallest $\sigma$-
+    algebra $\sigma(\mathcal{A})$ that contains all sets from $\mathcal{A}.$
+\end{lemma}
+\begin{proof}
+    The intersection of $\sigma$-algebras is a $\sigma$-algebra, so to find the 
+    smallest containing some collection of sets, take the intersection of all $\sigma$-
+    algebras containing those sets.
+\end{proof}
+
+\begin{remark}
+    The above $\sigma(\mathcal{A})$ is usually called the $\sigma$-algebra
+    \emph{generated} by $\mathcal{A}$.
+\end{remark}
+
+\begin{definition}[The Borel $\sigma$-algebra]
+    Consider the collection 
+    \begin{equation*}
+        \mathcal{A}=\{(a,b):a,b\in\mathbb{R}\cup\{-\infty,\infty\},a<b\}
+    \end{equation*}
+    Then define $\mathcal{B}(\mathbb{R}):=\sigma(\mathcal{A})$ the \emph{Borel 
+    $\sigma$-algebra}. This is the smallest $\sigma$-algebra containing all open
+    sets in $\mathbb{R}$. A set $B\in\mathcal{B}$ is a \emph{Borel set}.
+\end{definition}
+
+\begin{definition}[Measurable functions]
+    Let $(\Omega,\mathcal{F})$ be a measurable space. A function $f:\Omega\rightarrow\mathbb{R}$
+    is \emph{measurable} if for any 
+\end{definition}
 
 \section{Stochastic Processes}
-Markov chains
-Martingales
-Poisson processes
-Brownian motion
+\begin{itemize}
+    \item Markov chains
+    \item Martingales
+    \item Poisson processes
+    \item Brownian motion
+\end{itemize}
 
 \section{Stochastic Integration}
-Stochastic integral
-Itos lemma
+\begin{itemize}
+    \item Stochastic integral
+    \item Itos lemma
+\end{itemize}
 
 \section{Stochastic Differential Equations}
-From PDE to SDE
-Brownian motion as the solution to an SDE
+\begin{itemize}
+    \item From PDE to SDE
+    \item Brownian motion as the solution to an SDE
+\end{itemize}
