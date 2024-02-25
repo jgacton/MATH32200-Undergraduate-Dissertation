@@ -16,24 +16,31 @@ Consider the mean/variance objective
 \begin{equation}
     V(s,x,q,t)=\mathbb{E}\left[(x+qS_T)-\frac{\gamma}{2}(qS_T-qs)^2|\mathcal{F}_t\right]
 \end{equation}
-which we can simplify using the properties of the lognormal as follows:
+which we can simplify using the properties of GBM as follows:
 \begin{align*}
     V(s,x,q,t)&=\mathbb{E}\left[(x+qS_T)-\frac{\gamma}{2}(qS_T-qs)^2|\mathcal{F}_t\right]\\
     &=x+q\mathbb{E}[S_T|\mathcal{F}_t]-\frac{\gamma q^2}{2}\mathbb{E}[S_T^2|\mathcal{F}_t]+\gamma q^2s\mathbb{E}[S_T|\mathcal{F}_t]-\frac{\gamma q^2s^2}{2}\\
-    &=x+qs-\frac{\gamma q^2}{2}\left(\textrm{Var}[S_T|\mathcal{F}_t]-\mathbb{E}[S_T|\mathcal{F}_t]^2\right)+\gamma q^2s^2-\frac{\gamma q^2s^2}{2}\\
-    &=x+qs-\frac{\gamma q^2}{2}\left(s^2\left(e^{\sigma^2(T-t)}-1\right)-s^2\right)+\frac{\gamma q^2s^2}{2}\\
-    &=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{\sigma^2(T-t)}-2\right)+\frac{\gamma q^2s^2}{2}\\
-    &=x+qs-\frac{\gamma q^2s^2}{2}e^{\sigma^2{T-t}}+\gamma q^2s^2-\frac{\gamma q^2s^2}{2}\\
-    &=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{\sigma^2(T-t)}-1\right)
+    &=x+qs-\frac{\gamma q^2}{2}\left(s^2e^{2\sigma^2(T-t)}\right)+\gamma\sigma^2s^2-\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}\right)+\frac{\gamma q^2s^2}{2}\\
+    &=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)
 \end{align*}
 Using the definition of reserve bid and ask prices we obtain
-\begin{equation}
-    R^a(s,q,t)=s+ \frac{1-2q}{2} \gamma s^2 \left(e^{\sigma^2(T-t)}-1\right)
-\end{equation}
+\begin{align*}
+    V(s,x+R^a(s,q,t),q-1,t)&=V(s,x,q,t)\\
+    x+R^a(s,q,t)+(q-1)s-\frac{\gamma (q-1)^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)\\
+    R^a(s,q,t)+qs-s-\frac{\gamma (q^2-2q+1)s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=qs-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)\\
+    R^a(s,q,t)-s-\frac{\gamma q^2s^2+\gamma(1-2q)s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)\\
+    R^a(s,q,t)-\frac{(1-2q)\gamma s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=s\\
+    R^a(s,q,t)&=s+ \frac{(1-2q)\gamma s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)
+\end{align*}
 and
-\begin{equation}
-    R^b(s,q,t)=s+ \frac{-1-2q}{2} \gamma s^2 \left(e^{\sigma^2(T-t)}-1\right)
-\end{equation}
+\begin{align*}
+    V(s,x-R^b(s,q,t),q+1,t)&=V(s,x,q,t)\\
+    x-R^b(s,q,t)+(q+1)s-\frac{\gamma (q+1)^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=x+qs-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)\\
+    -R^b(s,q,t)+qs+s-\frac{\gamma (q^2+2q+1)s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=qs-\frac{\gamma q^2s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)\\
+    -R^b(s,q,t)+s-\frac{(1+2q)\gamma s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)&=0\\
+    R^b(s,q,t)&=s- \frac{(1+2q)\gamma s^2}{2}\left(e^{2\sigma^2(T-t)}-1\right)
+\end{align*}
 \section{Estimating the Frequency of Market Orders}
 \section{Estimating the Size Distribution of Market Orders}
 \section{Estimating the Temporary Price Impact of Large Market Orders}

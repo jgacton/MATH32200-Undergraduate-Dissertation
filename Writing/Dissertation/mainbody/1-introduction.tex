@@ -136,8 +136,8 @@ from a first-year undergraduate level course in real analysis, probability, and 
 \end{remark}
 
 \begin{lemma}
-    Let $\mathcal{A}\subseteq\mathcal{P}(\Omega)$ Then $\exists$ a smallest $\sigma$-
-    algebra $\sigma(\mathcal{A})$ that contains all sets from $\mathcal{A}.$
+    Let $\mathcal{A}\subseteq\mathcal{P}(\Omega)$ Then $\exists$ a smallest $\sigma$-algebra 
+    $\sigma(\mathcal{A})$ that contains all sets from $\mathcal{A}.$
 \end{lemma}
 \begin{proof}
     The intersection of $\sigma$-algebras is a $\sigma$-algebra, so to find the 
@@ -162,7 +162,10 @@ from a first-year undergraduate level course in real analysis, probability, and 
 
 \begin{definition}[Measurable functions]
     Let $(\Omega,\mathcal{F})$ be a measurable space. A function $f:\Omega\rightarrow\mathbb{R}$
-    is \emph{measurable} if for any 
+    is \emph{measurable} if for any $B\in\mathcal{B}$,
+    \begin{equation*}
+        f^{-1}(B)\in\mathcal{F}.
+    \end{equation*}
 \end{definition}
 
 \section{Stochastic Processes}
@@ -171,6 +174,7 @@ from a first-year undergraduate level course in real analysis, probability, and 
     \item Martingales
     \item Poisson processes
     \item Brownian motion
+    \item Geometric Brownian motion
 \end{itemize}
 
 \section{Stochastic Integration}
