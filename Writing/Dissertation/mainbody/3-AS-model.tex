@@ -157,19 +157,27 @@ Other methods exist i.e. integrating the density of the orderbook, potentially b
 
 \section{The Hamilton-Jacobi-Bellman Equation}
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
-\begin{align*}
-    u_t + \frac{1}{2} \sigma^2u_{ss} &+ \max \limits_{ \delta^b } \lambda^b( \delta^b )[ u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)] \\
-    &+\max\limits_{\delta^a}\lambda^a(\delta^a)[u(s,x+s+\delta^a,q-1,t)-u(s,x,q,t)]=0, \\
-    & u(s,x,q,T) = -e^{-\gamma(x+qs)}
-\end{align*}
+\begin{equation}\label{eq:hjb-1}
+    \left\{
+        \begin{aligned}
+            u_t+\frac{1}{2}\sigma^2u_{ss}&+\max\limits_{\delta^b}\lambda^b(\delta^b)[u(s,x-s+\delta^b,q+1,t)-u(s,x,q,t)]\\
+            &+\max\limits_{\delta^a}\lambda^a(\delta^a)[u(s,x+s+\delta^a,q-1,t)-u(s,x,q,t)]=0,\\
+            &u(s,x,q,T)=-e^{-\gamma(x+qs)}
+        \end{aligned}
+    \right.
+\end{equation}
 but due to our choice of exponential utility we can simplify the problem with the ansatz:
 $$u(s,x,q,t)=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}$$
-and by substitution we find the following equation for $\theta:$
-\begin{align*}
-    \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{ss}^2&+\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]\\
-    &+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a+r^a)})\right]=0,\\
-    &\theta(s,q,T)=qs.
-\end{align*}
+and by substitution we find the following equation for $\theta$:
+\begin{equation}\label{eq:hjb-2}
+    \left\{
+        \begin{aligned}
+            \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{ss}^2&+\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]\\
+            &+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a-r^a)})\right]=0,\\
+            &\theta(s,q,T)=qs.
+        \end{aligned}
+    \right.
+\end{equation}
 \subsection*{Relations for the reserve prices}
 By the definitions of the reserve bid and ask prices we obtain
 \begin{align*}
@@ -218,58 +226,82 @@ and
     \lambda^a(\delta)+\lambda^b(\delta)=Ae^{-k\delta}
 \end{equation}
 
-\begin{equation} 
+Using exponential arrival rates in our relations above for the optimal bid and 
+ask prices, we can see that
+\begin{equation*}
+    \frac{\lambda(\delta)}{\frac{\partial\lambda}{\partial\delta}(\delta)}=\frac{Ae^{-k\delta}}{-kAe^{-k\delta}}=-\frac{1}{k}.
+\end{equation*}
+Hence by plugging in the aforementioned relations under the assumption of symmetric
+exponential arrival rates to the maximised terms in the HJB equation \ref{eq:hjb-2}
+we see that
+\begin{align*}
+    &\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a-r^a)})\right]\\
+    &=\frac{Ae^{-k\delta^b}}{\gamma}\left(1-e^{\gamma\left(-\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)\right)}\right)+\frac{Ae^{-k\delta^a}}{\gamma}\left(1-e^{-\gamma\left(\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)\right)}\right)\\
+    &=\left[\frac{A}{\gamma}\left(1-e^{-\log\left(1+\frac{\gamma}{k}\right)}\right)\right](e^{-k\delta^b}+e^{-k\delta^a})\\
+    &=\left[\frac{A}{\gamma}\left(1-\frac{1}{1+\frac{\gamma}{k}}\right)\right](e^{-k\delta^b}+e^{-k\delta^a})\\
+    &=\left(\frac{A}{\gamma}-\frac{A}{\gamma+\frac{\gamma^2}{k}}\right)(e^{-k\delta^b}+e^{-k\delta^a})\\
+    &=\left(\frac{A\left(1+\frac{\gamma}{k}\right)-A}{\gamma+\frac{\gamma^2}{k}}\right)(e^{-k\delta^b}+e^{-k\delta^a})\\
+    &=\left(\frac{A\frac{\gamma}{k}}{\gamma+\frac{\gamma^2}{k}}\right)(e^{-k\delta^b}+e^{-k\delta^a})\\
+    &=\frac{A}{k+\gamma}(e^{-k\delta^b}+e^{-k\delta^a})
+\end{align*}
+which results in the simplified HJB equation below:
+\begin{equation}\label{eq:simp-hjb}
     \begin{cases} 
-        \theta_t+\frac{1}{2}\sigma^2\theta{ss}-\frac{1}{2}\sigma^2\gamma\theta^2_s+\frac{A}{k+\gamma}(e^{-k\delta^a}+e^{-k\delta^b})=0\\
+        \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta^2_s+\frac{A}{k+\gamma}(e^{-k\delta^a}+e^{-k\delta^b})=0\\
         \theta(s,q,T)=qs.
     \end{cases}
 \end{equation}
-
-\begin{equation}
+Asymptotic expansion in the inventory variable $q$:
+\begin{equation}\label{eq:asymp}
     \theta(q,s,t)=\theta^0(s,t)+q\theta^1(s,t)+\frac{1}{2}q^2\theta^2(s,t)+...
 \end{equation}
-
-\begin{equation}
-    r^b(s,q,t)=\theta^1(s,t)+(1+2q)\theta^2(s,t)+...
-\end{equation}
-
-\begin{equation}
-    r^a(s,q,t)=\theta^1(s,t)+(-1-2q)\theta^2(s,t)+...
-\end{equation}
-
-\begin{equation}
-    \delta^a+\delta^b=-2\theta^2(s,t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
-\end{equation}
-
-\begin{equation}
+The exact relations for the reserve bid and ask prices obtained above yield
+\begin{gather}
+    r^b(s,q,t)=\theta^1(s,t)+(1+2q)\theta^2(s,t)+...\\
+    r^a(s,q,t)=\theta^1(s,t)+(-1-2q)\theta^2(s,t)+...\;.
+\end{gather}
+Then
+\begin{equation}\label{eq:reserve-price}
     r(s,q,t)=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}=\theta^1(s,t)+2q\theta^2(s,t)
 \end{equation}
-
-\begin{equation}
+follows immediately, and we also have that
+\begin{equation}\label{eq:spread}
+    \begin{aligned}
+        \delta^a+\delta^b&=\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)+r^a(s,q,t)-s+\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)+s-r^b(s,q,t)\\
+        &=r^a(s,q,t)-r^b(s,q,t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)\\
+        &=-2\theta^2(s,t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
+    \end{aligned}
+\end{equation}
+Now consider a first-order approximation of the order arrival term:
+\begin{equation}\label{eq:approx-arrival}
     \frac{A}{k+\gamma}(e^{-\gamma\delta^a}+e^{-\gamma\delta^b})=\frac{A}{k+\gamma}(2-k(\delta^a+\delta^b)+...)
 \end{equation}
-
+The linear term does not depend on the inventory $q$. Therefore, by substituting
+\ref{eq:asymp} and \ref{eq:approx-arrival} into \ref{eq:simp-hjb} and 
+grouping terms of order $q$ we obtain
 \begin{equation}
     \begin{cases} 
         \theta^1_t+\frac{1}{2}\sigma^2\theta^1_{ss}=0\\
         \theta^1(s,T)=s.
     \end{cases}
 \end{equation}
-$\theta^1(s,t)=s$
+which admits the solution $\theta^1(s,t)=s$. Grouping terms of order $q^2$ yields
 \begin{equation}
     \begin{cases}
         \theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma(\theta^1_s)^2=0\\
         \theta^2(s,T)=0
     \end{cases}
 \end{equation}
-$\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$
-
+with solution $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$.
+Thus for this linear approximation of the order arrival term, we can substitute our
+solutions back into \ref{eq:reserve-price} to obtain the same indifference price
 \begin{equation}
     r(s,t)=s-q\gamma\sigma^2(T-t)
 \end{equation}
-
+as in the case where no trading is allowed. We quote a bid-ask spread given by
 \begin{equation}
     \delta^a+\delta^b=\gamma\sigma^2(T-t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
 \end{equation}
+which is again aquired by substituting our solutions back into \ref{eq:spread}.
 
 \section{Summary}
