@@ -79,7 +79,17 @@ We define the ``reserve" or ``indifference" price to be the average of these two
     \bar v(x,s,q)=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}dt\right]
 \end{equation*}
 \begin{align*}
-    \bar{v}(x-r^b(s,q),s,q+1)&=
+    \bar{v}(x-\bar{r}^b(s,q),s,q+1)&=\bar{v}(x,s,q)\\
+    \mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x-\bar{r}^b(s,q)+(q+1)S_t)}\mathrm dt\right]&=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}\mathrm dt\right]\\
+    \int_{0}^{\infty}e^{-\omega t}e^{-\gamma(x-\bar{r}^b(s,q))}\mathbb{E}\left[e^{-\gamma(q+1)S_t}\right]\mathrm dt&=\int_{0}^{\infty}e^{-\omega t}e^{-\gamma x}\mathbb{E}\left[e^{-\gamma qS_t}\right]\mathrm dt\textrm{ (by Tonelli)}\\
+    e^{-\gamma(x-\bar{r}^b(s,q))}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma(q+1)s+\frac{\gamma^2(q-1)^2\sigma^2t}{2}}\mathrm dt&=e^{-\gamma x}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma qs+\frac{\gamma^2q^2\sigma^2t}{2}}\mathrm dt\\
+    e^{-\gamma(x-\bar{r}^b(s,q))}e^{-\gamma(q+1)s}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2(q+1)^2\sigma^2t}{2}}\mathrm dt&=e^{-\gamma x}e^{-\gamma qs}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2q^2\sigma^2t}{2}}\mathrm dt\\
+    e^{\gamma \bar{r}^b(s,q)}e^{-\gamma s}\int_{0}^{\infty}e^{\left(\frac{\gamma^2(q+1)^2\sigma^2-2\omega}{2}\right)t}\mathrm dt&=\int_{0}^{\infty}e^{\left(\frac{\gamma^2q^2\sigma^2-2\omega}{2}\right)t}\mathrm dt\\
+    e^{\gamma \bar{r}^b(s,q)}e^{-\gamma s}\left(\frac{2}{2\omega-\gamma^2(q+1)^2\sigma^2}\right)&=\left(\frac{2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
+    e^{\gamma(\bar{r}^b(s,q)-s)}&=\frac{2\omega-\gamma^2(q+1)^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
+    e^{\gamma(\bar{r}^b(s,q)-s)}&=1-\frac{(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
+    \gamma\bar{r}^b(s,q)-\gamma s&=\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
+    \bar{r}^b(s,q) &= s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
 \begin{align*}
     \bar{v}(x+r^a(s,q),s,q-1)&=\bar{v}(x,s,q)\\
@@ -90,7 +100,7 @@ We define the ``reserve" or ``indifference" price to be the average of these two
     e^{-\gamma r^a(s,q)}e^{\gamma s}\int_{0}^{\infty}e^{\left(\frac{\gamma^2(q-1)^2\sigma^2-2\omega}{2}\right)t}dt&=\int_{0}^{\infty}e^{\left(\frac{\gamma^2q^2\sigma^2-2\omega}{2}\right)t}dt\\
     e^{-\gamma r^a(s,q)}e^{\gamma s}\left(\frac{2}{2\omega-\gamma^2(q-1)^2\sigma^2}\right)&=\left(\frac{2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
     e^{\gamma(s-r^a(s,q))}&=\frac{2\omega-\gamma^2(q-1)^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
-    e^{\gamma(s-r^a(s,q))}&=1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
+    e^{\gamma(s-r^a(s,q))}&=1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
     \gamma s - \gamma r^a(s,q)&=\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
     r^a(s,q) &= s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
