@@ -93,11 +93,11 @@ We define the ``reserve" or ``indifference" price to be the average of these two
 \end{align*}
 \begin{align*}
     \bar{v}(x+r^a(s,q),s,q-1)&=\bar{v}(x,s,q)\\
-    \mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+r^a(s,q)+(q-1)S_t)}dt\right]&=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}dt\right]\\
-    \int_{0}^{\infty}e^{-\omega t}e^{-\gamma(x+r^a(s,q))}\mathbb{E}\left[e^{-\gamma(q-1)S_t}\right]dt&=\int_{0}^{\infty}e^{-\omega t}e^{-\gamma x}\mathbb{E}\left[e^{-\gamma qS_t}\right]dt\textrm{ (by Tonelli)}\\
-    e^{-\gamma(x+r^a(s,q))}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma(q-1)s+\frac{\gamma^2(q-1)^2\sigma^2t}{2}}dt&=e^{-\gamma x}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma qs+\frac{\gamma^2q^2\sigma^2t}{2}}dt\\
-    e^{-\gamma(x+r^a(s,q))}e^{-\gamma(q-1)s}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2(q-1)^2\sigma^2t}{2}}dt&=e^{-\gamma x}e^{-\gamma qs}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2q^2\sigma^2t}{2}}dt\\
-    e^{-\gamma r^a(s,q)}e^{\gamma s}\int_{0}^{\infty}e^{\left(\frac{\gamma^2(q-1)^2\sigma^2-2\omega}{2}\right)t}dt&=\int_{0}^{\infty}e^{\left(\frac{\gamma^2q^2\sigma^2-2\omega}{2}\right)t}dt\\
+    \mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+r^a(s,q)+(q-1)S_t)}\mathrm dt\right]&=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}\mathrm dt\right]\\
+    \int_{0}^{\infty}e^{-\omega t}e^{-\gamma(x+r^a(s,q))}\mathbb{E}\left[e^{-\gamma(q-1)S_t}\right]\mathrm dt&=\int_{0}^{\infty}e^{-\omega t}e^{-\gamma x}\mathbb{E}\left[e^{-\gamma qS_t}\right]\mathrm dt\textrm{ (by Tonelli)}\\
+    e^{-\gamma(x+r^a(s,q))}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma(q-1)s+\frac{\gamma^2(q-1)^2\sigma^2t}{2}}\mathrm dt&=e^{-\gamma x}\int_{0}^{\infty}e^{-\omega t}e^{-\gamma qs+\frac{\gamma^2q^2\sigma^2t}{2}}\mathrm dt\\
+    e^{-\gamma(x+r^a(s,q))}e^{-\gamma(q-1)s}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2(q-1)^2\sigma^2t}{2}}\mathrm dt&=e^{-\gamma x}e^{-\gamma qs}\int_{0}^{\infty}e^{-\omega t}e^{\frac{\gamma^2q^2\sigma^2t}{2}}\mathrm dt\\
+    e^{-\gamma r^a(s,q)}e^{\gamma s}\int_{0}^{\infty}e^{\left(\frac{\gamma^2(q-1)^2\sigma^2-2\omega}{2}\right)t}\mathrm dt&=\int_{0}^{\infty}e^{\left(\frac{\gamma^2q^2\sigma^2-2\omega}{2}\right)t}\mathrm dt\\
     e^{-\gamma r^a(s,q)}e^{\gamma s}\left(\frac{2}{2\omega-\gamma^2(q-1)^2\sigma^2}\right)&=\left(\frac{2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
     e^{\gamma(s-r^a(s,q))}&=\frac{2\omega-\gamma^2(q-1)^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
     e^{\gamma(s-r^a(s,q))}&=1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\\
