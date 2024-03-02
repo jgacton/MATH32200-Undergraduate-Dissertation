@@ -188,3 +188,19 @@ from a first-year undergraduate level course in real analysis, probability, and 
     \item From PDE to SDE
     \item Brownian motion as the solution to an SDE
 \end{itemize}
+\begin{definition}[Geometric Brownian Motion]
+    A \emph{geometric brownian motion} is an adapted stochastic process which solves the following
+    stochastic differential equation
+    \begin{equation}
+        dS_t=\mu S_t\mathrm dt + \sigma S_t\mathrm dW_t
+    \end{equation}
+    for $\mu,\sigma\in\mathbb{R}$ and where $W$ is a standard Wiender process.
+    By It\^{o}'s formula with $f(S_t)=\log S_t$, we can write
+    \begin{align*}
+        \mathrm df(S_t)&=\frac{1}{S_t}\mathrm dS_t-\frac{1}{2S_t^2}(\mathrm dS_t)^2\\
+        &=\mu\mathrm dt+\sigma\mathrm dW_t-\frac{1}{2}\sigma^2\mathrm dt\\
+        \implies \log S_t&=\log S_0+\left(\mu-\frac{\sigma^2}{2}\right)t+\sigma W_t\\
+        \implies S_t&=S_0e^{\left(\mu-\frac{\sigma^2}{2}\right)t+\sigma W_t}
+    \end{align*}
+    and we arrive at the canonical formula for the GBM, where $S_0$ is the initial value of the process.
+\end{definition}
