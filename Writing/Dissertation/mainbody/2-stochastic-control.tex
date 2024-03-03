@@ -1,11 +1,24 @@
+\section{Introduction}
+In this section some of the relevant definitions and theorems from the field of stochastic optimal control 
+will be stated and proved. We mainly follow the text of \cite{pham}.
 \section{Controlled Diffusion Processes}
-$$dX_s=b(X_s,\alpha_s)ds+\sigma(X_s,\alpha_s)dW_s$$
-A strong solution to this SDE starting at time $t$ is a progressively measurable process $X$ such that for $s\leq t$:
-$$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)du+\int_t^s\sigma(X_u,\alpha_u)dW_u$$
-and
-$$\int_t^s|b(X_u,\alpha_u)|du+\int_t^s|\sigma(X_u,\alpha_u)|^2du<\infty$$
-a.s.
+\begin{definition}[Controlled Diffusion Process]
+    \begin{equation}
+        dX_s=b(X_s,\alpha_s)ds+\sigma(X_s,\alpha_s)dW_s
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Strong Solution]
+    A strong solution to this SDE starting at time $t$ is a progressively measurable process $X$ such that for $s\leq t$:
+    $$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)du+\int_t^s\sigma(X_u,\alpha_u)dW_u$$
+    and
+    $$\int_t^s|b(X_u,\alpha_u)|du+\int_t^s|\sigma(X_u,\alpha_u)|^2du<\infty$$
+    a.s.
+\end{definition}
 \section{The Finite-Horizon Problem}
+\begin{definition}[Optimal control]
+    
+\end{definition}
 We say that $\hat{\alpha}$ is an optimal control for a given initial condition $ (t,x) \in [0,T) \times \mathbb{R}^n $ if
 $$v(t,x)=J(t,x,\hat{\alpha})$$
 where $J$ is the gain function and $v$ is the associated value function
