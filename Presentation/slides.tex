@@ -23,31 +23,85 @@
 \end{frame}
 
 \begin{frame}{What is a market?}
-    
+    \begin{itemize}
+        \item Multiple buyers, multiple sellers
+        \item Prices determined by trading: literally supply \& demand
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Market participants}
-    
+    \begin{itemize}
+        \item Investors
+        \item Speculators
+        \begin{itemize}
+            \item What if no one wants to sell? (resp. buy?)
+            \item What if buyers and sellers have wildly different indifference prices?
+        \end{itemize}
+        \item Dealers
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{The limit orderbook}
-    
+    \begin{center}
+        \begin{tabular}{ |c|c|c| } 
+            \hline
+            Side & Price /\$ & Volume \\ 
+            \hline
+            A & 1.02 & 50 \\
+            A & 1.01 & 30 \\
+            N/A & 1.00 & 0 \\
+            B & 0.99 & 25 \\ 
+            B & 0.98 & 45 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \begin{itemize}
+        \item \emph{Limit} orders guaruntee price but not execution
+        \item \emph{Market} orders guaruntee execution but not price
+    \end{itemize}
 \end{frame}
 
-\begin{frame}{Risks to the dealer}
-    
+\begin{frame}{Dealer considerations}
+    Idea:
+    \begin{itemize}
+        \item Simultaneously place bid and ask limit orders $\rightarrow$ simultaneously buying and selling
+        \item Enables other market participants to always have someone to trade against
+        \item Narrows the spread between bid and ask prices, increasing efficiency
+        \item Dealer profits the (small) spread between buying and selling (multiplied by a large trading volume)
+    \end{itemize}
+    Risks:
+    \begin{itemize}
+        \item Informed traders
+        \item Inventory
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Modelling dealer behavior}
-    
+    \begin{itemize}
+        \item If large positive inventory, set a lower ask price
+        \item If large negative inventory, set a higher bid price
+        \item If high price volatility, set a wider spread 
+        \item Dealer may also have some predetermined risk aversion parameter
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model}
-    
+    Two-step process:
+    \begin{itemize}
+        \item Given current inventory (\& other fixed params), compute indifference price for the asset
+        \item Calibrate bid and ask quotes to the current order book
+        \begin{itemize}
+            \item Consider probability of order execution as a function of distance from mid-price
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Statistical properties of the limit order book}
-    
+    \begin{itemize}
+        \item Frequency of market orders: Poisson process (fixed rate)
+        \item Size distribution of market orders: Power law. Exponent is market-specific
+        \item Price impact of large market orders: Logarithmic or square root
+    \end{itemize}
 \end{frame}
 
 % Conclusion
