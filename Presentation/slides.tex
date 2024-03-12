@@ -26,18 +26,7 @@
     \begin{itemize}
         \item Multiple buyers, multiple sellers
         \item Prices determined by trading: literally supply \& demand
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Market participants}
-    \begin{itemize}
-        \item Investors
-        \item Speculators
-        \begin{itemize}
-            \item What if no one wants to sell? (resp. buy?)
-            \item What if buyers and sellers have wildly different indifference prices?
-        \end{itemize}
-        \item Dealers
+        \item So how does trading actually occur inside the exchange?
     \end{itemize}
 \end{frame}
 
@@ -49,7 +38,7 @@
             \hline
             A & 1.02 & 50 \\
             A & 1.01 & 30 \\
-            N/A & 1.00 & 0 \\
+            \_ & 1.00 & 0 \\
             B & 0.99 & 25 \\ 
             B & 0.98 & 45 \\
             \hline
@@ -57,7 +46,24 @@
     \end{center}
     \begin{itemize}
         \item \emph{Limit} orders guaruntee price but not execution
+        \begin{itemize}
+            \item Limit orders can also be ammended/updated for as long as they exist
+        \end{itemize}
         \item \emph{Market} orders guaruntee execution but not price
+        \item From a CS perspective, the order book is a \emph{priority queue}
+    \end{itemize}
+    So who is doing the trading?
+\end{frame}
+
+\begin{frame}{Market participants}
+    \begin{itemize}
+        \item Investors
+        \item Speculators
+        \begin{itemize}
+            \item What if no one wants to sell? (resp. buy?)
+            \item What if buyers and sellers have wildly different indifference prices?
+        \end{itemize}
+        \item Dealers
     \end{itemize}
 \end{frame}
 
