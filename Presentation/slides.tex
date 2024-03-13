@@ -22,8 +22,9 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{What is a market?}
+\begin{frame}{What is a (financial) market?}
     \begin{itemize}
+        \item Stocks, bonds, commodities, all manner of derivatives
         \item Multiple buyers, multiple sellers
         \item Prices determined by trading: literally supply \& demand
         \item So how does trading actually occur inside the exchange?
@@ -34,7 +35,7 @@
     \begin{center}
         \begin{tabular}{ |c|c|c| } 
             \hline
-            Side & Price /\$ & Volume \\ 
+            Side & Price /£ & Volume \\ 
             \hline
             A & 1.02 & 50 \\
             A & 1.01 & 30 \\
@@ -50,19 +51,56 @@
             \item Limit orders can also be ammended/updated for as long as they exist
         \end{itemize}
         \item \emph{Market} orders guaruntee execution but not price
-        \item From a CS perspective, the order book is a \emph{priority queue}
+        \item \emph{Spread} between best bid and best ask $\rightarrow$ £0.02
+        \item Can view the mid-price (here £1.00) as the ``true'' price
     \end{itemize}
+\end{frame}
+
+\begin{frame}{The limit orderbook}
+    After market order for 20 shares:
+    \begin{center}
+        \begin{tabular}{ |c|c|c| } 
+            \hline
+            Side & Price /£ & Volume \\ 
+            \hline
+            A & 1.02 & 50 \\
+            A & 1.01 & \textcolor{red}{10} \\
+            \_ & 1.00 & 0 \\
+            B & 0.99 & 25 \\ 
+            B & 0.98 & 45 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    After another market order for 30 shares:
+    \begin{center}
+        \begin{tabular}{ |c|c|c| } 
+            \hline
+            Side & Price /£ & Volume \\ 
+            \hline
+            A & 1.02 & \textcolor{red}{30} \\
+            A & 1.01 & \textcolor{red}{0} \\
+            \_ & 1.00 & 0 \\
+            B & 0.99 & 25 \\ 
+            B & 0.98 & 45 \\
+            \hline
+        \end{tabular}
+    \end{center}
     So who is doing the trading?
 \end{frame}
 
 \begin{frame}{Market participants}
     \begin{itemize}
         \item Investors
+        \begin{itemize}
+            \item Pension funds, asset managers, governments, some hedge funds
+        \end{itemize}
         \item Speculators
         \begin{itemize}
-            \item What if no one wants to sell? (resp. buy?)
-            \item What if buyers and sellers have wildly different indifference prices?
+            \item Other hedge funds, proprietary trading firms
         \end{itemize}
+        But what if no one wants to sell? (resp. buy?)
+
+        What if buyers and sellers have wildly different indifference prices?
         \item Dealers
     \end{itemize}
 \end{frame}
@@ -71,53 +109,162 @@
     Idea:
     \begin{itemize}
         \item Simultaneously place bid and ask limit orders $\rightarrow$ simultaneously buying and selling
-        \item Enables other market participants to always have someone to trade against
-        \item Narrows the spread between bid and ask prices, increasing efficiency
-        \item Dealer profits the (small) spread between buying and selling (multiplied by a large trading volume)
+        \item Enables other market participants to always have someone to trade against $\rightarrow$ ``providing liquidity''
+        \item Narrows the spread between bid and ask prices, decreasing implied cost of trading
+        \item Dealer profits the (small) spread between buying and selling (multiplied across large trading volume)
     \end{itemize}
     Risks:
     \begin{itemize}
         \item Informed traders
         \item Inventory
     \end{itemize}
+    Who does this?
+    \begin{itemize}
+        \item Specialist HFT/MM firms
+        \item Investment banks
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Modelling dealer behavior}
+    If dealer accrues positive inventory:
     \begin{itemize}
-        \item If large positive inventory, set a lower ask price
-        \item If large negative inventory, set a higher bid price
+        \item Want to sell more than buy
+        \item Set lower ask price
+    \end{itemize}
+    If dealer accrues negative inventory:
+    \begin{itemize}
+        \item Want to buy more than sell
+        \item Set a higher bid price
+    \end{itemize}
+    Other potential considerations:
+    \begin{itemize}
         \item If high price volatility, set a wider spread 
+        \item If trading day ends sooner, set narrower spread
         \item Dealer may also have some predetermined risk aversion parameter
+    \end{itemize}
+    Now for the maths\dots
+\end{frame}
+
+\begin{frame}{The Avellaneda-Stoikov model}
+    Model market mid-price as Brownian motion with variance $\sigma^2$ (no drift)
+    $$\mathrm d S_t=\sigma \mathrm d W_t,\;t\in[0,T]$$
+    Dealer's value function: Expected exponential utility of terminal wealth
+    \begin{equation}\label{1}
+        v(x,s,q,t)=\mathbb{E}\left[-e^{-\gamma(x+qS_T)}|\mathcal{F}_t\right]
+    \end{equation}
+    \begin{itemize}
+        \item $x=$ dealer's initial wealth (cash)
+        \item $q=$ dealer's inventory (assume fixed for now)
+        \item $\gamma=$ dealer's risk aversion
     \end{itemize}
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model}
-    Two-step process:
+    We can find a reservation bid price: The trading price at which the dealer is indifferent between buying an extra share and doing nothing: Set
+    \begin{equation}\label{2}
+        v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)
+    \end{equation}
+    and by substitution of (\ref{1}) into (\ref{2}) we obtain
+    \begin{equation}\label{3}
+        r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}
+    \end{equation}
+    An analagous expression exists for $r^a.$ We define the dealer's reservation price $r(s,q,t):=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}$ and obtain
+    \begin{equation}\label{4}
+        r(s,q,t)=s-q\gamma\sigma^2(T-t)
+    \end{equation}
+\end{frame}
+
+\begin{frame}{The Avellaneda-Stoikov model}
+    Now consider a dealer who sets limit orders. 
+    The dealer quotes bid $p^b$ and ask $p^a$ with spreads $\delta^b=s-p^b$ and $\delta^a=p^a-s$
+    respectively.
+    We assume that 
     \begin{itemize}
-        \item Given current inventory (\& other fixed params), compute indifference price for the asset
-        \item Calibrate bid and ask quotes to the current order book
-        \begin{itemize}
-            \item Consider probability of order execution as a function of distance from mid-price
-        \end{itemize}
+        \item Market buy orders will `lift' the dealer's sell orders at Poisson rate $\lambda^a(\delta^a)$ (a decreasing function of $\delta^a$)
+        \item Market sell orders will `hit' the dealer's bid orders at rate $\lambda^b(\delta^b)$ (decreasing in $\delta^b$).
     \end{itemize}
+    Now have stochastic wealth and inventory:
+    \begin{equation}
+        \mathrm dX_t=p^a\mathrm dN_t^a-p^b\mathrm dN_t^b
+    \end{equation}
+    \begin{equation}
+        q_t=N_t^b-N_t^a
+    \end{equation}
+\end{frame}
+
+\begin{frame}{The Avellaneda-Stoikov model}
+    Need to adapt our objective function: Maximise terminal wealth over possible bid/ask spreads $\delta^a,\delta^b$
+    \begin{equation}
+        u(s,x,q,t)=\max_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
+    \end{equation}
+    We now have a \emph{stochastic optimal control} problem:
+    \begin{itemize}
+        \item Formulate \emph{Hamilton-Jacobi-Bellman} equation and solve for function $u$
+        \item Use function $u$ to determine optimal $\delta^a,\delta^b$
+    \end{itemize}
+    Computationally difficult, however through some asymptotic approximations we can 
+    work out some simple expressions for an approximate solution in terms of our model paramaters\dots
+\end{frame}
+
+\begin{frame}{The Avellaneda-Stoikov model}
+    We obtain
+    \begin{equation}
+        r(s,q,t)=s-q\gamma\sigma^2(T-t)
+    \end{equation}
+    which coincides with our indifference price for the dealer with static inventory, and
+    \begin{equation}
+        \delta^a+\delta^b=\gamma\sigma^2(T-t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
+    \end{equation}
+    with $\gamma$ and $\sigma$ as before, $k$ is a parameter from the orderbook describing how 
+    market order size impacts prices.
 \end{frame}
 
 \begin{frame}{Statistical properties of the limit order book}
+    Poisson intensity $\lambda$ describes how likely a limit order is to be executed as a function of it's 
+    distance $\delta$ to the mid-price. Need some statistics regarding:
     \begin{itemize}
-        \item Frequency of market orders: Poisson process (fixed rate)
-        \item Size distribution of market orders: Power law. Exponent is market-specific
-        \item Price impact of large market orders: Logarithmic or square root
+        \item Overall frequency of market orders
+        \begin{itemize}
+            \item For simplicity, assume constant $\Lambda$
+        \end{itemize}
+        \item Size distribution of market orders
+        \begin{itemize}
+            \item ``Econophysics'' $\implies$ power law $f^Q(x)\propto x^{-1-\alpha}$
+        \end{itemize}
+        \item Price impact of large market orders
+        \begin{itemize}
+            \item ``Econophysics'' $\implies$ either $\Delta p\propto Q^\beta$ or $\Delta p\propto\log Q$
+        \end{itemize}
+    \end{itemize}
+    Using the first result for price impact we obtain:
+    \begin{align*}
+        \lambda(\delta)=\Lambda\mathbb{P}(\Delta p>\delta)&=\Lambda\mathbb{P}(\log Q>K\delta)\\
+        &=\Lambda\mathbb{P}\left(Q>e^{K\delta}\right)\\
+        &=\Lambda\int_{e^{K\delta}}^{\infty}x^{-1-\alpha}dx\\
+        &=Ae^{-k\alpha\delta}
+    \end{align*}
+\end{frame}
+
+\begin{frame}{The Avellaneda-Stoikov model - Summary}
+    At each timestep, given current inventory and parameters estimated from order book:
+    \begin{itemize}
+        \item Compute reservation price $r(s,q,t)$
+        \item Compute spread $\delta^a+\delta^b$
+        \item Set quotes $p^a=s+\frac{\delta^a+\delta^b}{2}$, $p^b=s-\frac{\delta^a+\delta^b}{2}$
     \end{itemize}
 \end{frame}
 
 % Conclusion
 \begin{frame}{Conclusion}
     \begin{itemize}
-        \item Under a few (potentially unrealistic) assumptions, it is
-        possible to determine what the optimal dealer strategy should be
-        \item No one model for all markets
-        \item Still very much an open field of study bringing together ideas
-        from maths, stats, physics, computer science and economics
+        \item Through the framework of stochastic control, we can attempt to model the optimal behaviour of a dealer in financial markets
+        \item We can also consider: 
+        \begin{itemize}
+            \item Geometric Brownian Motion
+            \item Infinite time horizons
+            \item Informed trader risk (game theory)
+            \item Alternative models for market orders (Hawkes Processes)
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
