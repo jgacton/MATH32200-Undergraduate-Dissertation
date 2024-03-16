@@ -17,6 +17,7 @@
 \begin{frame}{Introduction}
     \begin{itemize}
     \item How do financial markets work? (at the level of individual participants)
+    \item How can we use stochastic control theory to model the behaviour of market participants?
     \item The Avellaneda-Stoikov Model
     \item Results on the statistical properties of the limit orderbook
     \end{itemize}
@@ -46,6 +47,7 @@
         \end{tabular}
     \end{center}
     \begin{itemize}
+        \item Can either place \emph{limit} orders or \emph{market} orders
         \item \emph{Limit} orders guaruntee price but not execution
         \begin{itemize}
             \item Limit orders can also be ammended/updated for as long as they exist
@@ -85,27 +87,14 @@
             \hline
         \end{tabular}
     \end{center}
-    So who is doing the trading?
-\end{frame}
-
-\begin{frame}{Market participants}
-    \begin{itemize}
-        \item Investors
-        \begin{itemize}
-            \item Pension funds, asset managers, governments, some hedge funds
-        \end{itemize}
-        \item Speculators
-        \begin{itemize}
-            \item Other hedge funds, proprietary trading firms
-        \end{itemize}
-        But what if no one wants to sell? (resp. buy?)
-
-        What if buyers and sellers have wildly different indifference prices?
-        \item Dealers
-    \end{itemize}
 \end{frame}
 
 \begin{frame}{Dealer considerations}
+    Problem:
+    \begin{itemize}
+        \item What if no one wants to sell? (resp. buy?)
+        \item What if buyers and sellers have wildly different price expectations?
+    \end{itemize}
     Idea:
     \begin{itemize}
         \item Simultaneously place bid and ask limit orders $\rightarrow$ simultaneously buying and selling
@@ -117,11 +106,6 @@
     \begin{itemize}
         \item Informed traders
         \item Inventory
-    \end{itemize}
-    Who does this?
-    \begin{itemize}
-        \item Specialist HFT/MM firms
-        \item Investment banks
     \end{itemize}
 \end{frame}
 
@@ -136,16 +120,33 @@
         \item Want to buy more than sell
         \item Set a higher bid price
     \end{itemize}
-    Other potential considerations:
-    \begin{itemize}
-        \item If high price volatility, set a wider spread 
-        \item If trading day ends sooner, set narrower spread
-        \item Dealer may also have some predetermined risk aversion parameter
-    \end{itemize}
-    Now for the maths\dots
+    Now the maths\dots
+\end{frame}
+
+\begin{frame}{Stochastic Optimal Control}
+    Following Pham (2009):
+
+    System:
+    \begin{equation}
+        \mathrm dX_t=b(X_t,\alpha_t)\mathrm dt+\sigma(X_t,\alpha_t)\mathrm dW_t
+    \end{equation}
+    Objective (Finite time horizon):
+    \begin{equation}
+        v(t,x):=\sup_{\alpha\in\mathcal A}\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})\right]
+    \end{equation}
+    Dynamic Programming Principle:
+    \begin{equation}
+        v(t,x)=\sup_{\alpha\in\mathcal A}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]
+    \end{equation}
+    Hamilton-Jacobi-Bellman Equation:
+    \begin{equation}
+        \frac{\partial v}{\partial t}(t,x)+\sup_{\alpha\in\mathcal{A}}\left[\mathcal{L}^\alpha v(t,x)+f(t,x,\alpha)\right]=0
+    \end{equation}
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model}
+    Following Avellaneda \& Stoikov (2008):
+
     Model market mid-price as Brownian motion with variance $\sigma^2$ (no drift)
     $$\mathrm d S_t=\sigma \mathrm d W_t,\;t\in[0,T]$$
     Dealer's value function: Expected exponential utility of terminal wealth
@@ -160,15 +161,15 @@
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model}
-    We can find a reservation bid price: The trading price at which the dealer is indifferent between buying an extra share and doing nothing: Set
+    Reservation bid price: The price at which the dealer is indifferent between buying an extra share and doing nothing: Set
     \begin{equation}\label{2}
         v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)
     \end{equation}
     and by substitution of (\ref{1}) into (\ref{2}) we obtain
     \begin{equation}\label{3}
-        r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}
+        r^b(s,q,t)=s-(1+2q)\frac{\gamma\sigma^2(T-t)}{2}
     \end{equation}
-    An analagous expression exists for $r^a.$ We define the dealer's reservation price $r(s,q,t):=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}$ and obtain
+    An analagous expression exists for $r^a.$ We define the dealer's reservation price $r(s,q,t):=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}$ and arrive at
     \begin{equation}\label{4}
         r(s,q,t)=s-q\gamma\sigma^2(T-t)
     \end{equation}
@@ -197,13 +198,10 @@
     \begin{equation}
         u(s,x,q,t)=\max_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
     \end{equation}
-    We now have a \emph{stochastic optimal control} problem:
     \begin{itemize}
-        \item Formulate \emph{Hamilton-Jacobi-Bellman} equation and solve for function $u$
-        \item Use function $u$ to determine optimal $\delta^a,\delta^b$
+        \item Very difficult (maybe impossible) to solve analytically
+        \item Through some asymptotic approximations we can work out some simple expressions for an approximate solution in terms of our model paramaters
     \end{itemize}
-    Computationally difficult, however through some asymptotic approximations we can 
-    work out some simple expressions for an approximate solution in terms of our model paramaters\dots
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model}
@@ -220,8 +218,8 @@
 \end{frame}
 
 \begin{frame}{Statistical properties of the limit order book}
-    Poisson intensity $\lambda$ describes how likely a limit order is to be executed as a function of it's 
-    distance $\delta$ to the mid-price. Need some statistics regarding:
+    Poisson intensity $\lambda(\delta)$ describes how likely a limit order is to be executed as a function of it's 
+    distance to the mid-price. Need some statistics regarding:
     \begin{itemize}
         \item Overall frequency of market orders
         \begin{itemize}
@@ -236,7 +234,7 @@
             \item ``Econophysics'' $\implies$ either $\Delta p\propto Q^\beta$ or $\Delta p\propto\log Q$
         \end{itemize}
     \end{itemize}
-    Using the first result for price impact we obtain:
+    Using the second result for price impact we obtain:
     \begin{align*}
         \lambda(\delta)=\Lambda\mathbb{P}(\Delta p>\delta)&=\Lambda\mathbb{P}(\log Q>K\delta)\\
         &=\Lambda\mathbb{P}\left(Q>e^{K\delta}\right)\\
@@ -246,25 +244,27 @@
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model - Summary}
-    At each timestep, given current inventory and parameters estimated from order book:
+    \begin{itemize}
+        \item Estimate parameters from market data
+    \end{itemize}
+    At each timestep, given current inventory and estimated parameters:
     \begin{itemize}
         \item Compute reservation price $r(s,q,t)$
         \item Compute spread $\delta^a+\delta^b$
         \item Set quotes $p^a=s+\frac{\delta^a+\delta^b}{2}$, $p^b=s-\frac{\delta^a+\delta^b}{2}$
     \end{itemize}
+    \center{
+        \includegraphics[height=5cm, width=7cm]{./plot.png}
+    }
 \end{frame}
 
 % Conclusion
 \begin{frame}{Conclusion}
     \begin{itemize}
-        \item Through the framework of stochastic control, we can attempt to model the optimal behaviour of a dealer in financial markets
-        \item We can also consider: 
-        \begin{itemize}
-            \item Geometric Brownian Motion
-            \item Infinite time horizons
-            \item Informed trader risk (game theory)
-            \item Alternative models for market orders (Hawkes Processes)
-        \end{itemize}
+        \item Hopefully you know a little bit more about how financial markets work!
+        \item Stochastic control provides a useful framework through which to analyse the behaviour of market participants
+        \item We can apply this framework to model the optimal behaviour of a dealer in financial markets
+        \item This behaviour depends on the statistical properties of the particular market, which we can infer from market data
     \end{itemize}
 \end{frame}
 
