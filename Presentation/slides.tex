@@ -33,6 +33,16 @@
 \end{frame}
 
 \begin{frame}{The limit orderbook}
+    \begin{itemize}
+        \item Can either place \emph{limit} orders or \emph{market} orders
+        \item \emph{Limit} orders guaruntee price but not execution
+        \begin{itemize}
+            \item Limit orders can also be ammended/updated for as long as they exist
+        \end{itemize}
+        \item \emph{Market} orders guaruntee execution but not price
+        \item \emph{Spread} between best bid and best ask $\rightarrow$ £0.02
+        \item Can view the mid-price (here £1.00) as the ``true'' price
+    \end{itemize}
     \begin{center}
         \begin{tabular}{ |c|c|c| } 
             \hline
@@ -46,20 +56,10 @@
             \hline
         \end{tabular}
     \end{center}
-    \begin{itemize}
-        \item Can either place \emph{limit} orders or \emph{market} orders
-        \item \emph{Limit} orders guaruntee price but not execution
-        \begin{itemize}
-            \item Limit orders can also be ammended/updated for as long as they exist
-        \end{itemize}
-        \item \emph{Market} orders guaruntee execution but not price
-        \item \emph{Spread} between best bid and best ask $\rightarrow$ £0.02
-        \item Can view the mid-price (here £1.00) as the ``true'' price
-    \end{itemize}
 \end{frame}
 
 \begin{frame}{The limit orderbook}
-    After market order for 20 shares:
+    After market buy order for 20 shares:
     \begin{center}
         \begin{tabular}{ |c|c|c| } 
             \hline
@@ -73,7 +73,7 @@
             \hline
         \end{tabular}
     \end{center}
-    After another market order for 30 shares:
+    After another market buy order for 30 shares:
     \begin{center}
         \begin{tabular}{ |c|c|c| } 
             \hline
@@ -149,34 +149,6 @@
 
     Model market mid-price as Brownian motion with variance $\sigma^2$ (no drift)
     $$\mathrm d S_t=\sigma \mathrm d W_t,\;t\in[0,T]$$
-    Dealer's value function: Expected exponential utility of terminal wealth
-    \begin{equation}\label{1}
-        v(x,s,q,t)=\mathbb{E}\left[-e^{-\gamma(x+qS_T)}|\mathcal{F}_t\right]
-    \end{equation}
-    \begin{itemize}
-        \item $x=$ dealer's initial wealth (cash)
-        \item $q=$ dealer's inventory (assume fixed for now)
-        \item $\gamma=$ dealer's risk aversion
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{The Avellaneda-Stoikov model}
-    Reservation bid price: The price at which the dealer is indifferent between buying an extra share and doing nothing: Set
-    \begin{equation}\label{2}
-        v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)
-    \end{equation}
-    and by substitution of (\ref{1}) into (\ref{2}) we obtain
-    \begin{equation}\label{3}
-        r^b(s,q,t)=s-(1+2q)\frac{\gamma\sigma^2(T-t)}{2}
-    \end{equation}
-    An analagous expression exists for $r^a.$ We define the dealer's reservation price $r(s,q,t):=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}$ and arrive at
-    \begin{equation}\label{4}
-        r(s,q,t)=s-q\gamma\sigma^2(T-t)
-    \end{equation}
-\end{frame}
-
-\begin{frame}{The Avellaneda-Stoikov model}
-    Now consider a dealer who sets limit orders. 
     The dealer quotes bid $p^b$ and ask $p^a$ with spreads $\delta^b=s-p^b$ and $\delta^a=p^a-s$
     respectively.
     We assume that 
@@ -184,7 +156,7 @@
         \item Market buy orders will `lift' the dealer's sell orders at Poisson rate $\lambda^a(\delta^a)$ (a decreasing function of $\delta^a$)
         \item Market sell orders will `hit' the dealer's bid orders at rate $\lambda^b(\delta^b)$ (decreasing in $\delta^b$).
     \end{itemize}
-    Now have stochastic wealth and inventory:
+    Have stochastic wealth and inventory:
     \begin{equation}
         \mathrm dX_t=p^a\mathrm dN_t^a-p^b\mathrm dN_t^b
     \end{equation}
@@ -194,13 +166,13 @@
 \end{frame}
 
 \begin{frame}{The Avellaneda-Stoikov model}
-    Need to adapt our objective function: Maximise terminal wealth over possible bid/ask spreads $\delta^a,\delta^b$
+    Objective function: Maximise expected utility of terminal wealth over possible bid/ask spreads $\delta^a,\delta^b$
     \begin{equation}
         u(s,x,q,t)=\max_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
     \end{equation}
     \begin{itemize}
-        \item Very difficult (maybe impossible) to solve analytically
-        \item Through some asymptotic approximations we can work out some simple expressions for an approximate solution in terms of our model paramaters
+        \item HJB equation very difficult (maybe impossible) to solve analytically
+        \item Through some asymptotic approximations we can work out an approximate solution in terms of our model paramaters
     \end{itemize}
 \end{frame}
 
