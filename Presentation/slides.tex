@@ -27,7 +27,7 @@
     \begin{itemize}
         \item Stocks, bonds, commodities, all manner of derivatives
         \item Multiple buyers, multiple sellers
-        \item Prices determined by trading: literally supply \& demand
+        \item Prices determined by trading
         \item So how does trading actually occur inside the exchange?
     \end{itemize}
 \end{frame}
@@ -92,7 +92,7 @@
 \begin{frame}{Dealer considerations}
     Problem:
     \begin{itemize}
-        \item What if no one wants to sell? (resp. buy?)
+        \item What if no one wants to sell? resp. buy?
         \item What if buyers and sellers have wildly different price expectations?
     \end{itemize}
     Idea:
@@ -100,7 +100,7 @@
         \item Simultaneously place bid and ask limit orders $\rightarrow$ simultaneously buying and selling
         \item Enables other market participants to always have someone to trade against $\rightarrow$ ``providing liquidity''
         \item Narrows the spread between bid and ask prices, decreasing implied cost of trading
-        \item Dealer profits the (small) spread between buying and selling (multiplied across large trading volume)
+        \item Dealer profits the small spread between buying and selling, multiplied across a large trading volume
     \end{itemize}
     Risks:
     \begin{itemize}
@@ -153,8 +153,9 @@
     respectively.
     We assume that 
     \begin{itemize}
-        \item Market buy orders will `lift' the dealer's sell orders at Poisson rate $\lambda^a(\delta^a)$ (a decreasing function of $\delta^a$)
-        \item Market sell orders will `hit' the dealer's bid orders at rate $\lambda^b(\delta^b)$ (decreasing in $\delta^b$).
+        \item Market buy orders `lift' the dealer's sell orders at Poisson rate $\lambda^a(\delta^a)$
+        \item Market sell orders `hit' the dealer's bid orders at Poisson rate $\lambda^b(\delta^b)$
+        \item $\lambda$ is a decreasing function of $\delta$
     \end{itemize}
     Have stochastic wealth and inventory:
     \begin{equation}
@@ -171,7 +172,7 @@
         u(s,x,q,t)=\max_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
     \end{equation}
     \begin{itemize}
-        \item HJB equation very difficult (maybe impossible) to solve analytically
+        \item HJB equation very difficult, maybe impossible, to solve analytically
         \item Through some asymptotic approximations we can work out an approximate solution in terms of our model paramaters
     \end{itemize}
 \end{frame}
