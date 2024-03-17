@@ -23,15 +23,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{What is a financial market?}
-    \begin{itemize}
-        \item Stocks, bonds, commodities, all manner of derivatives
-        \item Multiple buyers, multiple sellers
-        \item Prices determined by trading
-        \item So how does trading actually occur inside the exchange?
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{The limit orderbook}
     \begin{itemize}
         \item Can either place \emph{limit} orders or \emph{market} orders
@@ -102,9 +93,8 @@
         \item Narrows the spread between bid and ask prices, decreasing implied cost of trading
         \item Dealer profits the small spread between buying and selling, multiplied across a large trading volume
     \end{itemize}
-    Risks:
+    Risk:
     \begin{itemize}
-        \item Informed traders
         \item Inventory
     \end{itemize}
 \end{frame}
@@ -224,7 +214,7 @@
     \begin{itemize}
         \item Compute reservation price $r(s,q,t)$
         \item Compute spread $\delta^a+\delta^b$
-        \item Set quotes $p^a=s+\frac{\delta^a+\delta^b}{2}$, $p^b=s-\frac{\delta^a+\delta^b}{2}$
+        \item Set quotes $p^a=r(s,q,t)+\frac{\delta^a+\delta^b}{2}$, $p^b=r(s,q,t)-\frac{\delta^a+\delta^b}{2}$
     \end{itemize}
     \center{
         \includegraphics[height=5cm, width=7cm]{./plot.png}
