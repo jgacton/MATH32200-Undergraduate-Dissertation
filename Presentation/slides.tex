@@ -190,19 +190,19 @@
         \end{itemize}
         \item Size distribution of market orders
         \begin{itemize}
-            \item ``Econophysics'' $\implies$ power law $f_Q(x)\propto x^{-1-\alpha}$
+            \item Power law $f_Q(x)\propto x^{-1-a}$
         \end{itemize}
         \item Price impact of large market orders
         \begin{itemize}
-            \item ``Econophysics'' $\implies$ either $\Delta p\propto Q^\beta$ or $\Delta p\propto\log Q$
+            \item Either $\Delta p\propto Q^\beta$ or $\Delta p\propto\log Q$
         \end{itemize}
     \end{itemize}
     Using the second result for price impact we obtain:
     \begin{align*}
         \lambda(\delta)=\Lambda\mathbb{P}(\Delta p>\delta)&=\Lambda\mathbb{P}(\log Q>K\delta)\\
         &=\Lambda\mathbb{P}\left(Q>e^{K\delta}\right)\\
-        &=\Lambda\int_{e^{K\delta}}^{\infty}x^{-1-\alpha}dx\\
-        &=Ae^{-k\alpha\delta}
+        &=\Lambda\int_{e^{K\delta}}^{\infty}x^{-1-a}dx\\
+        &=Ae^{-ka\delta}
     \end{align*}
 \end{frame}
 
