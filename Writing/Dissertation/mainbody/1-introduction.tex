@@ -157,19 +157,42 @@ from a first-year undergraduate level course in real analysis, probability, and 
 \end{definition}
 
 \begin{definition}[Simple functions]
-    
+    A \emph{simple function} is a finite linear combination of 
+    characteristic (or indicator) functions of measurable sets:
+    \begin{equation}
+        \phi=\sum_{i=1}^nc_i\chi_{A_i}
+    \end{equation}
+    where $c_i\in\mathbb{R}$ and $A_i\in\mathbb{X}$.
+    It is in standard representation if $X=\cup_{i=1}^nA_i$,
+    the sets $A_i$ are pairwise disjoint, and the numbers $c_i$
+    are distinct.
 \end{definition}
 
 \begin{definition}[Integral of a simple function]
-
+    Consider a non-negative simple function written in standard form as given above.
+    Then the \emph{integral} of $\phi$ \emph{with respect to $\mu$} is
+    \begin{equation}
+        \int\phi\mathrm d\mu:=\sum_{i=1}^nc_i\mu(A_i)
+    \end{equation}
+    which takes values in $\bar{\mathbb{R}}$.
 \end{definition}
 
 \begin{lemma}[Approximation by simple functions]
-    
+    Let $f\in M(X,\mathbb{X})$, $f\geq0.$ Then there exists a sequence
+    $(\phi_n)$ in $M(X,\mathbb{X})$ such that
+    \begin{itemize}
+        \item $0\leq\phi_n(x)\leq\phi_{n+1}(x)\;\forall\;x\in X,n\in\mathbb{N}$,
+        \item $\lim_{n\rightarrow\infty}\phi_n(x)=f(x)$,
+        \item Each $\phi_n$ is a simple function.
+    \end{itemize}
 \end{lemma}
 
 \begin{definition}[Integral of a non-negative measurable function]
-    
+    Let $f\in M(X,\mathbb{X})$. Then the \emph{integral} of $f$ 
+    \emph{with respect to $\mu$} is 
+    \begin{equation*}
+        \int f\mathrm d\mu := \sup\left\{\int\phi\mathrm d\mu : 0\leq\phi\leq f, \phi\textrm{ is a simple measurable function}\right\}\in\bar{\mathbb{R}}.
+    \end{equation*}
 \end{definition}
 
 \begin{definition}[Integrable functions]
