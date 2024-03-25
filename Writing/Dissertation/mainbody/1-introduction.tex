@@ -228,7 +228,7 @@ from a first-year undergraduate level course in real analysis, probability, and 
 \end{remark}
 
 \begin{definition}[Random variables]
-    Recall from above that a probability space $(\Omega,\mathcal{F},\mathbb{P})$
+    Recall from above that a probability space \\$(\Omega,\mathcal{F},\mathbb{P})$
     is simply a measure space $(X,\mathbb{X},\mu)$ where $\mu(X)=1.$ In this case,
     a measurable function $X:\Omega\rightarrow\mathbb{R}$ can be called
     a random variable. 
@@ -360,6 +360,14 @@ from a first-year undergraduate level course in real analysis, probability, and 
     adapted processes.
 \end{definition}
 
+\begin{definition}[Progressive Measurability]
+    A continuous-time stochastic process $(X_t)$ is progressively measurable if
+    for every time $t$, the map $[0,t]\times\Omega\rightarrow\mathbb{R}$ defined
+    by $(s,\omega)\rightarrow X_s(\omega)$ is $\mathcal{B}(\mathbb{R})\times\mathcal{F}_t$-measurable.
+    This is a slightly stronger condition than adaptedness, indeed, all progressively
+    measurable processes are adapted but the converse is not true. 
+\end{definition}
+
 
 \section{Stochastic Integration}
 \begin{itemize}
@@ -367,12 +375,21 @@ from a first-year undergraduate level course in real analysis, probability, and 
     \item Itos lemma
 \end{itemize}
 
-\section{Stochastic Differential Equations}
+\section{Stochastic Differential Equations}\label{sec:1.6}
 \begin{itemize}
     \item From PDE to SDE
     \item Brownian motion as the solution to an SDE
     \item Geometric Brownian Motion
 \end{itemize}
+
+\begin{definition}[Strong Solution]
+    A strong solution to this SDE starting at time $t$ is a progressively measurable process $X$ such that for $s\leq t$:
+    $$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)du+\int_t^s\sigma(X_u,\alpha_u)dW_u$$
+    and
+    $$\int_t^s|b(X_u,\alpha_u)|du+\int_t^s|\sigma(X_u,\alpha_u)|^2du<\infty$$
+    a.s.
+\end{definition}
+
 \begin{definition}[Geometric Brownian Motion]
     A \emph{geometric brownian motion} is an adapted stochastic process which solves the following
     stochastic differential equation
