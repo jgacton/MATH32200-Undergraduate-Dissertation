@@ -24,6 +24,7 @@ Enter the \textit{dealer}: An entity who provides \textit{liquidity} (ease of ex
 A dealer does this by simultaneously offering to both buy and sell the particular asset, offering to buy at a slightly lower price than they offer to sell. 
 This known as ``making a market'', and dealers in modern parlance may also be called ``market-makers''.
 
+\subsection*{Dealers}
 Dealers provide a crucial service in financial markets: By providing these quotes, 
 they narrow the \textit{spread} - the difference between the prices at which one can buy or sell an asset in the market. 
 Hence, entities who may need to trade even in adverse market scenarios (such as companies needing to buy foreign currency to pay workers abroad, 
@@ -37,23 +38,45 @@ The dealers aim is to be constantly selling the asset for a slightly higher pric
 In modern electronic markets with very high trading volumes, even in heavily traded assets with very narrow spreads, a spread of only 0.01\$ 
 multiplied across millions or billions of trades can be very lucrative for the dealers who are fast enough.
 
-So far we have discussed markets as an abstract concept, but in order to build a mathematical model of the dealer, 
-we need to specify the framework under which the market operates. Most modern electronic exchanges, including those mentioned above, 
-operate some version of a \textit{limit orderbook} where participants can place two types of orders: a \textit{limit order} or a \textit{market order} 
-depending on their needs. Limit orders specify a side (bid or ask, buying or selling), a quantity (how many units of the asset to buy/sell), 
-and a price at which the order should be executed. These enter a queue of limit orders at the particular price level. 
-Market orders specify the same information, but they do not enter a queue: 
-The exchange operates a \textit{matching engine} which takes incoming market orders and attempts to match them to existing limit orders, 
-and if two orders match, they are executed and a trade occurs. 
+\subsection*{The Limit Orderbook}
+So far we have discussed markets as an abstract concept, but in order to build a 
+mathematical model of the dealer, we need to specify the framework under which the 
+market operates. Most modern electronic exchanges, including those mentioned above, 
+operate some version of a \textit{limit orderbook} where participants can place two 
+types of orders: a \textit{limit order} or a \textit{market order} depending on their 
+needs. Limit orders specify a side (bid or ask, buying or selling), a quantity (how 
+many units of the asset to buy/sell), and a price at which the order should be 
+executed. These enter a queue of limit orders at the particular price level. Market 
+orders specify a side and a quantity, but not a price: The exchange operates a 
+\textit{matching engine} which takes incoming market orders and attempts to match 
+them to the existing limit orders, and if two orders match, they are executed and a 
+trade occurs. 
 
-For an example, consider the orderbook illustrated by %\ref{fig:orderbook}. 
-If a market order is placed to sell 25 units, then the trade will occur at \$0.99, the dealer will buy and the placer of the market order will sell, 
-and both orders will be removed from the market. However, suppose that a market order is placed to only sell 5 units. 
-In this case, the orders will still be matched, the seller will sell 5 units for \$0.99 apiece but the limit order at \$0.99 will remain on the exchange, 
-only now for 20 units instead of 25. Correspondingly, if the market order is placed for 100 units, 
-the limit orders at both price levels will be hit and taken off the market, 
-and the seller will only sell 70 units for an average price of $\frac{25\times0.99+45\times0.98}{70}=\$\frac{1377}{1400}$ per asset. 
-If a market order is placed and there are no limit orders to match it against, the market order would not be executed at all and be voided.
+For an example, consider the orderbook illustrated by figure \ref{fig:orderbook}, and
+suppose that individual limit orders may only be placed for 1-share lots. If a market 
+order is placed to buy 10 lots, then the trade will occur at \$1.01, the dealer/s will 
+sell and the placer of the market order will buy, and both the market order and the 10
+lowest limit ask orders will be removed from the market. So immediately after this 
+trade, there will be 20 shares left available to be sold at the \$1.01 price level. 
+However, suppose that a market order is placed to buy 30 units. In this case, the 
+orders will still be matched, the buyer will buy 30 units for \$1.01 apiece but all of 
+the limit orders at \$1.01 will be taken off the exchange, and the market mid-point 
+price has now moved up from \$1.00 to \$1.005. If a market order is placed to buy 100
+shares, since there are only 80 shares available to be sold, only these 80 will be 
+bought for an average price of $\frac{30\times1.01\$+50\times1.02\$}{80}=1.01625\$.$
+On the other hand, if a market order is placed and there are no limit orders to match 
+it against, the market order would not be executed at all and be voided.
+
+Finally, suppose we place a limit 
+order into this market to buy 10 shares for \$0.90. Thus, for our order to ever be 
+executed, a market order or sequence of market orders would have to come in and move
+the market mid-price by $\approx10\%$ in order for our order to be touched. Hence in a 
+given (small) interval of time, it is intuitively very unlikely that our order will
+be executed, especially when you consider that a move of $10\%$ is roughly how 
+much you might expect a stock to move over a year, let alone over a fraction of a 
+trading day. This is one of the fundamental ideas that we will employ to model our 
+dealing agent: The probability that a limit order will execute is a decreasing 
+function of its distance from the mid-price.
 
 \begin{figure}
 \centering
@@ -72,30 +95,39 @@ If a market order is placed and there are no limit orders to match it against, t
     \label{fig:orderbook}
 \end{figure}
 
-Here we can see the key difference between market and limit orders in action: Limit orders guarantee price, 
-but do not guarantee that all or any of the order will be filled. Market orders guarantee that as much of the order as possible will be filled, 
+We have also seen the key difference between market and limit orders in action: Limit 
+orders guarantee price, but do not guarantee that all or any of the order will be 
+filled. Market orders guarantee that as much of the order as possible will be filled, 
 but they do not guarantee the price at which the trade will occur.
 
-We can also observe that the market provides us with a way to estimate the true value of the asset. 
-Classical economic theory dictates that in aggregate, market participants react quickly and rationally to new information about a particular asset, 
-meaning that market prices reflect the consensus opinion of market participants about the value of traded assets. 
-The spread exists because people would only want to sell for slightly more than something is worth, and buy it for slightly less. 
-Hence, if you really want to buy an asset you have to pay a premium to ``\textit{cross the spread}'' to acquire it. 
-From this we can determine that the true price of the asset at a point in time lies somewhere in between the maximum bid price and the 
-minimum ask price for the asset at that time. The most common estimator in the literature is simply the average of these two values, 
-but other estimators do exist such as the volume-weighted average price (VWAP) which takes into account the volume of the bids vs asks. 
-For the rest of this paper we will use the midpoint price as our estimator for the ``true'' value of an asset.
+We can also observe that the market provides us with a way to estimate the true value 
+of the asset. Classical economic theory dictates that in aggregate, market participants 
+react quickly and rationally to new information about a particular asset, meaning that 
+market prices reflect the consensus opinion of market participants about the value of 
+traded assets. The spread exists because people would only want to sell for slightly 
+more than something is worth, and buy it for slightly less. Hence, if you really want 
+to buy an asset you have to pay a premium to ``\textit{cross the spread}'' to acquire 
+it. From this we can determine that the true price of the asset at a point in time 
+lies somewhere in between the maximum bid price and the minimum ask price for the asset 
+at that time. The most common estimator in the literature and in practice is simply 
+the average of these two values - the mid-market price, but other estimators do exist 
+such as the volume-weighted average price (VWAP) which takes into account the volume 
+of the bids vs asks. For the rest of this report we will use the mid-price as our 
+estimator for the ``true'' value of an asset.
 
-The aim for the rest of this paper is to build up a model of how a dealer should behave to maximise their returns in the presence of uncertainty: 
-namely, uncertainty about the path that the true value of the stock might take. 
-In order to do this, we will need to make use of some basic results from measure/probability theory and stochastic processes, which we will
-summarise below. We will also briefly introduce some tools from stochastic calculus. Familiarity with standard results 
-from a first-year undergraduate level course in real analysis, probability, and statistics is assumed.
+The aim for the rest of this report is to build up a model of how a dealer should 
+behave to maximise their returns in the presence of uncertainty: namely, uncertainty 
+about the path that the true value of the stock might take. In order to do this, we 
+will need to make use of some basic results from measure/probability theory and 
+stochastic processes, which we will summarise below. We will also briefly introduce 
+some tools from stochastic calculus. Familiarity with standard results from a 
+first-year undergraduate level course in real analysis, probability, and statistics 
+is assumed.
 
 \section{Measure Theory and Probability}
 
 \begin{definition}[$\sigma$-algebra]
-    A family $\mathcal{F}\subset\subseteq\mathcal{P}(\Omega)$ of sets is called a $\sigma$-algebra if 
+    A family $\mathcal{F}\subseteq\mathcal{P}(\Omega)$ of sets is called a $\sigma$-algebra if 
     \begin{itemize}
         \item $\Omega\in\mathcal{A},$
         \item for every countable collection of sets $A_1,A_2,...\in\mathcal{F},\;\bigcup_{n}A_n\in\mathcal{F},$
@@ -266,7 +298,7 @@ from a first-year undergraduate level course in real analysis, probability, and 
 
 \begin{theorem}[Tonelli]
     Let $X_n\geq0$ be random variables. Then 
-    \begin{equation}
+    \begin{equation}\label{eq:1.11}
         \mathbb{E}\left[\sum_{k=1}^\infty X_k\right]=\sum_{k=1}^\infty\mathbb{E}[X_k]
     \end{equation}
     and the statement also holds with an integral instead of a sum.

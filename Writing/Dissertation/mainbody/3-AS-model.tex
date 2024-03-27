@@ -1,49 +1,137 @@
-In this section we will walk through the methodology and theoretical
-results of Avellaneda and Stoikov (\cite{as})
+\section{Introduction}\label{sec:3.1}
 
-\section{Model assumptions}
+In this chapter, we can finally return to the market-making problem introduced in
+Chapter \ref{chap:1}, fully armed with the theory of stochastic optimal control 
+that we have built up in Chapter \ref{chap:2}. We will formulate the problem and our
+assumptions in the framework of \cite{AS2008}, and walk through
+their methodology and theoretical results. 
+
+We begin in section \ref{sec:3.2} by setting out our assumptions our assumptions about 
+the dynamics of the market mid-point price and our agents utility function. In section 
+\ref{sec:3.3}, we introduce the concept of an indifference or reservation price in the 
+context of a passive agent with constant inventory, and derive some expressions. In 
+\ref{sec:3.4}, we briefly analyse the infinite time horizon case, showing that 
+analagous reservation prices exist, which may be of greater interest to dealers in 
+markets that trade 24/7 such as FX and crypto. In section \ref{sec:3.5} we return to 
+the finite horizon setting and define concepts such as market impact, arriving at the 
+objective function of the agent who can set limit orders and thus influence the dynamics 
+of their wealth over time. 
+
+Of crucial importance to this
+agent are the statistical properties of market orders: Their arrival frequency, the 
+distribution of their size, and how they impact prices, which we discuss in section
+\ref{sec:3.6}. Next we derive the Hamilton-Jacobi-Bellman equation in section \ref{sec:3.7},
+and introduce an ansatz which allows us to simplify our problem and derive some useful
+relations between the agents reservation price and optimal bid-ask spread. Finally,
+we introduce some analytical approximations in section \ref{sec:3.8} that enable us to
+derive an approximate solution in terms of our model parameters. 
+
+The main result, which
+we summarise in section \ref{sec:3.9}, is that optimal bid and ask quotes can be computed
+through an intuitive two-step procedure: First, the agent computes a personal reservation
+price for the asset, given her current inventory. Second, she calibrates her bid and ask
+quotes to the limit order book, by considering the probability with which her quotes will
+be executed as a function of their distance from the midpoint price.
+
+\section{Model assumptions}\label{sec:3.2}
+
+The paper of \cite{AS2008} is closely related to that of \cite{HS1981}, with the 
+crucial difference being that while Ho and Stoll consider a monopolistic dealer,
+Avellaneda and Stoikov consider a dealer who is potentially one of many dealers 
+and many other market participants who may set limit orders. 
+
+In Ho and Stoll (1981),
+the authors specify a `true' price for the asset, and then allow the dealer to set 
+quotes around this price. This may be more applicable to OTC markets in illiquid 
+products where there is no openly accessible limit orderbook, but Avellaneda and Stoikov
+consider a dealer operating in an openly accessible limit orderbook, and hence it makes
+sense to view the mid-point price in the orderbook as the true price of the security. 
+
+Another point to make here is that Avellaneda and Stoikov consider a dealer who is 
+concerned only with inventory risk, not asymmetric information, and so assuming that
+other market participants are better informed and reacting to fundamental arbitrage
+opportunities, by the efficient market hypothesis we would have that the market mid
+price is the best available measure of the true price of the asset given all the information
+available up to a particular point in time.
+
+We will assume that the market mid-point price evolves according to the SDE
+\begin{equation}
+    \mathrm dS_u=\sigma\mathrm dW_u
+\end{equation}
+with initial value $S_t=s$. $W_t$ is a standard one-dimensional Brownian motion, and
+$\sigma>0$ is constant. Underlying this model is an implicit assumption that the agent
+has no opinion on the drift or any autocorrelation or stochasticity of volatility 
+for the stock. 
+
+We also assume for simplicity that the money market pays no interest. Moreover, the
+limit orders set by the agent can be continuously updated at no cost. In reality, 
+the cost of trading will differ depending on the exchange in question, as most
+charge a small percentage fee of every executed trade and some only charge market orders,
+while providing rebates to dealers' trades for the liquidity they provide. Finally,
+we assume that the lot sizes our limit orders are constant at one share per order,
+and that the overall arrival frequency of market orders is constant.
+
+We summarise our assumptions in the list below:
 
 \begin{itemize}
     \item The dealer being modelled is one of many players in the market
     \item The `true' price is given by the market mid-price
-    \item The money-market pays no interest
+    \item The mid-price evolves according to a brownian motion with constant volatility $\sigma$
     \item The agent has no opinion on drift or autocorrelation of the stock price
+    \item The money-market pays no interest
     \item Limit orders can be continuously updated at no cost
-    \item The arrival frequency of market orders to the market is constant
     \item Limit orders are of fixed size 1
+    \item The arrival frequency of market orders to the market is constant
 \end{itemize}
 
-Assume the stock evolves according to a standard Wiener process with some variance $\sigma^2$: 
-$$dS_u=\sigma dW_u$$
+\section{Modelling an inactive trader}\label{sec:3.3}
 
-\section{Modelling an inactive trader}
+Our agents objective will be to maximise the expected utility of their wealth at 
+a terminal time $T$. Avellaneda and Stoikov's choice of exponential utility is 
+convenient since its convexity allows us to define reservation prices that are 
+indepenent of the agents current wealth.
+
 \subsection*{The utility function}
 
-Consider an inactive trader who holds an inventory of $q$ stocks until the terminal time $T.$ The agent's value function is
-$$v(x,s,q,t)=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)$$
-where $x$ is the initial wealth in dollars, $t$ is the present time and $\gamma$ is a user-defined risk-aversion parameter.
-By some simple manipulations, we can write this in a more convenient form as follows:
+Initially, we consider an inactive trader who holds a fixed inventory of $q$ stocks 
+until the terminal time $T.$ The agent's value function is
+\begin{equation}\label{eq:3.1}
+    v(x,s,q,t)=\mathbb{E}\left[-e^{-\gamma(x+qS_T)}|\mathcal{F}_t\right]
+\end{equation}
+where $x$ is the initial wealth in dollars, $t$ is the present time and $\gamma$ is 
+a personal pre-defined risk-aversion parameter. By some simple manipulations, we can 
+write this in a more convenient form as follows:
 \begin{align*}
-    v(x,s,q,t)&=\mathbb{E}_t\left(-e^{-\gamma(x+qS_T)}\right)\\
-    &=\mathbb{E}\left[-\exp(-\gamma(x+qS_T))|\mathcal{F}_t\right]\\
-    &=-e^{-\gamma x}\mathbb{E}\left[e^{-\gamma q S_T}\right]\\
+    v(x,s,q,t)&=\mathbb{E}\left[-e^{-\gamma(x+qS_T)}|\mathcal{F}_t\right]\\
+    &=-e^{-\gamma x}\mathbb{E}\left[e^{-\gamma q S_T}|\mathcal{F}_t\right]\\
     &=-e^{-\gamma x}e^{-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
     &=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}
 \end{align*}
 
 \subsection*{Reservation prices}
 
-The reservation price is the price that would make the agent indifferent between his current portfolio and his current portfolio $\pm$ one stock. So $r^b$ can be determined from the relation
-\begin{equation} \label{eq:1}
-    v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)
-\end{equation}
-and $r^a$ solves
-\begin{equation}
-    v(x+r^a(s,q,t),s,q-1,t)=v(x,s,q,t).
-\end{equation}
+Following \cite{AS2008}, we can now use our value function to define the agents 
+reservation bid and ask prices.
+The reservation bid and reservation ask prices are simply the prices at which the agent
+is indifferent between buying/selling and doing nothing. In other words, the reservation
+bid (ask) is the price at which the agent is indifferent between her current portfolio
+and her current portfolio $\pm$ one stock and $\mp$ the cash price.
 
-We solve for $r^b(s,q,t)$ by plugging \ref{eq:1} in to our expression for the value function as follows:
+\begin{definition}[Reservation bid price]
+    Let $v$ be the value function of the agent. Its reservation bid price $r^b$ is
+    given implicitly by the relation
+    \begin{equation}\label{eq:3.2}
+        v(x-r^b(s,q,t),s,q+1,t)=v(x,s,q,t)
+    \end{equation}
+    and the corresponding reservation ask price $r^a$ is similarly implicit in the 
+    relation
+    \begin{equation}\label{eq:3.3}
+        v(x+r^a(s,q,t),s,q-1,t)=v(x,s,q,t).
+    \end{equation}
+\end{definition}
 
+We can determine an exact expression for $r^b(s,q,t)$ by plugging our prior definition
+for the value function, (\ref{eq:3.1}), in to our relation (\ref{eq:3.2}) as follows:
 \begin{align*}
     v(x-r^b(s,q,t),s,q+1,t)&=v(x,s,q,t)\\
     -e^{-\gamma(x-r^b(s,q,t))}e^{-\gamma s(q+1)}e^{\frac{\gamma^2(q+1)^2\sigma^2(T-t)}{2}}&=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
@@ -62,22 +150,56 @@ Similarly for $r^a(s,q,t)$:
     -\gamma(x+r^a(s,q,t))-\gamma s(q-1)+\frac{\gamma^2(q-1)^2\sigma^2(T-t)}{2}&=-\gamma x-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}\\
     -\gamma r^a(s,q,t) + \gamma s + \frac{\gamma^2(1-2q)\sigma^2(T-t)}{2}&=0,
 \end{align*}
-dividing by $\gamma$ and rearranging to obtain
+again dividing by $\gamma$ and rearranging to obtain
 \begin{equation}
     r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}
 \end{equation}
-We define the ``reserve" or ``indifference" price to be the average of these two \textit{given} that the agent currently holds q stocks:
+We define the \emph{reservation} or \emph{indifference} price to be the average of 
+these two \textit{given} that the agent currently holds q stocks:
 \begin{align*}
     r(s,q,t)&=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}\\
     &=\frac{s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}+s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}}{2}\\
     &=\frac{2s-2q\gamma\sigma^2(T-t)}{2}\\
     &=s-q\gamma\sigma^2(T-t)
 \end{align*}
+This price is nothing more than an adjustment to the mid-price which accounts for the 
+effect of the inventory held by the agent on the agents preference to buy or sell. It
+is easy to see that if the agent is long stock ($q>0$), the reservation price will be 
+lower than the mid-price, reflecting the agents willingness to sell at a discount in 
+order to reduce its inventory. Conversely, if the agent is short stock ($q<0$), its 
+reservation price will be greater than the mid-price, indicating the agents preference
+to buy at a premium to the market in order to return to a market-neutral position.
 
-\section{The Optimising Agent with Infinite Horizon}
+We note that the expressions derived above for $r^a$ and $r^b$ (and consequently $r$)
+exist in the setting where $q$ is a fixed constant, and therefore it is not so simple
+to derive these expressions when our agent is permitted to set limit orders. However,
+they are important both as an illustrative example and because when we introduce our 
+approximate solution in \ref{sec:3.8}, we will arrive at a very similar reservation price.
+
+\section{The Optimising Agent with Infinite Horizon}\label{sec:3.4}
+We will now briefly analyse the infinite horizon variant of the dealer problem, showing
+that we can derive a stationary version of the reservation price through defining
+an infinite horizon variant of our value function including a discount factor. This is
+necessary since in our finite horizon case discussed above, our reservation price is
+dependent upon the time interval $T-t.$ The intuition for this is that at or close to 
+$T$, the agent may liquidate any remaining inventory for (or at least close to) $S_T$,
+hence the closer time is to $T$, the less risk there is in the dealer's position.
+
+We consider an infinite-horizon value function of the form
 \begin{equation*}
-    \bar v(x,s,q)=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}dt\right]
+    \bar v(x,s,q)=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}\mathrm dt\right]
 \end{equation*}
+where $\omega$ is our discount factor. An interpretation of $\omega$ is that it may
+represent an upper bound on the absolute inventory position that the agent is allowed
+to build up. A natural choice is to take $\omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2$
+, this will be justified shortly. 
+
+Using the definition of reservation bid and ask 
+prices given above in section \ref{sec:3.3}, we can attain stationary versions of the 
+reservation prices $r^b$ and $r^a$ with much the same method as before, only relying on
+slightly more advanced theory, appealing to Tonelli's theorem (\ref{eq:1.11}) which 
+allows us to swap the expectation and integral in the value function. For $r^b$, we 
+have the following:
 \begin{align*}
     \bar{v}(x-\bar{r}^b(s,q),s,q+1)&=\bar{v}(x,s,q)\\
     \mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x-\bar{r}^b(s,q)+(q+1)S_t)}\mathrm dt\right]&=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}\mathrm dt\right]\\
@@ -91,6 +213,9 @@ We define the ``reserve" or ``indifference" price to be the average of these two
     \gamma\bar{r}^b(s,q)-\gamma s&=\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
     \bar{r}^b(s,q) &= s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
+which is valid for $\omega>\frac{1}{2}\gamma^2\sigma^2q^2$ and agrees exactly with
+the result presented in \cite{AS2008}. We can now perform the same procedure for the
+reservation ask price $r^a$:
 \begin{align*}
     \bar{v}(x+r^a(s,q),s,q-1)&=\bar{v}(x,s,q)\\
     \mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+r^a(s,q)+(q-1)S_t)}\mathrm dt\right]&=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}\mathrm dt\right]\\
@@ -104,8 +229,24 @@ We define the ``reserve" or ``indifference" price to be the average of these two
     \gamma s - \gamma r^a(s,q)&=\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\\
     r^a(s,q) &= s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
+which is again valid for $\omega>\frac{1}{2}\gamma^2\sigma^2q^2$. However, this differs
+from the result presented in \cite{AS2008}, which they give to be:
+\begin{equation*}
+    r^a(s,q)=s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
+\end{equation*}
+Using the correct values of the reservation prices obtained above, we can derive an
+expression for the reservation price as we did before.
+\begin{align*}
+    r(s,q):=&\frac{r^a(s,q)+r^b(s,q)}{2}\\
+    =&\frac{s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)+s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)}{2}\\
+    =&s+\frac{1}{2\gamma}\left(\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)-\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\right)\\
+    =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
+    =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1-2q)\gamma^2\sigma^2+4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
+    =&s+\frac{1}{2\gamma}\log\left(1+\frac{\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
+    =&s+\frac{1}{2\gamma}\log\left(1+\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)
+\end{align*}
 
-\section{Modelling Limit Orders}
+\section{Modelling Limit Orders}\label{sec:3.5}
 The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances 
 $$\delta^b:=s-p^b$$
 and 
@@ -124,7 +265,7 @@ $$dXt=p^adN^a_t-p^bdN^b_t.$$
 The objective of the agent who sets limit orders is 
 $$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
 
-\section{Modelling Trading Intensity}
+\section{Modelling Trading Intensity}\label{sec:3.6}
 Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
 To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. 
 \subsection*{Distribution of the size of market orders}
@@ -165,7 +306,7 @@ while \ref{eq:2} and \ref{eq:3} yield:
 \end{align*}
 Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
 
-\section{The Hamilton-Jacobi-Bellman Equation}
+\section{The Hamilton-Jacobi-Bellman Equation}\label{sec:3.7}
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
 \begin{equation}\label{eq:hjb-1}
     \left\{
@@ -231,7 +372,7 @@ and
     r^a(s,q,t)-s&=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)
 \end{align*}
 
-\section{Asymptotic Expansion in q}
+\section{Asymptotic Expansion in q}\label{sec:3.8}
 \begin{equation}
     \lambda^a(\delta)+\lambda^b(\delta)=Ae^{-k\delta}
 \end{equation}
@@ -314,6 +455,6 @@ as in the case where no trading is allowed. We quote a bid-ask spread given by
 \end{equation}
 which is again aquired by substituting our solutions back into \ref{eq:spread}.
 
-\section{Summary}
+\section{Summary}\label{sec:3.9}
 The reserve ask price derived by Avellaneda and Stoikov in the infinite horizon case
 is potentially incorrect, a correction is presented.
