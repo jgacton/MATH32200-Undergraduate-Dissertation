@@ -234,6 +234,7 @@ from the result presented in \cite{AS2008}, which they give to be:
 \begin{equation*}
     r^a(s,q)=s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{equation*}
+\textbf{Probably don't include this last bit}\\
 Using the correct values of the reservation prices obtained above, we can derive an
 expression for the reservation price as we did before.
 \begin{align*}
@@ -241,72 +242,174 @@ expression for the reservation price as we did before.
     =&\frac{s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)+s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)}{2}\\
     =&s+\frac{1}{2\gamma}\left(\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)-\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\right)\\
     =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
-    =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1-2q)\gamma^2\sigma^2+4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
-    =&s+\frac{1}{2\gamma}\log\left(1+\frac{\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
+    =&s+\frac{1}{2\gamma}\log\left(\frac{2\omega-\gamma^2q^2\sigma^2-(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)\\
     =&s+\frac{1}{2\gamma}\log\left(1+\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)
 \end{align*}
 
 \section{Modelling Limit Orders}\label{sec:3.5}
-The agent quotes the bid price $p^b$ and the ask price $p^a$, and the current shape of the limit orderbook as well as the distances 
-$$\delta^b:=s-p^b$$
-and 
-$$\delta^a:=p^a-s$$ 
-determine the priority of execution when large market orders are placed. 
-E.g. when a market order to buy $Q$ shares arrives, the $Q$ limit orders with the lowest ask prices will be lifted. 
-Let $p^Q$ be the price of the highest limit order executed in this trade. Then 
-$$\Delta p:=p^Q-s$$ 
-is the temporary market impact of the trade of size $Q.$ 
-Then we have that if our $\delta^a < \Delta p$, our agents limit order will be executed. We assume that market orders will fill our limit orders at Poisson rates $\lambda^a(\delta^a)$ and $\lambda^b(\delta^b)$, decreasing functions of $\delta^a$ and $\delta^b$ resp. 
-(further away from midpoint $\rightarrow$ orders hit less often).
+Now that we have defined and discussed the idea of a reservation price
+for the dealer, we should move on to considering the case of the dealer
+who can indirectly influence both their inventory and cash flow through
+the setting of limit orders. 
 
-We now have stochastic wealth and inventory: Let $N^b_t$ and $N^a_t$ be Poisson processes with intensities $\lambda^b$ and $\lambda^a$ representing the amount of stocks bought/sold by the agent at time t. The inventory at time t is 
-$$q_t=N^b_t-N^a_t$$ and the wealth process evolves according to
-$$dXt=p^adN^a_t-p^bdN^b_t.$$
-The objective of the agent who sets limit orders is 
-$$u(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}_t\left[-e^{-\gamma(X_T+q_TS_T)}\right]$$
+As mentioned in section \ref{sec:3.2},
+the agent quotes bid and ask limit orders in lot sizes of 1 only.
+We denote the agent's quotes $p^a$ and $p^b$ for the ask and bid respectively,
+and note that the agent is comitted to sell or buy 1 unit of stock respectively
+should these orders be ``hit'' or ``lifted'' by an incoming market order.
+These quotes can also be updated continuously at no cost. The distances
+\begin{equation}
+    \delta^a:=p^a-s
+\end{equation}
+and 
+\begin{equation}
+    \delta^b:=s-p^b
+\end{equation}
+as well as the current shape of the orderbook determine the priority 
+of execution when large market orders are placed. 
+
+For example, when a market order to buy $Q$ shares arrives, the $Q$ 
+limit orders with the lowest ask prices will be lifted automatically
+by the exchanges matching engine. If $Q$ is greater than the number
+of shares available at the lowest ask level in the orderbook, the order
+causes a temporary market impact since transactions will occur at a 
+price not only higher than the mid-price, but higher than the best ask.
+
+\begin{definition}[Temporary market impact]
+    Let $p^Q$ be the price of the highest (most expensive) limit order 
+    executed in this trade. Then 
+    \begin{equation}
+        \Delta p:=p^Q-s
+    \end{equation}
+    is the temporary market impact of the trade of size $Q.$ 
+\end{definition}
+
+Then we have that if our agent's $\delta^a < \Delta p$, our agents 
+limit order will be executed. We will assume that market buy orders
+will lift our agent's sell limit orders with a Poisson intensity function
+denoted $\lambda^a(\delta^a)$ which is a decreasing function of $\delta^a$.
+Likewise, we assume that market sell orders will hit our agent's bid 
+limit orders with Poisson intensity $\lambda^b(\delta^b)$, decreasing
+in $\delta^b$. Intuitively, this encapsulates the fact that further 
+away from the mid-price the agent places her quotes, the less often she
+will receive market orders.
+
+Now, our cash wealth and portfolio of stock is stochastic and depends
+on the incoming flow of market buy and sell orders. Naturally, both
+our cash flow and inventory jump every time a market order executes 
+one of our agent's limit orders. Let $N^a_t$ and $N^b_t$ be Poisson 
+point processes with intensities $\lambda^a$ and $\lambda^b$, 
+representing the amount of stocks sold or bought by the agent up to 
+time t respectively. Our inventory at time t is thus 
+\begin{equation}
+    q_t:=N^b_t-N^a_t
+\end{equation} 
+and our wealth process evolves according to
+\begin{equation}
+    \mathrm dXt=p^a\mathrm dN^a_t-p^b\mathrm dN^b_t.
+\end{equation}
+Finally, we can reformulate our value function from section \ref{sec:3.3}.
+The goal we set for our agent is still to maximise the expected 
+expontential utility of terminal wealth, however now the cash and 
+inventory components of our terminal portfolio are stochastic as 
+well as the mid-price itself. Hence, our value function becomes 
+the following:
+\begin{definition}[Value function of Market-Making Agent]
+    \begin{equation}
+        u(s,x,q,t):=\max\limits_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
+    \end{equation}
+\end{definition}
+
+Notice that our agent choses its quote spreads $\delta^a$ and $\delta^b$,
+and hence controls its quotes $p^a$ and $p^b$. This means that the 
+agent therefore indirectly influences the flow of orders she receives.
+
+In the next section we will consider some realistic forms for the functions
+$\lambda^a$ and $\lambda^b$ based on results in the econophysics literature
+exploring the statistical properties of the limit orderbook, before 
+turning to the application of Stochastic Control and solution to the 
+above problem in section \ref{sec:3.7}.
 
 \section{Modelling Trading Intensity}\label{sec:3.6}
-Assume constant frequency $\Lambda$ of market orders. We want to determine some realistic functional forms for the relationship between the Poisson intensity $\lambda$ and distance to mid-price $\delta$. 
-To do this we need information on: (i) the overall frequency of market orders, (ii) the distribution of their size, (iii) the temporary impact of a large market order. 
+
+Here, we will focus on deriving a realistic form for the Poisson intensity
+$\lambda$ with which a limit order will be executed as a function of its
+distance $\delta$ to the mid-price. In order to quantify this, we need 
+to infer some statistics regarding
+\begin{itemize}
+    \item The overall frequency of market orders
+    \item The distribution of the size of market orders
+    \item The temporary price impact of a large market order
+\end{itemize}
+For simplicity, we will assume a constant frequency $\Lambda$ of market
+buy or sell orders. In practice, this could be estimated by simply 
+dividing the total volume bought or sold in a given time interval 
+by the average volume of market buy/sell orders in that interval. 
+
 \subsection*{Distribution of the size of market orders}
-The distribution of size of market orders has been found to obey a power law:
-\begin{equation}\label{eq:2}
-    f^{Q}(x)\propto x^{-1-\alpha}
-\end{equation}
-for large $x$, with $\alpha\in[1.4,1.6].$
+
+The distribution of size of market orders has been found to obey a 
+power law:
+\begin{theorem}[Density of Market Order Size]
+    The distribution of size of market orders has been found to obey a 
+    power law:
+    \begin{equation}\label{eq:3.13}
+        f^{Q}(x)\propto x^{-1-\alpha}
+    \end{equation}
+    for large $x$, with $\alpha=1.53$ in \cite{Gopi2000} for US stocks,
+    $\alpha=1.4$ in \cite{Maslov2001} for shares traded on the NASDAQ
+    and $\alpha=1.5$ in \cite{Gabaix2006} for shares on the Paris Bourse.
+\end{theorem}
+
 \subsection*{Modelling market impact}
-Less consensus on market impact. Some find change in price $\Delta p$ after market order size $Q$ given by 
-\begin{equation}\label{eq:3}
-    \Delta p\propto Q^\beta, \beta\in[0.5,0.8]
+
+Here there is much less consensus on market impact, due to lack of
+agreement on how to define it and how to measure it. Some papers
+find that the change in price $\Delta p$ after a market order of size 
+$Q$ is described well by 
+\begin{equation}\label{eq:3.14}
+    \Delta p\propto Q^\beta
 \end{equation}
-while others find
-\begin{equation}\label{eq:4}
-    \Delta p\propto\log(Q)
+with $\beta=0.5$ in \cite{Gabaix2006} and $\beta=0.76$ in \cite{Weber2005},
+while \cite{Potters2003} find a better fit to the relationship
+\begin{equation}\label{eq:3.15}
+    \Delta p\propto\log(Q).
 \end{equation}
-Using \ref{eq:2} and \ref{eq:4} we can derive the poisson intensity as follows:
+Using (\ref{eq:3.13}) and (\ref{eq:3.15}) we can derive the poisson 
+intensity as follows:
 \begin{align*}
     \lambda(\delta)&=\Lambda\mathbb{P}(\delta<\Delta p)\\
     &=\Lambda\mathbb{P}\left(\delta<\frac{\log Q}{K}\right)\\
     &=\Lambda\mathbb{P}(K\delta<\log Q)\\
-    &=\Lambda\mathbb{P}\left(e^{K\delta}<Q\right)
+    &=\Lambda\mathbb{P}\left(e^{K\delta}<Q\right)\\
     &=\Lambda\int_{e^{K\delta}}^{\infty}x^{-1-\alpha}dx\\
     &=\Lambda\left[\frac{-x^{-\alpha}}{\alpha}\right]_{e^{K\delta}}^\infty\\
     &=\Lambda\left(\lim_{t\rightarrow\infty}\frac{-t^{-\alpha}}{\alpha}+\frac{e^{-K\delta\alpha}}{\alpha}\right)\\
     &=\frac{\Lambda}{\alpha}\left(e^{-K\delta\alpha}-\lim_{t\rightarrow\infty}\frac{1}{t^\alpha}\right)\\
-    &=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}
+    &=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}\\
+    &=Ae^{-k\delta}
 \end{align*}
-while \ref{eq:2} and \ref{eq:3} yield:
+where $A=\frac{\Lambda}{\alpha}$ and $k=\alpha K$. 
+On the other hand, (\ref{eq:3.13}) and (\ref{eq:3.14}) yield:
 \begin{align*}
     \lambda(\delta)&=\Lambda\mathbb{P}(\delta<\Delta p)\\
     &=\Lambda\mathbb{P}(\delta<kQ^\beta)\\
     &=\Lambda\mathbb{P}\left(Q>\left(\frac{\delta}{k}\right)^{-\beta}\right)\\
     &=\Lambda\int_{\left(\frac{\delta}{k}\right)^{-\beta}}^\infty x^{-1-\alpha}dx\\
     &=\Lambda\left[\lim_{t\rightarrow\infty}\frac{-t^{-\alpha}}{\alpha}+\frac{\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}\right]\\
-    &=\frac{\Lambda\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}
+    &=\frac{\Lambda\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}\\
+    &=B\delta^{-\frac{\alpha}{\beta}}
 \end{align*}
-Other methods exist i.e. integrating the density of the orderbook, potentially better since we only care abt short-term liquidity?
+where $B=\frac{\Lambda}{k\alpha}$.
+Other methods do exist i.e. directly integrating the density of the 
+orderbook, which is potentially better since we only care about 
+short-term liquidity. This procedure is described in \cite{Weber2005}
+and \cite{Smith2003}.\\
+\textbf{Include discussion and explanation of this method and derived form of $\lambda$}
 
+\newpage
 \section{The Hamilton-Jacobi-Bellman Equation}\label{sec:3.7}
+
 Ho and stoll use the dynamic programming principle to show that a function $u$ must solve the HJB:
 \begin{equation}\label{eq:hjb-1}
     \left\{
