@@ -559,36 +559,70 @@ the HJB equation given in theorem \ref{thm:3.7.2}.
 
 \subsection*{Implicit relations for the optimal spreads $\delta^a$ and $\delta^b$}
 
-From the first order optimality condition on the maximised terms in the HJB equation, we may obtain as follows some implicit relations
-on the optimal bid and ask spreads $\delta^b$ and $\delta^a$:
-\begin{align*}
-    \frac{\partial}{\partial\delta}\left[\frac{\lambda^b(\delta)}{\gamma}(1-e^{\gamma(s-\delta-r^b(s,q,t))})\right](\delta^b)&=0\\
-    \frac{1}{\gamma}\left[\frac{\partial\lambda^b}{\partial\delta}(\delta^b)-\frac{\partial}{\partial\delta}\lambda^b(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}\right]&=0\\
-    \frac{\partial\lambda^b}{\partial\delta}(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}+\gamma\lambda^b(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}&=0\\
-    \left(\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{\gamma(s-\delta^b-r^b(s,q,t))}&=-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
-    -\left(\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
-    e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\\
-    -\gamma(s-\delta^b-r^b(s,q,t))&=\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
-    s-\delta^b-r^b(s,q,t)&=-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
-    s-r^b(s,q,t)&=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)
-\end{align*}
-and
-\begin{align*}
-    \frac{\partial}{\partial\delta}\left[\frac{\lambda^a(\delta)}{\gamma}(1-e^{-\gamma(s+\delta-r^a(s,q,t))})\right](\delta^a)&=0\\
-    \frac{1}{\gamma}\left[\frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial}{\partial\delta}\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}\right]&=0\\
-    \frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}+\gamma\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=0\\
-    \left(\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
-    -\left(\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{\gamma(s+\delta^a-r^a(s,q,t))}&=\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
-    e^{\gamma(s+\delta^a-r^a(s,q,t))}&=1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\\
-    \gamma(s+\delta^a-r^a(s,q,t))&=\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
-    s+\delta^a-r^a(s,q,t)&=\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
-    r^a(s,q,t)-s&=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)
-\end{align*}
+We can derive some relations for the optimal distances $\delta^a$ and $\delta^b$
+that are implicit in our slightly simplified HJB equation (\ref{eq:3.19}). Inspecting
+the maximised terms in the HJB, we can invoke a first-order optimality condition to
+find an expression involving the optimal spreads, the reservation prices, and our 
+Poisson intensity $\lambda$. 
+\begin{theorem}[Implicit relations for the optimal spreads $\delta^a$ and $\delta^b$]
+    For $\delta^b$, we obtain the following:
+    \begin{equation}\label{eq:3.22}
+        s-r^b(s,q,t)=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)
+    \end{equation}
+    while for $\delta^a$ we have
+    \begin{equation}\label{eq:3.23}
+        r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Taking the derivative of the term in \ref{eq:3.19} that we maximise w.r.t. $\delta^b$
+    and setting it equal to 0, we find:
+    \begin{align*}
+        \frac{\partial}{\partial\delta}\left[\frac{\lambda^b(\delta)}{\gamma}(1-e^{\gamma(s-\delta-r^b(s,q,t))})\right](\delta^b)&=0\\
+        \frac{1}{\gamma}\left[\frac{\partial\lambda^b}{\partial\delta}(\delta^b)-\frac{\partial}{\partial\delta}\lambda^b(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}\right]&=0\\
+        \frac{\partial\lambda^b}{\partial\delta}(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}+\gamma\lambda^b(\delta^b)e^{\gamma(s-\delta^b-r^b(s,q,t))}&=0\\
+        \left(\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{\gamma(s-\delta^b-r^b(s,q,t))}&=-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
+        -\left(\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\right)e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=\gamma\lambda^b(\delta^b)-\frac{\partial\lambda^b}{\partial\delta}(\delta^b)\\
+        e^{-\gamma(s-\delta^b-r^b(s,q,t))}&=1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\\
+        -\gamma(s-\delta^b-r^b(s,q,t))&=\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+        s-\delta^b-r^b(s,q,t)&=-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)\\
+        s-r^b(s,q,t)&=\delta^b-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^b(\delta^b)}{\frac{\partial\lambda^b}{\partial\delta}(\delta^b)}\right)
+    \end{align*}
+    while a similar procedure for $\delta^a$ yields:
+    \begin{align*}
+        \frac{\partial}{\partial\delta}\left[\frac{\lambda^a(\delta)}{\gamma}(1-e^{-\gamma(s+\delta-r^a(s,q,t))})\right](\delta^a)&=0\\
+        \frac{1}{\gamma}\left[\frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial}{\partial\delta}\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}\right]&=0\\
+        \frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}+\gamma\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=0\\
+        \left(\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
+        -\left(\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{\gamma(s+\delta^a-r^a(s,q,t))}&=\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
+        e^{\gamma(s+\delta^a-r^a(s,q,t))}&=1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\\
+        \gamma(s+\delta^a-r^a(s,q,t))&=\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
+        s+\delta^a-r^a(s,q,t)&=\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
+        r^a(s,q,t)-s&=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).
+    \end{align*}
+\end{proof}
+
+To briefly summarise, the optimal bid and ask spreads $\delta^a$ and $\delta^a$ are
+derived in an intuitive two-step procedure. First, we solve the HJB PDE (\ref{eq:3.19})
+to obtain the reservation bid and ask prices. Then, we use the relations (\ref{eq:3.22})
+and (\ref{eq:3.23}) to find the optimal bid and ask spreads $\delta^b(s,q,t)$ and 
+$\delta^a(s,q,t)$ between the mid-price and obtimal bid and ask quotes respectively.
 
 \section{Asymptotic Expansion in q}\label{sec:3.8}
+
+The main computational difficulty in this advance is solving equation \ref{eq:3.19}
+due to the order-arrival terms (the terms to be maximised) being highly nonlinear and
+dependent on the inventory variable $q$. To get around this, \cite{AS2008} suggest
+an asymptotic expansion of $\theta$ in the inventory variable $q$, and a linear 
+approximation of the order arrival terms. 
+
+Following on from our work in section \ref{sec:3.6}, we will assume that our arrival 
+rates are symmetric and exponential given by 
 \begin{equation}
     \lambda^a(\delta)+\lambda^b(\delta)=Ae^{-k\delta}
 \end{equation}
+in which case, we find that our agents indifference prices $r^a(s,q,t)$ and $r^b(s,q,t)$
+coincide with their frozen inventory values given in section \ref{sec:3.3}.
 
 Using exponential arrival rates in our relations above for the optimal bid and 
 ask prices, we can see that
