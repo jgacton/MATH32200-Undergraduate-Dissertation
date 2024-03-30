@@ -618,20 +618,20 @@ approximation of the order arrival terms.
 
 Following on from our work in section \ref{sec:3.6}, we will assume that our arrival 
 rates are symmetric and exponential given by 
-\begin{equation}
+\begin{equation}\label{eq:3.24}
     \lambda^a(\delta)+\lambda^b(\delta)=Ae^{-k\delta}
 \end{equation}
-in which case, we find that our agents indifference prices $r^a(s,q,t)$ and $r^b(s,q,t)$
+in which case, our agents indifference prices $r^a(s,q,t)$ and $r^b(s,q,t)$
 coincide with their frozen inventory values given in section \ref{sec:3.3}.
 
-Using exponential arrival rates in our relations above for the optimal bid and 
-ask prices, we can see that
+With some elementary calculus we can see that our exponential arrival rates satisfy
+the following property:
 \begin{equation*}
     \frac{\lambda(\delta)}{\frac{\partial\lambda}{\partial\delta}(\delta)}=\frac{Ae^{-k\delta}}{-kAe^{-k\delta}}=-\frac{1}{k}.
 \end{equation*}
-Hence by plugging in the aforementioned relations under the assumption of symmetric
-exponential arrival rates to the maximised terms in the HJB equation \ref{eq:3.19}
-we see that
+Hence by plugging in the relations (\ref{eq:3.22}) and (\ref{eq:3.23}) into the 
+maximised terms in the HJB equation (\ref{eq:3.19}) under the assumption of symmetric
+exponential arrival rates (3.24), we see that
 \begin{align*}
     &\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a-r^a)})\right]\\
     &=\frac{Ae^{-k\delta^b}}{\gamma}\left(1-e^{\gamma\left(-\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)\right)}\right)+\frac{Ae^{-k\delta^a}}{\gamma}\left(1-e^{-\gamma\left(\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)\right)}\right)\\
@@ -649,20 +649,29 @@ which results in the simplified HJB equation below:
         \theta(s,q,T)=qs.
     \end{cases}
 \end{equation}
-Asymptotic expansion in the inventory variable $q$:
+
+Next, we consider an asymptotic expansion of $\theta$ in the inventory variable $q$:
 \begin{equation}\label{eq:asymp}
     \theta(q,s,t)=\theta^0(s,t)+q\theta^1(s,t)+\frac{1}{2}q^2\theta^2(s,t)+...
 \end{equation}
-The exact relations for the reserve bid and ask prices obtained above yield
+where the superscripts denote different functions, not powers - we do not use subscripts
+to avoid conflicts with our notation for partial derivatives later on.
+
+The exact relations for the reserve bid and ask prices obtained in lemma \ref{lem:3.7.3}
+yield
 \begin{gather}
     r^b(s,q,t)=\theta^1(s,t)+(1+2q)\theta^2(s,t)+...\\
     r^a(s,q,t)=\theta^1(s,t)+(-1-2q)\theta^2(s,t)+...\;.
 \end{gather}
-Then
+Then our reservation price
 \begin{equation}\label{eq:reserve-price}
     r(s,q,t)=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}=\theta^1(s,t)+2q\theta^2(s,t)
 \end{equation}
-follows immediately, and we also have that
+follows immediately. We can interpret this expression nicely: $\theta^1$ is the reserve
+price when the inventory is 0, and $\theta^2$ is our agent's sensitivity to changes in 
+inventory. We might then expect that $\theta^2 < 0\;\forall(s,t)$, since then a long 
+position will result in lower quotes (more willing to sell) and vice-versa. We also 
+have that
 \begin{equation}\label{eq:spread}
     \begin{aligned}
         \delta^a+\delta^b&=\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)+r^a(s,q,t)-s+\frac{1}{\gamma}\log\left(1+\frac{\gamma}{k}\right)+s-r^b(s,q,t)\\
@@ -670,38 +679,60 @@ follows immediately, and we also have that
         &=-2\theta^2(s,t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
     \end{aligned}
 \end{equation}
+through our approximation and the relations (\ref{eq:3.22}) and (\ref{eq:3.23}).
 Now consider a first-order approximation of the order arrival term:
 \begin{equation}\label{eq:approx-arrival}
     \frac{A}{k+\gamma}(e^{-\gamma\delta^a}+e^{-\gamma\delta^b})=\frac{A}{k+\gamma}(2-k(\delta^a+\delta^b)+...)
 \end{equation}
-The linear term does not depend on the inventory $q$. Therefore, by substituting
-\ref{eq:asymp} and \ref{eq:approx-arrival} into \ref{eq:simp-hjb} and 
-grouping terms of order $q$ we obtain
-\begin{equation}
+where we notice that the linear term does not depend on the inventory $q$. Therefore,
+by substituting (\ref{eq:asymp}) and (\ref{eq:approx-arrival}) into (\ref{eq:simp-hjb}) 
+and grouping terms of order $q$ we obtain
+\begin{equation}\label{eq:3.32}
     \begin{cases} 
         \theta^1_t+\frac{1}{2}\sigma^2\theta^1_{ss}=0\\
         \theta^1(s,T)=s.
     \end{cases}
 \end{equation}
-which admits the solution $\theta^1(s,t)=s$. Grouping terms of order $q^2$ yields
+which admits the solution $\theta^1(s,t)=s$ by inspection. 
+
+Grouping terms of order $q^2$ yields
 \begin{equation}
     \begin{cases}
         \theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma(\theta^1_s)^2=0\\
         \theta^2(s,T)=0
     \end{cases}
 \end{equation}
-with solution $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$.
+which simplifies by our previous solution to (\ref{eq:3.32}) to
+\begin{equation*}
+    \begin{cases}
+        \theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma=0\\
+        \theta^2(s,T)=0
+    \end{cases}
+\end{equation*}
+with solution $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$ by inspection.
+
 Thus for this linear approximation of the order arrival term, we can substitute our
-solutions back into \ref{eq:reserve-price} to obtain the same indifference price
+solutions back into (\ref{eq:reserve-price}) to obtain the same indifference price
 \begin{equation}
     r(s,t)=s-q\gamma\sigma^2(T-t)
 \end{equation}
-as in the case where no trading is allowed. We quote a bid-ask spread given by
+as in the case where no trading is allowed. We quote a bid-ask spread that is symmetric
+about this reservation price and is given by the below expression, which is again acquired
+through subsituting our solutions for $\theta^1$ and $\theta^2$ back into (\ref{eq:spread}).
 \begin{equation}
     \delta^a+\delta^b=\gamma\sigma^2(T-t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
 \end{equation}
-which is again aquired by substituting our solutions back into \ref{eq:spread}.
 
 \section{Summary}\label{sec:3.9}
-The reserve ask price derived by Avellaneda and Stoikov in the infinite horizon case
-is potentially incorrect, a correction is presented.
+
+In the above section, we have seen how the problem of finding the optimal behaviour
+of a dealer in a limit orderbook, which we introduced in chapter \ref{chap:1}, can be
+formulated as a stochastic control problem using the theoretical framework we built up
+in chapter \ref{chap:2}. We have also noted a possible miscalculation or typographical
+error in the short section of the original paper of \cite{AS2008} on the infinite-horizon
+agent, which we address in section \ref{sec:3.4}. 
+
+We go on to provide full derivations of all of the results presented in \cite{AS2008},
+explain the use of the ansatz (\ref{eq:3.18}) as a key simplifying assumption, and walk
+through the analytical approximation used to yield the final results that Avellaneda
+and Stoikov present, and then numerically simulate.
