@@ -1,0 +1,318 @@
+\section{Introduction}
+In this chapter we introduce the idea of a stochastic control problem in one dimension, 
+and construct a theoretical framework for the resolution of a regular solution, 
+provided that such a solution exists (which is not guarunteed). We Primarily 
+follow the text of \cite{Pham}. In section \ref{sec:2.2} we introduce the notion
+of a controlled diffusion process and its solution. In section \ref{sec:2.3} we
+consider a stochastic control problem over a finite time horizon, before introducing
+the dynamic programming principle and Hamilton-Jacobi-Bellman equation in section \ref{sec:2.4}
+and section \ref{sec:2.5} respectively. Finally, in section \ref{sec:2.6}, we consider
+the verification theorem which allows us to validate the optimality of a candidate solution.
+We then procede in \ref{sec:2.7} to put these tools to use through a worked example
+in a financial context, setting us up to tackle the Avellaneda-Stoikov model in Chapter \ref{chap:3}.
+
+\section{Controlled Diffusion Processes}\label{sec:2.2}
+
+The following all will rely on the existence of a standard filtered probability space\\
+$(\Omega,\mathcal{F},(\mathcal{F}_n)_{n=0}^\infty,\mathbb{P})$ as defined above in chapter \ref{chap:1}.
+
+\begin{definition}[Controlled Diffusion Process]
+    We consider a control model where the state of the system is governed by 
+    an $\mathbb{R}$-valued SDE:
+    \begin{equation}\label{eq:2.1}
+        dX_t=b(t,X_t,\alpha_t)ds+\sigma(t,X_t,\alpha_t)dW_t
+    \end{equation}
+    where $W$ is a standard Wiener process. The control $\alpha=(\alpha_t)$ is a 
+    progressively measurable process valued in $A\subseteq\mathbb{R}^m$.
+\end{definition}
+
+The functions $b:\mathbb{R}^+\times\mathbb{R}\times A\rightarrow\mathbb{R}$
+and $\sigma:\mathbb{R}^+\times\mathbb{R}\times A\rightarrow\mathbb{R}$ are measurable
+in all of their arguments and satisfy a uniform Lipschitz condition in A:
+There exists a $K\geq0$ such that $\forall\;x,y\in\mathbb{R}, \forall\;a\in A,$
+\begin{equation}\label{eq:2.2}
+    |b(x,a)-b(y,a)|+|\sigma(x,a)-\sigma(y,a)|\leq K|x-y|.
+\end{equation}
+In what follows, for $0\leq t\leq T<\infty$, we denote by $\mathcal{T}_{t,T}$ the
+set of stopping times valued in $[t,T]$.
+
+\section{The Finite-Horizon Problem}\label{sec:2.3}
+
+Fix a finite horizon $0<T<\infty$. We denote by $\mathcal{A}$ the set of control
+processes $\alpha$ such that for any arbitrary $x\in\mathbb{R},$
+\begin{equation}\label{eq:2.3}
+    \mathbb{E}\left[\int_0^T|b(x,\alpha_t)|^2+|\sigma(x,\alpha_t)|^2\mathrm dt\right]<\infty.
+\end{equation}
+From Chapter \ref{chap:1}, conditions (\ref{eq:2.2}) and (\ref{eq:2.3}) ensure the existence
+and uniqueness of a strong solution to the SDE (\ref{eq:2.1}) starting from any initial
+condition $(t,x)\in[0,T]\times\mathbb{R}$ and with any control process $\alpha\in\mathcal{A}$.
+We denote this unique strong solution with almost surely continuous sample paths by 
+$\{X_s^{t,x},t\leq s\leq T\}$.\\
+\textbf{Pham includes extra technical properties of the strong solution here which I may not require.}\\
+Next we set out our functional objective. Let $f:[0,T]\times\mathbb{R}\times A\rightarrow\mathbb{R}$
+and $g:\mathbb{R}\rightarrow\mathbb{R}$ be two measurable functions. We suppose that:
+
+\begin{itemize}
+    \item $g$ is lower-bounded \textbf{or}
+    \item $g$ satisfies a quadratic growth condition: $|g(x)|\leq C(1+|x|^2)\;\forall\;x\in\mathbb{R}$ for some constant $C$ independent of $x$.
+\end{itemize}
+
+We also denote by $\mathcal{A}(t,x)$ the subset of controls $\alpha\in\mathcal{A}$ such that
+
+\begin{equation}
+    \mathbb{E}\left[\int_t^T|f(s,X_x^{t,x},\alpha_s)|\mathrm ds\right]<\infty
+\end{equation}
+
+for $(t,x)\in[0,T]\times\mathbb{R}$, and we assume that this set is not empty for all 
+$(t,x)\in[0,T]\times\mathbb{R}$. We now define the \emph{gain function:}
+
+\begin{definition}[Gain Function]
+    \begin{equation}
+        J(t,x,\alpha):=\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})\right]
+    \end{equation}
+    for all $(t,x)\in[0,T]\times\mathbb{R}$ and $\alpha\in\mathcal{A}(t,x).$
+\end{definition}
+
+Our objective is thus to maximise over possible control processes the gain function $J$,
+and to do this we introduce the associated \emph{value function}:
+
+\begin{definition}[Value Function]
+    \begin{equation}\label{eq:2.6}
+        v(t,x):=\sup_{\alpha\in\mathcal{A}(t,x)}J(t,x,\alpha).
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Optimal control]
+    Given an initial condition $(t,x)\in[0,T]\times\mathbb{R}$, we say that $\hat{\alpha}\in\mathcal{A}(t,x)$
+    is an optimal control if
+    \begin{equation}
+        v(t,x)=J(t,x,\hat{\alpha}).
+    \end{equation}
+\end{definition}
+
+\begin{remark}
+    A control process $\alpha$ of the form $\alpha_s=a(s,X_s^{t,x})$ for some measurable
+    function $a:[0,T]\times\mathbb{R}\rightarrow A$ is called a \emph{Markovian} control.
+\end{remark}
+
+\textbf{Pham includes a remark here about constant controls and conditions for the equivalence of $\mathcal{A}$ and $\mathcal{A}(t,x)$ which I probably don't need.}\\
+\textbf{Include words on the interpretation and intuition of the f, g, the gain and value functions}
+
+\section{The Dynamic Programming Principle}\label{sec:2.4}
+
+The Dynamic Programming Principle (DPP) is the fundamental tool upon which much of the 
+theory of stochastic control relies. We formulate it as follows, considering only
+the context of the finite-horizon problem described above.
+
+\begin{theorem}[Dynamic Programming Principle]
+    Let $(t,x)\in[0,T]\times\mathbb{R}.$ Then we have
+    \begin{align}
+        v(t,x)&=\sup_{\alpha\in\mathcal{A}(t,x)}\sup_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
+        &=\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
+    \end{align}
+\end{theorem}
+\begin{proof}[Proof of the DPP]
+    By pathwise uniqueness of the SDE for X, for any admissible control $\alpha\in\mathcal{A}(t,x)$,
+    for any $\theta\in\mathcal{T}_{t,T}$ and for all $s\geq\theta$
+    \begin{equation}
+        X_s^{t,x}=X_s^{\theta,X_\theta^{t,x}}.
+    \end{equation}
+    By the law of iterated expectations we then have
+    \begin{align*}
+        J(t,x,\alpha)&=\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})\right]\\
+        &=\mathbb{E}\left[\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})|\mathcal{F}_\theta\right]\right]\\
+        &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+\mathbb{E}\left[\int_\theta^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})|\mathcal{F}_\theta\right]\right]\\
+        &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+\mathbb{E}\left[\int_\theta^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})\right]\right]\\
+        &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha)\right]
+    \end{align*}
+    and since $J(.,.,\alpha)\leq v$ and $\theta$ is arbitrary in $\mathcal{T}_{t,T}$
+    we obtain
+    \begin{align*}
+        J(t,x,\alpha)&\leq\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
+        &\leq\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
+        &\leq\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]
+    \end{align*}
+    and by taking the supremum over $\alpha$ in the left hand side, we obtain the second
+    of the desired inequalities:
+    \begin{equation}
+        v(t,x)\leq\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
+    \end{equation}
+    Next we fix an arbitrary control $\alpha\in\mathcal{A}(t,x)$ and $\theta\in\mathcal{T}_{t,T}.$
+    By the definition of the value function, for any $\epsilon>0$ and $\omega\in\Omega$
+    there exists an $\alpha^{\epsilon,\omega}\in\mathcal{A}(\theta(\omega),X_{\theta(\omega)}^{t,x}(\omega))$
+    that is an $\epsilon$-optimal control for $v(\theta,X_{\theta(\omega)}^{t,x}(\omega))$, i.e.
+    \begin{equation}\label{eq:2.13}
+        v(\theta,X_{\theta(\omega)}^{t,x}(\omega))-\epsilon \leq J(\theta(\omega),X_{\theta(\omega)}^{t,x}(\omega),\alpha^{\epsilon,\omega}).
+    \end{equation}
+    \textbf{Maybe include some more intuition behind this point?}\\
+    We now define the process
+    \begin{equation}
+        \hat{\alpha}_s(\omega)=\begin{cases}
+            &\alpha_s(\omega), s\in[0,\theta(\omega)],\\
+            &\alpha_s^{\epsilon,\omega}(\omega),s\in[\theta(\omega),T].
+        \end{cases}
+    \end{equation}
+    It can be shown by the measurable selection theorem \\
+    \textbf{do this in the appendix}\\
+    that the process $\hat{\alpha}$ is progressively measurable, and so lies in $\mathcal{A}(t,x)$.
+    Again by the law of iterated expectations and (\ref{eq:2.13}) we get 
+    \begin{align*}
+        v(t,x)\geq J(t,x,\hat{\alpha})=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha^\epsilon)\right]\\
+        \geq\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]-\epsilon.
+    \end{align*}
+    Finally, by the fact that $\alpha\in\mathcal{A}(t,x),\theta\in\mathcal{T}_{t,T}$
+    and $\epsilon>0$ are all arbitrary, we obtain the first inequality:
+    \begin{equation}
+        v(t,x)=\sup_{\alpha\in\mathcal{A}(t,x)}\sup_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
+    \end{equation}
+\end{proof}
+
+\begin{remark}[Equivalent Formulations]
+    We normally write the DPP as 
+    \begin{equation}\label{eq:2.16}
+        v(t,x)=\sup_{\alpha\in\mathcal{A}(t,x)}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right],
+    \end{equation}
+    however it is sometimes useful to use the following equivalent formulation of the DPP:\\
+    (i) For all $\alpha\in\mathcal{A}(t,x)$ and $\theta\in\mathcal{T}_{t,T}$:
+    \begin{equation}\label{eq:2.17}
+        v(t,x)\geq\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
+    \end{equation}
+    (ii) For all $\epsilon>0,$ there exists $\alpha\in\mathcal{A}(t,x)$ such that for all $\theta\in\mathcal{T}_{t,T}$:
+    \begin{equation}
+        v(t,x)-\epsilon\leq\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
+    \end{equation}
+    
+\end{remark}
+
+\textbf{Include words on the interpretation and intuition of the DPP.}
+
+\section{Hamilton-Jacobi-Bellman Equation}\label{sec:2.5}
+
+The Dynamic Programming Principle tells us that we can consider a stochastic control
+problem as a sequence of smaller sub-problems defined over intervals of $[0,T]$
+characterised by stopping times, i.e., $[0,T]=[0,\theta_1]\cup(\theta_1,\theta_2]\cup\dots\cup(\theta_{n},T]$
+where $\theta_1\leq\dots\leq\theta_n\in\mathcal{T}_{t,T}.$ Thus, a natural thing to consider
+is the following: What happens as $n\rightarrow\infty$ and correspondingly $\theta_{i+1}-\theta_i\rightarrow0$?
+What we obtain is the Hamilton-Jacobi-Bellman equation (HJB) which describes the 
+dynamics of the value function over small increments of time. In this chapter and what 
+follows, we will use the HJB equation as follows:
+\begin{itemize}
+    \item Provide a formal derivation of the HJB equation.
+    \item Obtain or try to show the existence of a smooth solution.
+    \item Verification step: Show that the smooth solution is the value function.
+    \item As a byproduct, we obtain an optimal feedback control.
+\end{itemize}
+
+\begin{theorem}[Hamilton-Jacobi-Bellman Equation]
+    The dynamics of the value function $v(t,x)$ satisfy the following non-linear
+    second-order partial differential equation:
+    \begin{equation}
+        \left\{
+        \begin{aligned}
+            &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R}\\
+            &v(T,x)=g(x)\;\forall\;x\in\mathbb{R}.
+        \end{aligned}
+        \right.
+    \end{equation}
+    where $\mathcal{L}^a$ is the operator associated to the diffusion (\ref{eq:2.1})
+    and defined by (see Section \ref{sec:1.6})
+    \begin{equation}
+        \mathcal{L}^av=b(t,x,a)v_x+\frac{1}{2}\sigma(t,x,a)^2v_{xx}.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Let us consider time $\theta=t+h$ and a constant control $\alpha_s=a$ for some arbitrary
+    $a\in A$, in our slightly stronger variant of the DPP (\ref{eq:2.17}):
+    \begin{equation}\label{eq:2.21}
+        v(t,x)\geq\mathbb{E}\left[\int_{t}^{t+h} f(s,X_s^{t,x},a)\mathrm ds+v(t+h,X_{t+h}^{t,x})\right].
+    \end{equation}
+    By assuming that $v$ is smooth enough, we can apply It\^{o}'s formula between
+    $t$ and $t+h$:
+    \begin{equation}
+        v(t+h,X_{t+h}^{t,x})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})\mathrm ds +\textrm{(local) martingale}.
+    \end{equation}
+    We can then substitute back into (\ref{eq:2.21}) to obtain
+    \begin{equation}
+        0\geq\mathbb{E}\left[\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})+f(s,X_s^{t,x},a)\mathrm ds\right]
+    \end{equation}
+    which if we divide by $h$ and send $h\rightarrow0$ we yield
+    \begin{equation}
+        0\geq\frac{\partial v}{\partial t}(t,x)+\mathcal{L}^av(t,x)+f(t,x,a)
+    \end{equation}
+    by the mean-value theorem. Since this holds true for any $a\in A$, we obtain the
+    inequality
+    \begin{equation}\label{eq:2.25}
+        -\frac{\partial v}{\partial t}(t,x)-\sup_{a\in A}[\mathcal{L}^av(t,x)+f(t,x,a)]\geq0.
+    \end{equation}
+    On the other hand, suppose that $\alpha^*$ is an optimal control. Then in (\ref{eq:2.16})
+    we have
+    \begin{equation}\label{eq:2.26}
+        v(t,x)=\mathbb{E}\left[\int_t^{t+h}f(s,X_s^*,\alpha_s^*)\mathrm ds+v(t+h,X_{t+h}^*)\right],
+    \end{equation}
+    where $X^*$ is the solution to (\ref{eq:2.1}) starting from state $x$ at time $t$
+    with control $\alpha^*.$ Again by It\^{o}'s formula we have that 
+    \begin{equation}
+        v(t+h,X^*_{t+h})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)\mathrm ds +\textrm{(local) martingale}
+    \end{equation}
+    which we can again substitute back into (\ref{eq:2.26}) to obtain
+    \begin{equation}
+        0=\mathbb{E}\left[\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)+f(s,X_s*,a)\mathrm ds\right]
+    \end{equation}
+    and hence once again we divide by $h$ and send $h\rightarrow0$ yielding
+    \begin{equation}
+        -\frac{\partial v}{\partial t}(t,x)-\mathcal{L}^{\alpha^*_t}v(t,x)-f(t,x,\alpha_t^*)=0.
+    \end{equation}
+    Combining this with (\ref{eq:2.25}), $v$ should satisfy
+    \begin{equation}
+        -\frac{\partial v}{\partial t}(t,x)-\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R},
+    \end{equation}
+    if the above supremum in $a$ is finite. This may arise when the control space $A$
+    is unbounded, and we will see how to deal with this later on. We can also obtain
+    the terminal condition associated to this PDE:
+    \begin{equation}
+        v(T,x)=g(x)\;\forall\;x\in\mathbb{R}
+    \end{equation}
+    which results immediately from the definition in (\ref{eq:2.6}) of the value function
+    considered at the horizon time $T$.
+\end{proof}
+
+\section{Verification Theorem}\label{sec:2.6}
+
+\begin{theorem}[Verification Theorem]
+    Let $w:[0,T]\times\mathbb{R}\rightarrow\mathbb{R}$ be a continuous function which
+    is continuously differentiable at least once in its first argument and twice
+    in its second. Let $w$ also satisfy a quadratic growth condition, i.e. there
+    exists a constant $C$ such that
+    \begin{equation*}
+        |w(t,x)|\leq C(1+x^2)\;\forall\;(t,x)\in[0,T]\times\mathbb{R}.
+    \end{equation*}
+    (i) Suppose that
+    \begin{align}
+        \frac{\partial w}{\partial t}(t,x)+\sup_{a\in A}[\mathcal{L}^aw(t,x)+f(t,x,a)]&\geq0,\;(t,x)\in[0,T]\times\mathbb{R}\\
+        w(T,x)&\geq g(x),\;x\in\mathbb{R}.
+    \end{align}
+    Then $w\geq v$ on $[0,T]\times\mathbb{R}.$\\
+    (ii) Suppose further that $w(T,.)=g$ and that there exists a measurable function
+    $\hat{\alpha}:[0,T]\times\mathbb{R}\rightarrow A$ such that
+    \begin{equation*}
+        \frac{\partial w}{\partial t}(t,x)+\sup_{a\in A}[\mathcal{L}^aw(t,x)+f(t,x,a)]=\frac{\partial w}{\partial t}(t,x)+\mathcal{L}^{\hat{\alpha}(t,x)}w(t,x)+f(t,x,\hat{\alpha}(t,x))=0,
+    \end{equation*}
+    the SDE
+    \begin{equation*}
+        \mathrm dX_t=b(s,X_s,\hat{\alpha}(s,X_s))\mathrm ds+\sigma(s,X_s,\hat{\alpha}(s,X_s))\mathrm dW_s
+    \end{equation*}
+    admits a unique solution denoted by $\hat{X}_s^{t,x}$ given an initial condition
+    $X_t=x$, and the process $\{\hat{\alpha}(s,\hat{X}_s^{t,x}):t\leq s\leq T\}$
+    lies in $\mathcal{A}(t,x)$. Then
+    \begin{equation}
+        w=v\textrm{ on }[0,T]\times\mathbb{R}
+    \end{equation}
+    and $\hat{\alpha}$ is an optimal Markovian control.
+\end{theorem}
+\begin{proof}
+    
+\end{proof}
+
+\section{A Worked Example}\label{sec:2.7}
+
+\subsection{Finite-Horizon Merton Portfolio Allocation Problem}
