@@ -1,42 +1,58 @@
 \section{Introduction}
-This section aims to equip the reader with both the motivation and mathematical tools to begin to formalise problems in stochastic optimal control 
-and mathematical finance, by first providing some background material on financial markets, their participants, and their structure, 
-and then setting up the basic elements of measure-theoretic probability theory and stochastic processes which we will use to describe them. 
-We will end with a discussion of the market-making problem and how we might go about formalising it.
+This section aims to equip the reader with both the motivation and mathematical 
+tools to begin to formalise problems in stochastic optimal control and mathematical 
+finance, by first providing some background material on financial markets, their 
+participants, and their structure, and then setting up the basic elements of 
+measure-theoretic probability theory and stochastic processes which we will use to 
+describe them. We will end with a discussion of the market-making problem and how 
+we might go about formalising it.
 
 \section{Financial Markets}
-A market is simply some social structure that attempts to match those who want to sell a good or service to those who want to buy it. 
-Modern financial markets, thanks to recent innovations such as the internet, satellite communication, and fibre-optic cables, 
-are perhaps the most interconnected and widespread markets in human history. 
+A market is simply some social structure that attempts to match those who want to 
+sell a good or service to those who want to buy it. Modern financial markets, 
+thanks to recent innovations such as the internet, satellite communication, and 
+fibre-optic cables, are perhaps the most interconnected and widespread markets in 
+human history. 
 
-Most people may have heard of the New York Stock Exchange, London Stock Exchange, or NASDAQ, 
-but these are only one type of exchange for one type of financial asset, namely equity 
-(part ownership of a corporate entity, individually called ``stocks'' or ``shares''). There are also markets for commodities 
-(oil, gas, industrial metals, precious metals, live cattle and more), bonds (pieces of government or corporate debt, 
-where the holder receives fixed interest payments), currencies (including cryptocurrencies), 
-and derivatives which are legal contracts whose value is some function of the price of a specified underlying asset. 
-In total, on an average day, tens of trillions of US dollars worth of assets change hands.
+Most people may have heard of the New York Stock Exchange, London Stock Exchange, 
+or NASDAQ, but these are only one type of exchange for one type of financial asset, 
+namely equity (part ownership of a corporate entity, individually called ``stocks'' 
+or ``shares'').There are also markets for commodities (oil, gas, industrial metals, 
+precious metals, live cattle and more), bonds (pieces of government or corporate 
+debt, where the holder receives fixed interest payments), currencies (including 
+cryptocurrencies), and derivatives which are legal contracts whose value is some 
+function of the price of a specified underlying asset. In total, on an average day, 
+tens of trillions of US dollars worth of assets change hands.
 
-All markets, whatever the good or service being exchanged, have something in common: Every seller needs a buyer, 
-and every buyer needs a seller. But this raises some natural questions: What happens if no-one wants to sell (or buy)? 
-What happens if the only prices at which people are willing to sell is far out of reach of those who want to buy? 
-Enter the \textit{dealer}: An entity who provides \textit{liquidity} (ease of exchange) to market participants. 
-A dealer does this by simultaneously offering to both buy and sell the particular asset, offering to buy at a slightly lower price than they offer to sell. 
-This known as ``making a market'', and dealers in modern parlance may also be called ``market-makers''.
+All markets, whatever the good or service being exchanged, have something in common: 
+Every seller needs a buyer, and every buyer needs a seller. But this raises some 
+natural questions: What happens if no-one wants to sell (or buy)? What happens if 
+the only prices at which people are willing to sell is far out of reach of those 
+who want to buy? Enter the \textit{dealer}: An entity who provides \textit{liquidity} 
+(ease of exchange) to market participants. A dealer does this by simultaneously 
+offering to both buy and sell the particular asset, offering to buy at a slightly 
+lower price than they offer to sell. This known as ``making a market'', and dealers 
+in modern parlance may also be called ``market-makers''.
 
 \subsection*{Dealers}
 Dealers provide a crucial service in financial markets: By providing these quotes, 
-they narrow the \textit{spread} - the difference between the prices at which one can buy or sell an asset in the market. 
-Hence, entities who may need to trade even in adverse market scenarios (such as companies needing to buy foreign currency to pay workers abroad, 
-or oil producers seeking to hedge their production) know that they can reliably find a buyer or seller, 
-regardless of the uncertainty of other market participants such as \textit{speculators} - those believe that a certain asset is under or overvalued, 
-and trade it with the sole motive of making money buy selling it for more than they bought it or vice-versa.
+they narrow the \textit{spread} - the difference between the prices at which one can 
+buy or sell an asset in the market. Hence, entities who may need to trade even in 
+adverse market scenarios (such as companies needing to buy foreign currency to pay 
+workers abroad, or oil producers seeking to hedge their production) know that they 
+can reliably find a buyer or seller, regardless of the uncertainty of other market 
+participants such as \textit{speculators} - those believe that a certain asset is 
+under or overvalued, and trade it with the sole motive of making money buy selling 
+it for more than they bought it or vice-versa.
 
-Of course, there is no free lunch. Dealers do not provide this service to the market out of the goodness of their own hearts - they too have a profit motive. 
-While the presence of dealers in the market narrows the spread, it does not eliminate it. 
-The dealers aim is to be constantly selling the asset for a slightly higher price than it is buying it, and taking the spread as profit. 
-In modern electronic markets with very high trading volumes, even in heavily traded assets with very narrow spreads, a spread of only 0.01\$ 
-multiplied across millions or billions of trades can be very lucrative for the dealers who are fast enough.
+Of course, there is no free lunch. Dealers do not provide this service to the market 
+out of the goodness of their own hearts - they too have a profit motive. While the 
+presence of dealers in the market narrows the spread, it does not eliminate it. 
+The dealers aim is to be constantly selling the asset for a slightly higher price 
+than it is buying it, and taking the spread as profit. In modern electronic markets 
+with very high trading volumes, even in heavily traded assets with very narrow 
+spreads, a spread of only 0.01\$ multiplied across millions or billions of trades 
+can be very lucrative for the dealers who are fast enough.
 
 \subsection*{The Limit Orderbook}
 So far we have discussed markets as an abstract concept, but in order to build a 
@@ -400,12 +416,59 @@ is assumed.
     measurable processes are adapted but the converse is not true. 
 \end{definition}
 
+\begin{definition}[C\`{a}dl\`{a}g processes]
+    Right continuous with left limits. Acronym from the french
+    ``continue \`{a} droite, limite \`{a} gauche''.
+\end{definition}
+
+\begin{definition}[Semimartingales]
+    A real-valued process $X$ is called a \emph{semimartingale} if it can be decomposed as
+    \begin{equation}
+        X_t = M_t + A_t
+    \end{equation}
+    where $M$ is a local martingale and $A$ is a c\`{a}dl\`{a}g, adapted process of locally
+    bounded variation.
+\end{definition}
 
 \section{Stochastic Integration}
-\begin{itemize}
-    \item Stochastic integral
-    \item Itos lemma
-\end{itemize}
+
+\begin{definition}[It\^{o} (Stochastic) Integral]
+    Let $W$ be a standard Wiener process as defined above, and let $H$ be a c\`{a}dl\`{a}g,
+    adapted (to $W$), and locally bounded process. If $\{\pi_n\}$ is a sequence of partitions
+    on $[0,t]$ with mesh width decreasing to $0$, then the \emph{It\^{o} integral} of $H$
+    w.r.t. $W$ is the random variable
+    \begin{equation}
+        \int_0^tH\mathrm dW:=\lim_{n\rightarrow\infty}\sum_{[t_{i-1},t_i]\in\pi_n}H_{t_{i-1}}(W_{t_i}-W_{t_{i-1}})
+    \end{equation}
+\end{definition}
+
+\begin{definition}[It\^{o} Processes]
+    An It\^{o} process is any adapted stochastic process that can be written as the sum of a 
+    deterministic integral w.r.t. time and a stochastic integral w.r.t. Brownian motion:
+    \begin{equation}
+        X_t=X_0+\int_0^t\mu_s\mathrm ds+\int_0^t\sigma_s\mathrm dW
+    \end{equation}
+    where $W$ is a standard Wiener process, $\sigma$ is predictable and integrable w.r.t. $W$,
+    and $\mu$ is predictable and Lebesgue integrable. Equivalently, in differential form, we 
+    may also write
+    \begin{equation}
+        \mathrm dX_t=\mu_t\mathrm dt + \sigma_t\mathrm dW_t
+    \end{equation}
+\end{definition}
+
+\begin{lemma}[It\^{o}'s Lemma]
+    Probably most important result in stochastic calculus. Provides an analogue of the chain rule,
+    allowing us to find differentials for functions of It\^{o} processes. Suppose $X$ is an It\^{o}
+    process satisfying the differential form given above. Let $f:[0,T]\times\mathbb{R}\rightarrow\mathbb{R}$
+    be continuously differentiable at least once in the first argument and twice in the second.
+    Then we have that
+    \begin{equation}
+        \mathrm df=\left(\frac{\partial f}{\partial t}+\mu_t\frac{\partial f}{\partial x}+\frac{\sigma_t^2}{2}\frac{\partial^2 f}{\partial x^2}\right)\mathrm dt + \sigma_t\frac{\partial f}{\partial x}\mathrm dW_t
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Taylor expansions
+\end{proof}
 
 \section{Stochastic Differential Equations}\label{sec:1.6}
 \begin{itemize}
