@@ -13,17 +13,31 @@ in a financial context, setting us up to tackle the Avellaneda-Stoikov model in 
 
 \section{Controlled Diffusion Processes}\label{sec:2.2}
 
-The following all will rely on the existence of a standard filtered probability space\\
-$(\Omega,\mathcal{F},(\mathcal{F}_n)_{n=0}^\infty,\mathbb{P})$ as defined above in chapter \ref{chap:1}.
+In the previous chapter we have considered It\^{o} processes that are governed either by constants or by
+functions of time and/or state. Using this, we could for example model a stock price, the movement of a particle,
+or any other system with the kinds of properties that we study above. If we have a portfolio of cash 
+and an asset, we can model our wealth through time as a stochastic differential equation governed by the 
+risk-free rate at which we earn returns on our cash, and the random fluctuations of the stock price. 
+
+For the market-maker however, this is insufficient. We described intuitively at the beginning of chapter \ref{chap:1}
+how a market maker might be able to influence the flow of orders they recieve over time, and hence their 
+cash flow over time, by adjusting the limit bid and ask quotes that they send to the market. Hence,
+the market makers portfolio value is governed by not only the fluctuations of the stock and the risk-free
+rate, but also (stochastically) by the spread that they set. We thus need a model that allows our diffusion
+process to be governed by not only functions of time and state, but also of some other process which we 
+will call $\alpha$.
+
+Throughout this chapter we will assume the background of a standard continuous and filtered probability space
+$(\Omega,\mathcal{F},(\mathcal{F}_t)_{t\geq0},\mathbb{P})$ as defined above in chapter \ref{chap:1}.
 
 \begin{definition}[Controlled Diffusion Process]
     We consider a control model where the state of the system is governed by 
     an $\mathbb{R}$-valued SDE:
     \begin{equation}\label{eq:2.1}
-        dX_t=b(t,X_t,\alpha_t)ds+\sigma(t,X_t,\alpha_t)dW_t
+        \mathrm dX_t=b(t,X_t,\alpha_t)\mathrm ds+\sigma(t,X_t,\alpha_t)\mathrm dW_t
     \end{equation}
     where $W$ is a standard Wiener process. The control $\alpha=(\alpha_t)$ is a 
-    progressively measurable process valued in $A\subseteq\mathbb{R}^m$.
+    \emph{progressively measurable} process valued in $A\subseteq\mathbb{R}^m$.
 \end{definition}
 
 The functions $b:\mathbb{R}^+\times\mathbb{R}\times A\rightarrow\mathbb{R}$
@@ -34,7 +48,7 @@ There exists a $K\geq0$ such that $\forall\;x,y\in\mathbb{R}, \forall\;a\in A,$
     |b(x,a)-b(y,a)|+|\sigma(x,a)-\sigma(y,a)|\leq K|x-y|.
 \end{equation}
 In what follows, for $0\leq t\leq T<\infty$, we denote by $\mathcal{T}_{t,T}$ the
-set of stopping times valued in $[t,T]$.
+set of \emph{stopping times} valued in $[t,T]$.
 
 \section{The Finite-Horizon Problem}\label{sec:2.3}
 
