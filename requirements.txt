@@ -1,4 +1,0 @@
-binance-connector
-numpy
-matplotlib
-scipy
