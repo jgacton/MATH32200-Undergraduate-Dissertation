@@ -489,9 +489,10 @@ is assumed.
     \end{equation}
     Substituting $X_t$ for $x$ and therefore $\mu_t\mathrm dt + \sigma_t\mathrm dW_t$
     for $\mathrm dx$ gives
-    \begin{equation}
-        \mathrm df = \frac{\partial f}{\partial t}\mathrm dt+\frac{1}{2}\frac{\partial^2f}{\partial t^2}\mathrm dt^2+\dots+\frac{\partial f}{\partial x}(\mu_t\mathrm dt + \sigma_t\mathrm dW_t)+\frac{1}{2}\frac{\partial^2f}{\partial x^2}(\mu_t^2(\mathrm dt)^2 + 2\mu_t\sigma_t\mathrm dt\mathrm dW_t+ \sigma_t^2(\mathrm dW_t)^2)+\dots.
-    \end{equation}
+    \begin{align*}
+        \mathrm df &= \frac{\partial f}{\partial t}\mathrm dt+\frac{1}{2}\frac{\partial^2f}{\partial t^2}\mathrm dt^2+\dots\\
+        &+\frac{\partial f}{\partial x}(\mu_t\mathrm dt + \sigma_t\mathrm dW_t)+\frac{1}{2}\frac{\partial^2f}{\partial x^2}(\mu_t^2(\mathrm dt)^2 + 2\mu_t\sigma_t\mathrm dt\mathrm dW_t+ \sigma_t^2(\mathrm dW_t)^2)+\dots.
+    \end{align*}
     As $\mathrm dt\rightarrow0$, the terms $\mathrm dt^2$ and $\mathrm dt\mathrm dW_t$ 
     tend to 0 faster than $\mathrm dW_t^2$ which is $\mathcal{O}(\mathrm dt)$ due to
     the quadratic variation of the Wiener process. Thus setting the $\mathrm dt^2$ 
