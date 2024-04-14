@@ -1,1 +1,34 @@
-\section{The Measurable Selection Theorem}
+\begin{theorem}[Verification Theorem]
+    Let $w:[0,T]\times\mathbb{R}\rightarrow\mathbb{R}$ be a continuous function which
+    is continuously differentiable at least once in its first argument and twice
+    in its second. Let $w$ also satisfy a quadratic growth condition, i.e. there
+    exists a constant $C$ such that
+    \begin{equation*}
+        |w(t,x)|\leq C(1+x^2)\;\forall\;(t,x)\in[0,T]\times\mathbb{R}.
+    \end{equation*}
+    (i) Suppose that
+    \begin{align}
+        \frac{\partial w}{\partial t}(t,x)+\sup_{a\in A}[\mathcal{L}^aw(t,x)+f(t,x,a)]&\geq0,\;(t,x)\in[0,T]\times\mathbb{R}\\
+        w(T,x)&\geq g(x),\;x\in\mathbb{R}.
+    \end{align}
+    Then $w\geq v$ on $[0,T]\times\mathbb{R}.$\\
+    (ii) Suppose further that $w(T,.)=g$ and that there exists a measurable function
+    $\hat{\alpha}:[0,T]\times\mathbb{R}\rightarrow A$ such that
+    \begin{equation*}
+        \frac{\partial w}{\partial t}(t,x)+\sup_{a\in A}[\mathcal{L}^aw(t,x)+f(t,x,a)]=\frac{\partial w}{\partial t}(t,x)+\mathcal{L}^{\hat{\alpha}(t,x)}w(t,x)+f(t,x,\hat{\alpha}(t,x))=0,
+    \end{equation*}
+    the SDE
+    \begin{equation*}
+        \mathrm dX_t=b(s,X_s,\hat{\alpha}(s,X_s))\mathrm ds+\sigma(s,X_s,\hat{\alpha}(s,X_s))\mathrm dW_s
+    \end{equation*}
+    admits a unique solution denoted by $\hat{X}_s^{t,x}$ given an initial condition
+    $X_t=x$, and the process $\{\hat{\alpha}(s,\hat{X}_s^{t,x}):t\leq s\leq T\}$
+    lies in $\mathcal{A}(t,x)$. Then
+    \begin{equation}
+        w=v\textrm{ on }[0,T]\times\mathbb{R}
+    \end{equation}
+    and $\hat{\alpha}$ is an optimal Markovian control.
+\end{theorem}
+\begin{proof}
+    
+\end{proof}
