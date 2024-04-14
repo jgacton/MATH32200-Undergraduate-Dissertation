@@ -71,14 +71,23 @@ and $g:\mathbb{R}\rightarrow\mathbb{R}$ be two measurable functions. We suppose 
     \item $g$ satisfies a quadratic growth condition: $|g(x)|\leq C(1+|x|^2)\;\forall\;x\in\mathbb{R}$ for some constant $C$ independent of $x$.
 \end{itemize}
 
-We also denote by $\mathcal{A}(t,x)$ the subset of controls $\alpha\in\mathcal{A}$ such that
+In our current context, $f$ will represent a kind of ``rolling'' reward function, 
+which, when summed or integrated over time allows us to measure the payoff of 
+our actions. The function $g$ represents a kind of terminal reward, for example, 
+some kind of bonus for good performance received at the end of the time period.
+We also denote by $\mathcal{A}(t,x)$ the subset of controls $\alpha\in\mathcal{A}$ 
+such that
 
 \begin{equation}
     \mathbb{E}\left[\int_t^T|f(s,X_x^{t,x},\alpha_s)|\mathrm ds\right]<\infty
 \end{equation}
 
 for $(t,x)\in[0,T]\times\mathbb{R}$, and we assume that this set is not empty for all 
-$(t,x)\in[0,T]\times\mathbb{R}$. We now define the \emph{gain function:}
+$(t,x)\in[0,T]\times\mathbb{R}$. This integrability condition defines our set of 
+\emph{admissible} controles, control processes which we may find it easy to work 
+with mathematically. We now define the \emph{gain function} to be the expected value
+of our cumulative rolling reward $f$ and terminal payoff $g$ under a particular 
+control process $\alpha$:
 
 \begin{definition}[Gain Function]
     \begin{equation}
@@ -96,6 +105,12 @@ and to do this we introduce the associated \emph{value function}:
     \end{equation}
 \end{definition}
 
+Hence, it is easy to see that the value function simply represents the best possible 
+value function that we could achieve under what we will come to call an \emph{optimal}
+control process $\alpha$. The concept behind much of stochastic control is that if 
+we can find what this value function $v$ should be, then we can work backwards to determine 
+the optimal $\alpha$.
+
 \begin{definition}[Optimal control]
     Given an initial condition $(t,x)\in[0,T]\times\mathbb{R}$, we say that $\hat{\alpha}\in\mathcal{A}(t,x)$
     is an optimal control if
@@ -108,8 +123,6 @@ and to do this we introduce the associated \emph{value function}:
     A control process $\alpha$ of the form $\alpha_s=a(s,X_s^{t,x})$ for some measurable
     function $a:[0,T]\times\mathbb{R}\rightarrow A$ is called a \emph{Markovian} control.
 \end{remark}
-
-\textbf{Include words on the interpretation and intuition of the f, g, the gain and value functions}
 
 \section{The Dynamic Programming Principle}\label{sec:2.4}
 
@@ -151,13 +164,13 @@ the context of the finite-horizon problem described above.
         v(t,x)\leq\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
     \end{equation}
     Next we fix an arbitrary control $\alpha\in\mathcal{A}(t,x)$ and $\theta\in\mathcal{T}_{t,T}.$
-    By the definition of the value function, for any $\epsilon>0$ and $\omega\in\Omega$
+    By the definition of the value function, and the properties of the supremum and 
+    of continuity, for any $\epsilon>0$ and $\omega\in\Omega$
     there exists an $\alpha^{\epsilon,\omega}\in\mathcal{A}(\theta(\omega),X_{\theta(\omega)}^{t,x}(\omega))$
     that is an $\epsilon$-optimal control for $v(\theta,X_{\theta(\omega)}^{t,x}(\omega))$, i.e.
     \begin{equation}\label{eq:2.13}
         v(\theta,X_{\theta(\omega)}^{t,x}(\omega))-\epsilon \leq J(\theta(\omega),X_{\theta(\omega)}^{t,x}(\omega),\alpha^{\epsilon,\omega}).
     \end{equation}
-    \textbf{Maybe include some more intuition behind this point?}\\
     We now define the process
     \begin{equation}
         \hat{\alpha}_s(\omega)=\begin{cases}
@@ -165,9 +178,10 @@ the context of the finite-horizon problem described above.
             &\alpha_s^{\epsilon,\omega}(\omega),s\in[\theta(\omega),T].
         \end{cases}
     \end{equation}
-    It can be shown by the measurable selection theorem \\
-    \textbf{do this in the appendix}\\
-    that the process $\hat{\alpha}$ is progressively measurable, and so lies in $\mathcal{A}(t,x)$.
+    It can be shown by the measurable selection theorem that the process 
+    $\hat{\alpha}$ is progressively measurable, and so lies in $\mathcal{A}(t,x)$.
+    This is well beyond the scope of this project, and so will not be done here, 
+    however one example of this can be found in Chapter 7 of \cite{BeSh78}.
     Again by the law of iterated expectations and (\ref{eq:2.13}) we get 
     \begin{align*}
         v(t,x)\geq J(t,x,\hat{\alpha})=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha^\epsilon)\right]\\
@@ -194,10 +208,14 @@ the context of the finite-horizon problem described above.
     \begin{equation}
         v(t,x)-\epsilon\leq\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
     \end{equation}
-    
 \end{remark}
 
-\textbf{Include words on the interpretation and intuition of the DPP.}
+The idea behind the DPP is that we do not have to solve for the optimal control over 
+the entire time interval in one go: We can split the problem into two, first finding 
+an optimal control from $\theta$ to $T$, and finding the optimal control from $t$ up
+to $\theta$, as given in (\ref{eq:2.16}). The magic in this is that we are not limited 
+to two sub-problems: We can continue splitting up our interval of time into increasingly 
+small chunks, hopefully making each subproblem more tractable.
 
 \section{Hamilton-Jacobi-Bellman Equation}\label{sec:2.5}
 
