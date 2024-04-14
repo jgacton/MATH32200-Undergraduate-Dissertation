@@ -8,8 +8,8 @@
     \end{equation*}
     (i) Suppose that
     \begin{align}
-        \frac{\partial w}{\partial t}(t,x)+\sup_{a\in A}[\mathcal{L}^aw(t,x)+f(t,x,a)]&\geq0,\;(t,x)\in[0,T]\times\mathbb{R}\\
-        w(T,x)&\geq g(x),\;x\in\mathbb{R}.
+        \frac{\partial w}{\partial t}(t,x)+\sup_{a\in A}[\mathcal{L}^aw(t,x)+f(t,x,a)]&\geq0,\;(t,x)\in[0,T]\times\mathbb{R}\label{eq:A.1}\\
+        w(T,x)&\geq g(x),\;x\in\mathbb{R}.\label{eq:A.2}
     \end{align}
     Then $w\geq v$ on $[0,T]\times\mathbb{R}.$\\
     (ii) Suppose further that $w(T,.)=g$ and that there exists a measurable function
@@ -30,5 +30,72 @@
     and $\hat{\alpha}$ is an optimal Markovian control.
 \end{theorem}
 \begin{proof}
-    
+    (i) Since $w\in C^{1,2}([0,T)\times\mathbb{R}^n)$, we have that for all $(t,x)
+    \in[0,T)\times\mathbb{R}^n,\alpha\in\mathcal{A}(t,x),s\in[t,T),$ and any stopping
+    time $\tau$ valued in $[t,\infty)$, by It\^{o}'s formula
+    \begin{multline*}
+        w(s\wedge\tau,X_{s\wedge\tau}^{t,x})=w(t,x)+\int_t^{s\wedge\tau}\frac{\partial w}{\partial t}(u,X_u^{t,x})+\mathcal{L}^{\alpha_u}w(u,X_u^{t,x})\mathrm du\\
+        +\int_t^{s\wedge\tau}D_xw(u,X_u^{t,x})^\top\sigma(X_u^{t,x},\alpha_u)\mathrm dW_u.
+    \end{multline*}
+    We choose $\tau=\tau_n=\inf\{s\geq t:\int_t^s|D_xw(u,X_u^{t,x})^\top\sigma(X_u^{t,x},\alpha_u)|^2\mathrm du\geq n\}$,
+    and we notice that $\tau_n\nearrow\infty$ as $n\rightarrow\infty$.
+    The stopped process $\{\int_t^{s\wedge\tau_n}D_xw(u,X_u^{t,x})^\top\sigma(X_u^{t,x})\mathrm dW_u,t\leq s\leq T\}$
+    is then a martingale, and by taking the expectation, we get 
+    \begin{equation*}
+        \mathbb{E}[w(s\wedge\tau_n,X_{s\wedge\tau_n}^{t,x})]=w(t,x)+\mathbb{E}\left[\int_t^{s\wedge\tau_n}\frac{\partial w}{\partial t}(u,X_u^{t,x})+\mathcal{L}^{\alpha_u}w(u,X_u^{t,x})\mathrm du\right].
+    \end{equation*}
+    Since $w$ satisfies (\ref{eq:A.1}), we have
+    \begin{equation*}
+        \frac{\partial w}{\partial t}(u,X_u^{t,x})+\mathcal{L}^{\alpha_u}w(u,X_u^{t,x})+f(X_u^{t,x},\alpha_u)\leq0,\;\forall\;\alpha\in\mathcal{A}(t,x)
+    \end{equation*}
+    and so
+    \begin{equation}\label{eq:A.4}
+        \mathbb{E}[w(s\wedge\tau_n,X_{s\wedge\tau_n}^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_t^{s\wedge\tau_n}f(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).
+    \end{equation}
+    We have 
+    \begin{equation*}
+        \left|\int_t^{s\wedge\tau_n}f(X_u^{t,x},\alpha_u)\mathrm du\right|\leq\int_t^T|f(X_u^{t,x},\alpha_u)|\mathrm du,
+    \end{equation*}
+    and the RHS is integrable by the integrability condition on $\mathcal{A}(t,x)$.
+    Since $w$ satisfies a quadratic growth condition, we have 
+    \begin{equation*}
+        |w(s\wedge\tau_n,X_{s\wedge\tau_n}^{t,x})|\leq C(1+\sup_{s\in[t,T]}|X_s^{t,x}|^2),
+    \end{equation*}
+    and the RHS term is integrable from the fact that 
+    \begin{equation*}
+        \mathbb{E}\left[\sup_{t\leq s\leq T}|X_s^{t,x}|^2\right]<\infty.
+    \end{equation*}
+    We can then apply the dominated convergence theorem, and send $n$ to infinity
+    in (\ref{eq:A.4}):
+    \begin{equation*}
+        \mathbb{E}[w(s,X_s^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_s^tf(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).
+    \end{equation*}
+    Since $w$ is continuous on $[0,T]\times\mathbb{R}^n$, by sending $s$ to $T$,
+    we obtain by the dominated convergence theorem and by (\ref{eq:A.2})
+    \begin{equation*}
+        \mathbb{E}[g(X_T^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_t^Tf(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).
+    \end{equation*}
+    From the arbitrariness of $\alpha\in\mathcal{A}(t,x)$, we deduce that $w(t,x)
+    \leq v(t,x)$ for all $(t,x)\in[0,T]\times\mathbb{R}^n.$
+
+    (ii) We apply It\^{o}'s formula to $w(u,\hat{X}_u^{t,x})$ between $t\in[0,T]$ 
+    and $s\in[t,T)$, obtaining (after an eventual localisation to remove the stochastic 
+    integral term in the localisation):
+    \begin{equation*}
+        \mathbb{E}[w(s,\hat{X}_s^{t,x})]=w(t,x)+\mathbb{E}\left[\int_t^s\frac{\partial w}{\partial t}(u,\hat{X}_u^{t,x})+\mathcal{L}^{\hat\alpha(u,\hat{X}_u^{t,x})}w(u,\hat{X}_u^{t,x})\mathrm du\right].
+    \end{equation*}
+    Now, by the definition of $\hat\alpha(t,x)$, we have 
+    \begin{equation*}
+        \frac{\partial w}{\partial t}+\mathcal{L}^{\hat\alpha(t,x)}w(t,x)-f(t,x,\hat\alpha(t,x))=0,
+    \end{equation*}
+    and so 
+    \begin{equation*}
+        \mathbb{E}[w(s,\hat{X}_s^{t,x})]=w(t,x)-\mathbb{E}\left[\int_t^sf(\hat{X}_u^{t,x},\hat{\alpha}(u,\hat{X}_u^{t,x}))\mathrm du\right].
+    \end{equation*}
+    By taking the limit as $s$ approaches $T$, we obtain
+    \begin{equation*}
+        w(t,x)=\mathbb{E}\left[\int_t^Tf(\hat{X}_u^{t,x},\hat\alpha(u,\hat{X}_u^{t,x}))\mathrm du+g(\hat{X}_T^{t,x})\right]=J(t,x,\hat{\alpha}).
+    \end{equation*}
+    This shows that $w(t,x)=J(t,x,\hat\alpha)\leq v(t,x)$, and finally that $w=v$
+    with $\hat\alpha$ as an optimal Markovian control.
 \end{proof}
