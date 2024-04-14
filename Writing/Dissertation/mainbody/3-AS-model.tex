@@ -436,22 +436,86 @@ Principle to show that $v$ satisfies the following HJB:
     \end{equation}
 \end{theorem}
 \begin{proof}
-    
+    Recall from chapter \ref{chap:2} that the value function in general follows the 
+    form given in (\ref{eq:2.19}) and shown below:
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R}\\
+            &v(T,x)=g(x)\;\forall\;x\in\mathbb{R}.
+        \end{aligned}
+        \right.
+    \end{equation*}
+    First, we will check our boundary condition. At time $T$, the trading period 
+    has ended, and so in (\ref{eq:3.12}) we can ignore the maximisation over 
+    controles $\delta^a$ and $\delta^b$ when evaluating $v$ at $T$. Moreover,
+    $X_T$, $q_T$ and $S_T$ are all adapted and hence measurable with respect to 
+    $\mathcal{F}_T$, and we can remove the expectation. Hence we find that 
+    \begin{equation}
+        v(s,x,q,T)=-e^{-\gamma(X_T+q_TS_T)}
+    \end{equation}
+    as expected. Next, for the dynamics of the system, note that the operator 
+    $\mathcal{L}^\alpha v$ defined as 
+    \begin{align*}
+        \mathcal{L}^\alpha v(t,x)&=b(t,x,\alpha)v_x+\frac{1}{2}\sigma(t,x,\alpha)^2v_{xx}\\
+        &=\frac{1}{2}\sigma(t,x,\alpha)^2v_{xx}\textrm{ since we assumed a brownian motion without drift}\\
+        &=\frac{1}{2}\sigma^2v_{xx}\textrm{ since we assumed constant volatility $\sigma$}
+    \end{align*}
+    and we also notice that this has no dependence on our control process 
+    $\alpha=\begin{pmatrix}\delta^{a}\\\delta^{b}\end{pmatrix}$.
+
+    For the incremental gains encapuslated by the function $f$, we notice that 
+    by the properties of the Poisson process, the density of ask or bid orders
+    arriving at time $t$ is $\lambda^a(\delta^a)$ or $\lambda^b(\delta^b)$ respectively.
+    Hence the density of changes to the value function over infinitessimal units of 
+    time is given by 
+    \begin{equation*}
+        \lambda^b(\delta^b)\times(\textrm{increment to $v$ caused by 1 bid order})=\lambda^b(\delta^b)[v(s,x-s+\delta^b,q+1,t)-v(s,x,q,t)]
+    \end{equation*}
+    for market sell orders hitting our bid orders, and the corresponding expression 
+    for market buy orders lifting our ask orders is 
+    \begin{equation*}
+        \lambda^a(\delta^a)[v(s,x+s+\delta^a,q-1,t)-v(s,x,q,t)].
+    \end{equation*}
+    Putting this all together, we have that 
+    \begin{equation*}
+        \frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0
+    \end{equation*}
+    equates to 
+    \begin{equation*}
+        \left\{
+            \begin{aligned}
+                v_t+\frac{1}{2}\sigma^2v_{ss}&+\max\limits_{\delta^b}\lambda^b(\delta^b)[v(s,x-s+\delta^b,q+1,t)-v(s,x,q,t)]\\
+                &+\max\limits_{\delta^a}\lambda^a(\delta^a)[v(s,x+s+\delta^a,q-1,t)-v(s,x,q,t)]=0
+            \end{aligned}
+        \right.
+    \end{equation*}
+    for our particular value function $v$. 
 \end{proof}
 
-However, \cite{AS2008} argue that due to our choice of exponential 
-utility, we can simplify the problem with the following ansatz:
+\begin{remark}
+    \cite{AS2008} throughout their paper refer to maxima, rather than suprema, over
+    the value functions. This is justified because although the optimal quotes 
+    are real-valued, modern electronic markets typically trade in integer amounts 
+    of fractions of pennies, restricting dealers to a countable set of possible quotes.
+    Optimal quotes can simply be rounded to the nearest attainable quote in order to 
+    be used for trading.
+\end{remark}
+
+In order to simplify the problem before turning to look at its solution, 
+\cite{AS2008} argue that due to our choice of exponential 
+utility, we can introduce the following ansatz:
 \begin{equation}\label{eq:3.18}
     v(s,x,q,t)=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}
 \end{equation}
 The intuition behind this is that considering our value function at 
 time $t$, our current wealth $X_t$ is a predetermined constant and thus
 measurable w.r.t $\mathcal{F}_t$. Hence we can take $-e^{-\gamma x}$
-from the expectation. The remainder, being our future cash flow, 
+out from the expectation. The remainder, being our future cash flow, 
 future inventory and terminal portfolio value are all time and state
 dependent and hence encapsulated by some function $\theta$ of $s$, $q$
 and $t$. Moreover, thanks to the properties of the exponential function, 
-the expectation (integral) of the utility of our future wealth can also be 
+the expectation of the utility of our future wealth can also be 
 written in an exponential form. Finally, we also assume that the function
 $\theta$ factors in our optimal control $\alpha^*=\begin{pmatrix}\delta^{a*}\\\delta^{b*}\end{pmatrix}$
 
@@ -492,7 +556,7 @@ $\theta$ as follows:
     We prove the above directly from the definition of the reserve bid and ask 
     respectively:
     \begin{align*}
-        u(s,x-r^b(s,q,t),q+1,t)&=u(s,x,q,t)\\
+        v(s,x-r^b(s,q,t),q+1,t)&=v(s,x,q,t)\\
         -e^{-\gamma(x-r^b(s,q,t))}e^{-\gamma\theta(s,q+1,t)}&=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}\\
         -\gamma(x-r^b(s,q,t))-\gamma\theta(s,q+1,t)&=-\gamma x-\gamma\theta(s,q,t)\\
         x-r^b(s,q,t)+\theta(s,q+1,t)&=x+\theta(s,q,t)\\
@@ -500,7 +564,7 @@ $\theta$ as follows:
     \end{align*}
     and
     \begin{align*}
-        u(s,x+r^a(s,q,t),q-1,t)&=u(s,x,q,t)\\
+        v(s,x+r^a(s,q,t),q-1,t)&=v(s,x,q,t)\\
         -e^{-\gamma(x+r^a(s,q,t))}e^{-\gamma\theta(s,q-1,t)}&=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}\\
         -\gamma(x+r^a(s,q,t))-\gamma\theta(s,q-1,t)&=-\gamma x-\gamma\theta(s,q,t)\\
         x+r^a(s,q,t)+\theta(s,q-1,t)&=x+\gamma\theta(s,q,t)\\
