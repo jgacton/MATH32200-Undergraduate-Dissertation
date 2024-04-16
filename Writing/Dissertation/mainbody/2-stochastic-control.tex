@@ -307,6 +307,122 @@ follows, we will use the HJB equation as follows:
     considered at the horizon time $T$.
 \end{proof}
 
-\section{A Worked Example}\label{sec:2.6}
+So the general process for solving a stochastic optimal control problem is the 
+following:
+\begin{enumerate}
+    \item Formulate the problem in terms of a controlled diffusion process
+    \item Define the value function 
+    \item Formulate the Hamilton-Jacobi-Bellman equation that describes the dynamics 
+    of the value function
+    \item Solve the HJB equation to obtain an exact form or approximation for the 
+    value function
+    \item Utilise the resolved value function to find the optimal control process
+\end{enumerate}
 
-\subsection*{Finite-Horizon Merton Portfolio Allocation Problem}
+There is an extra step that we have not covered here in chapter \ref{chap:2},
+namely the \emph{verification theorem}. This theorem provides necessary and sufficient 
+conditions for the candidate value function found in step 4. and candidate optimal 
+control found in step 5. to constitute the full solution to the problem. For simplicity,
+we do not include it here as we will not be explicitly solving the HJB-equation associated 
+to our value function for the market-making problem in chapter \ref{chap:3}, however,
+the theorem and it's proof is included in appendix \ref{app:A}.
+
+To finish off chapter \ref{chap:2}, we will work through a famous example, given 
+by \cite{MER69}, of portfolio allocation over a finite time horizon in a 
+Black-Scholes-Merton Model.
+
+\section{Finite-Horizon Merton Portfolio Allocation Problem}\label{sec:2.6}
+
+Consider an agent who, at time $t$, invests a proportion of her wealth $\alpha_t$
+in a stock of price $S$ governed by a geometric Brownian motion, and $1-\alpha_t$
+in a riskless bond of price $S^0$ with interest rate r. We consider a finite horizon
+$[0,T]$, and at any time $t\in[0,T]$ the investor faces the constraint that $\alpha_t$
+is valued in $A$, a closed convex subset of $\mathbb{R}$ (namely, $A=[0,1]$).
+
+The wealth process evolves according to 
+\begin{align*}
+    \mathrm dX_t&=\frac{X_t\alpha_t}{S_t}\mathrm dS_t+\frac{X_t(1-\alpha_t)}{S^0_t}\mathrm dS_t^0\\
+    &=X_t(\alpha_t\mu+(1-\alpha_t)r)\mathrm dt+X_t\alpha_t\sigma\mathrm dW_t.
+\end{align*}
+
+Denote by $\mathcal{A}$ the set of progressively measurable processes $\alpha$ 
+valued in $A$ and such that 
+\begin{equation*}
+    \int_0^T\alpha_s^2\mathrm ds<\infty\textrm{ a.s.}
+\end{equation*}
+This integrability condition ensures the existence and uniqueness of a strong solution
+to the SDE governing the wealth process controlled by $\alpha$. Given a strategy $\alpha$,
+we denote by $X^{t,x}$ the corresponding wealth process starting from initial capital
+$X_t=x>0$ at time $t$. The agent wants to maximise the expected utility of terminal wealth,
+giving us the value function 
+\begin{equation}
+    v(t,x)=\sup_{\alpha\in\mathcal{A}}\mathbb{E}[U(X_T^{t,x})],\;(t,x)\in[0,T]\times\mathbb{R}^+.
+\end{equation}
+The HJB equation for this stochastic control problem is given by 
+\begin{equation}\label{eq:2.33}
+    \frac{\partial v}{\partial t}+\sup_{a\in A}\{\mathcal{L}^av(t,x)\}=0,
+\end{equation}
+together with the terminal condition
+\begin{equation}\label{eq:2.34}
+    v(T,x)=U(x),\;x\in\mathbb{R}^+.
+\end{equation}
+Here, 
+\begin{equation}\label{eq:2.35}
+    \mathcal{L}^av(t,x)=x(a\mu+(1-a)r)\frac{\partial v}{\partial x}+\frac{1}{2}x^2a^2\sigma^2\frac{\partial^2 v}{\partial x^2}.
+\end{equation}
+As originally considered by Merton, we will look at power utility functions of 
+Constant Relative Risk Aversion (CRRA) type, taking the form
+\begin{equation*}
+    U(x)=\frac{x^p}{p},\;x\geq0,p<1,p\neq0.
+\end{equation*}
+It turns out that explicit smooth solutions do exist for the problem given by 
+(\ref{eq:2.33})-(\ref{eq:2.34}). We are looking for a candidate solution of the 
+form 
+\begin{equation*}
+    v(t,x)=\phi(t)U(x)
+\end{equation*}
+for some positive function $\phi$. By substituting into (\ref{eq:2.33})-(\ref{eq:2.34}),
+we derive that $\phi$ should satisfy the ODE
+\begin{equation*}
+    \left\{
+    \begin{aligned}
+        &\phi^\prime(t)+\rho\phi(t)=0\\
+        &\phi(T)=1
+    \end{aligned}
+    \right.
+\end{equation*}
+where 
+\begin{equation*}
+    \rho=p\sup_{a\in A}\{a(\mu-r)+r-\frac{1}{2}a^2(1-p)\sigma^2\}.
+\end{equation*}
+This ODE is solved by $\phi(t)=e^{\rho(T-t)}$. Hence we arrive at 
+\begin{equation}\label{eq:2.36}
+    v(t,x)=e^{\rho(T-t)}U(x),\;(t,x)\in[0,T]\times\mathbb{R}^+.
+\end{equation}
+Moreover, $a(\mu-r)+r-\frac{1}{2}a^2(1-p)\sigma^2$ is a concave function of $a\in A$
+and thus attains its maximum at some point $\hat a$. By construction, $\hat a$ also
+attains the supremum of $\sup_{a\in A}\{\mathcal{L}^av(t,x)\}$. Moreover, the wealth
+process associated to the constant control $\hat a$
+\begin{equation*}
+    \mathrm dX_t=X_t(\hat a\mu+(1-\hat a)r)\mathrm dt+X_t\hat a\sigma\mathrm dW_t
+\end{equation*}
+admits a unique solution given an initial condition. We can also use the verification 
+theorem in appendix \ref{app:A} to prove that the value function in problem (\ref{eq:2.33})
+is equal to (\ref{eq:2.35}), and the optimal proportion of wealth to invest is given 
+by $\hat a$. Finally, using the concavity of 
+\begin{equation*}
+    a(\mu-r)+r-\frac{1}{2}a^2(1-p)\sigma^2
+\end{equation*}
+in $a$ we obtain that 
+\begin{equation}
+    \hat a=\frac{\mu-r}{(1-p)\sigma^2}
+\end{equation}
+and 
+\begin{equation*}
+    \rho=\frac{(\mu-r)^2}{2\sigma^2}\frac{p}{1-p}+rp.
+\end{equation*}
+
+After walking through this short example, we hopefully have a little bit more understanding
+of how to apply stochastic control theory to problems in finance. In chapter \ref{chap:3},
+we will put this to the test by returning to the market-making problem introduced in
+section \ref{sec:1.2}, and building up the model given by \cite{AS2008}.
