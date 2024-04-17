@@ -189,8 +189,8 @@ We consider an infinite-horizon value function of the form
 \begin{equation*}
     \bar v(x,s,q)=\mathbb{E}\left[\int_{0}^{\infty}-e^{-\omega t}e^{-\gamma(x+qS_t)}\mathrm dt\right]
 \end{equation*}
-where $\omega$ is our discount factor. An interpretation of $\omega$ is that it may
-represent an upper bound on the absolute inventory position that the agent is allowed
+where $\omega$ is our discount factor. An interpretation of $\omega$ is that it
+represents an upper bound on the absolute inventory position that the agent is allowed
 to build up. A natural choice is to take $\omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2$
 , this will be justified shortly. 
 
@@ -234,17 +234,30 @@ from the result presented in \cite{AS2008}, which they give to be:
 \begin{equation*}
     r^a(s,q)=s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{equation*}
-\textbf{Probably don't include this last bit}\\
-Using the correct values of the reservation prices obtained above, we can derive an
-expression for the reservation price as we did before.
-\begin{align*}
-    r(s,q):=&\frac{r^a(s,q)+r^b(s,q)}{2}\\
-    =&\frac{s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)+s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)}{2}\\
-    =&s+\frac{1}{2\gamma}\left(\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)-\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\right)\\
-    =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
-    =&s+\frac{1}{2\gamma}\log\left(\frac{2\omega-\gamma^2q^2\sigma^2-(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)\\
-    =&s+\frac{1}{2\gamma}\log\left(1+\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)
-\end{align*}
+From our derivations, we can see that to ensure integrability in both cases, the 
+user-specified parameter $\omega$ must satisfy
+\begin{equation*}
+    \omega>\frac{1}{2}\gamma^2\sigma^2q^2,
+\end{equation*}
+where the only variable quantity on the RHS is the inventory variable $q$. Therefore,
+if we want to ensure that these reserve prices always exist, we should bound the maximum
+inventory our agent can build up on either side. Hence, we set some $q_{\textrm{max}}>0$
+and set
+\begin{equation*}
+    \omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2
+\end{equation*}
+to ensure integrability.
+%\textbf{Probably don't include this last bit}\\
+%Using the correct values of the reservation prices obtained above, we can derive an
+%expression for the reservation price as we did before.
+%\begin{align*}
+%    r(s,q):=&\frac{r^a(s,q)+r^b(s,q)}{2}\\
+%    =&\frac{s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)+s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)}{2}\\
+%    =&s+\frac{1}{2\gamma}\left(\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)-\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\right)\\
+%    =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
+%    =&s+\frac{1}{2\gamma}\log\left(\frac{2\omega-\gamma^2q^2\sigma^2-(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)\\
+%    =&s+\frac{1}{2\gamma}\log\left(1+\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)
+%\end{align*}
 
 \section{Modelling Limit Orders}\label{sec:3.5}
 Now that we have defined and discussed the idea of a reservation price
@@ -401,11 +414,12 @@ On the other hand, (\ref{eq:3.13}) and (\ref{eq:3.14}) yield:
     &=B\delta^{-\frac{\alpha}{\beta}}
 \end{align*}
 where $B=\frac{\Lambda}{k\alpha}$.
-Other methods do exist i.e. directly integrating the density of the 
-orderbook, which is potentially better since we only care about 
-short-term liquidity. This procedure is described in \cite{Weber2005}
-and \cite{Smith2003}.\\
-\textbf{Include discussion and explanation of this method and derived form of $\lambda$}
+Alternatively, we could derive the price impact function $\Delta p$ directly by 
+integrating the density of the orderbook as described in \cite{Weber2005}
+and \cite{Smith2003}. However, this leads to a function which is highly dependent
+on the orderbook in question, so in the interest of obtaining a more general result
+in the following sections, we will not cover this method here.
+%\textbf{Include discussion and explanation of this method and derived form of $\lambda$}
 
 \newpage
 \section{The Hamilton-Jacobi-Bellman Equation}\label{sec:3.7}
@@ -796,7 +810,13 @@ in chapter \ref{chap:2}. We have also noted a possible miscalculation or typogra
 error in the short section of the original paper of \cite{AS2008} on the infinite-horizon
 agent, which we address in section \ref{sec:3.4}. 
 
-We go on to provide full derivations of all of the results presented in \cite{AS2008},
+We then provide full derivations of all of the results presented in \cite{AS2008},
 explain the use of the ansatz (\ref{eq:3.18}) as a key simplifying assumption, and walk
-through the analytical approximation used to yield the final results that Avellaneda
-and Stoikov present, and then numerically simulate.
+through the asymptotic approximation used to yield the final results that Avellaneda
+and Stoikov present. 
+
+In the next chapter, we will provide code and results for the
+numerical simulation results that Avellaneda and Stoikov describe, attaining results 
+that are very close to those presented in the original paper, and demonstrating some
+of the concepts that we have worked with mathematically through visualisations of 
+our simulations.

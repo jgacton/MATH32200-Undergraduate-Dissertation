@@ -1,10 +1,58 @@
-\begin{itemize}
-    \item Measure Theory
-    \item SDEs and It\^{o}'s lemma
-    \item Controlled diffusion processes
-    \item Dynamic Programming
-    \item Hamilton-Jacobi-Bellman
-    \item Market-making
-    \item The avellaneda-stoikov model
-    \item Numerical simulation and results
-\end{itemize}
+%\begin{itemize}
+%    \item C1 Measure Theory 
+%    \item C1 SDEs and It\^{o}'s lemma
+%    \item C1 Controlled diffusion processes
+%    \item C2 Dynamic Programming
+%    \item C2 Hamilton-Jacobi-Bellman
+%    \item C3 Market-making
+%    \item C3 The avellaneda-stoikov model
+%    \item C4 Numerical simulation and results
+%\end{itemize}
+
+In chapter \ref{chap:1} we introduced the motivation for the market-making problem,
+that to ensure smooth operation and liquidity in quote driven markets, a dealer can 
+continuously quote bid and ask prices in a security in return for profiting the bid-
+ask spread mutliplied across a large volume of transactions. We then discussed how 
+financial markets are organised in the limit orderbook, which we illustrated in 
+\ref{fig:orderbook}. We presented the ideas that trading determines prices, and that 
+the dealer is incentivised to minimise their inventory both to avoid taking on 
+unecessary market risk and asymmetric information risk.
+
+Before moving on to discuss stochastic control, we first needed to acquire some 
+prerequisite knowledge from probability theory and analysis, including a formal 
+treatment of probability theory as a subset of measure theory, expectation as an
+application of the lebesgue integral, and conditional expectation in a measure-theoretic
+setting. We then recapped some basic definitions of stochastic processes in continuous
+time, before turning to the concept of stochastic integration given by It\^{o}.
+
+Next, we considered stochastic calculus in more depth, looking at It\^{o}'s lemma 
+and the concept of a stochastic differential equation and its solution, and saw a brief 
+example through the geometric Brownian motion.
+
+Chapter \ref{chap:2} extended our understanding of SDEs to controlled SDEs where we 
+have an auxiliary process $\alpha$ influencing the dynamics of our system. We then 
+introduced the setup of finite horizon stochastic control, where we wish to maximise 
+some function of our stochastic process over the space of possible control processes.
+
+The crucial part of this theory is the Dynamic Programming Principle, which simply states
+that our optimisation problem can be split up into an optimisation from time 0 to 
+some stopping time $\theta$, and then from $\theta$ to $T$, and that this process of 
+splitting can be repeated as many times as we would like. Continuing this line of reasoning
+to infinitessimal intervals of time gave us the Hamilton-Jacobi-Bellman equation for 
+our maximised gain function - the value function.
+
+In chapter \ref{chap:3}, we returned to the problem of the dealer, now with a clearer 
+idea of how we can formulate the behaviour of the dealer as a stochastic control problem:
+maximising expected utility of final wealth over the space of possible bid and ask quotes
+that the dealer can choose during $[0,T]$. However, we were faced with a potentially 
+very complex HJB equation, and so sought to obtain an approximate solution through 
+asymptotic approximations and an important simplifying ansatz. Utilising these tools 
+gave us a simple approximate solution in terms of our pre-determined model parameters.
+
+Chapter \ref{chap:5} then allowed us to demonstrate the performance of the derived 
+strategy against that of a simple benchmark strategy, comparing mean and standard 
+deviation of profit and final inventory over 10000 simulated trading sessions. We 
+managed to replicate the results of \cite{AS2008}, and compare the performance of the 
+strategy with different risk-aversion parameters $\gamma$. Finally, we illustrate 
+the approach of the model in the plots \ref{fig:sample-paths}, \ref{fig:inventory},
+and \ref{fig:pnl}.
