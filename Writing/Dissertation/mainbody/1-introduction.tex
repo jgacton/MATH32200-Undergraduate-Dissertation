@@ -642,11 +642,33 @@ context of stochastic control in finance, \cite{Pham} provides a recap in chapte
 \begin{definition}[Strong Solution]
     A strong solution to this SDE starting at time $t$ is a progressively measurable 
     process $X$ such that for $t\leq s$:
-    $$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)du+\int_t^s\sigma(X_u,\alpha_u)dW_u$$
+    $$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)\mathrm du+\int_t^s\sigma(X_u,\alpha_u)\mathrm dW_u$$
     and
-    $$\int_t^s|b(X_u,\alpha_u)|du+\int_t^s|\sigma(X_u,\alpha_u)|^2du<\infty$$
+    $$\int_t^s|b(X_u,\alpha_u)|\mathrm du+\int_t^s|\sigma(X_u,\alpha_u)|^2\mathrm du<\infty$$
     a.s.
 \end{definition}
+
+\begin{theorem}\label{thm:1.6.1}
+    Suppose there exists a deterministic constant $K$ and an $\mathbb{R}$-valued process
+    $k$ such that for every $t\in[0,T],\omega\in\Omega,x,y\in\mathbb{R}$:
+    \begin{align}
+        |b(t,x,\omega)-b(t,y,\omega)|+|\sigma(t,x,\omega)-\sigma(t,y,\omega)|&\leq K|x-y|,\\
+        |b(t,x,\omega)+\sigma(t,x,\omega)|&\leq k_t(\omega)+K|x|,\textrm{ with}\\
+        \mathbb{E}\left[\int_0^tk_u^2\mathrm du\right]&<\infty\;\forall\;t\in[0,T].
+    \end{align}
+    Then under these conditions, there exists for all $t\in[0,T]$ a strong solution 
+    to the SDE \ref{eq:1.28} starting at time $t$ with initial condition $X_t=x$.
+    
+    Moreover, this solution is pathwise unique, meaning that if $X$ and $Y$ are two
+    such strong solutions, we have $\mathbb{P}(X_s=Y_s\;\forall\;t\leq s)=1.$ Calling 
+    the solution $X$, we also have that $X$ is square-integrable: For all $T>t$, there 
+    exists a constant $C_T$ such that
+    \begin{equation}
+        \mathbb{E}\left[\sup_{t\leq s\leq T}|X_s|^p\right]\leq C_t(1+|x|^p).
+    \end{equation}
+    The proof of this is pages long and quite dry, so we skip it here. It can be found
+    in Chapter 6 of \cite{Krylov}.
+\end{theorem}
 
 \begin{definition}[Infinitessimal Generator]
     A useful concept is that of the generator of a diffusion process governed by 
