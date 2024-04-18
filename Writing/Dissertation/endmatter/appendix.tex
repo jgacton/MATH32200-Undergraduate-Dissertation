@@ -72,7 +72,8 @@ as given by \cite{Pham}.
     \begin{equation*}
         \mathbb{E}[w(s,X_s^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_s^tf(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).
     \end{equation*}
-    Since $w$ is continuous on $[0,T]\times\mathbb{R}^n$, by sending $s$ to $T$,
+    Since $w$ is continuous on $[0,T]\times\mathbb{R}^n$, by taking the limit as $s
+    \rightarrow T$,
     we obtain by the dominated convergence theorem and by (\ref{eq:A.2})
     \begin{equation*}
         \mathbb{E}[g(X_T^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_t^Tf(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).

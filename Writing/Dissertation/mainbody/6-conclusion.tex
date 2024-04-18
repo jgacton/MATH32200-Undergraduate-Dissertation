@@ -1,17 +1,4 @@
-%\begin{itemize}
-%    \item C1 Measure Theory 
-%    \item C1 SDEs and It\^{o}'s lemma
-%    \item C1 Controlled diffusion processes
-%    \item C2 Dynamic Programming
-%    \item C2 Hamilton-Jacobi-Bellman
-%    \item C3 Market-making
-%    \item C3 The avellaneda-stoikov model
-%    \item C4 Numerical simulation and results
-%\end{itemize}
-
-% Clearly state the answer to your main research question
-
-The main goal of this report was to clearly formulate and solve the problem of 
+The main goal of this project was to clearly formulate and solve the problem of 
 market-making under inventory risk in the framework of stochastic optimal control.
 With the background material in stochastic calculus and stochastic differential 
 equations from chapter \ref{chap:1}, and our development of the theory of 
@@ -19,7 +6,7 @@ stochastic optimal control in chapter \ref{chap:2}, we were then able to formula
 and prove the results of \cite{AS2008} concerning market-making under inventory 
 risk in chapter \ref{chap:3}. Indeed, we may even have corrected an error in their calculation
 of reservation prices in the infinite-horizon case, although this does not impact the 
-main result of the paper. We go on to perform the same numerical simulations as 
+main result of their paper. We go on to perform the same numerical simulations as 
 in \cite{AS2008}, with a larger sample size, and replicate their results.
 
 Our conclusion is thus that under some potentially quite restrictive assumptions,
@@ -29,93 +16,23 @@ Hamilton-Jacobi-Bellman equation, which we may solve explicitly (if a solution e
 numerically (if this is computationally tractable), or in our case, approximately, using 
 an important ansatz and analytical approximations.
 
-% Summarise and reflect on your research process
-% Make recommendations for future work on your topic
-
-As mentioned previously, the assumptions under which we can formulate the general 
-problem of a dealer may not be the most realistic. On the finite time-horizon which
-we consider here, modelling the asset as a Brownian motion without drift may be valid,
-but if building a market-making model for an asset which is continuously traded 24/7
-such as currencies or cryptocurrencies, this may be invalid as over longer time horizons
-assets tent to exhibit drift (equities), mean-reversion (currencies), and fatter tails 
-to the distribution of returns than a normal or log-normal distribution would suggest.
-
-We also ignore transaction costs. Depending on the exact rules of the exchange running 
-the orderbook, market-makers may have to pay a small percentage fee every time their 
-limit orders are executed. On the other hand, some exchanges give rebates to market-
-makers, paying them a small percentage of their trading volume in exchange for the 
-liquidity the market-maker provides to other participants on the exchange.
-
-Another important factor is the fundamental physical constraints of market-making,
-particularly in developed, electronic markets with high trading volumes and lots of
-participants. Trades tend to be executed on millisecond timescales, so latency becomes
-an important factor, and many firms in this space have developed custom hardware (FPGAs)
-which they pay the exchange to plug directly into the exchange's servers. Simply put,
-there is a fundamental limit to the speed at which you can update your quotes to ensure 
-you are always at the head of the queue when market orders reach the market, and if 
-another market-maker is closer to that fundamental limit than you, then you won't be 
-able to trade optimally. 
-
-The constant arrival frequency of market orders is another potentially unrealistic 
-assumption. Trading volume tends to peak around the opening and closing bell of the 
-trading session as new information that may have revealed pre or post-market is traded
+As mentioned above, the assumptions under which we can formulate the general 
+problem of a dealer may not be the most realistic. One particular example of this 
+is that we assume the arrival frequency of market orders to be constant. Trading volume 
+tends to peak around the opening and closing bell of the trading session (
+\cite{volume}) as new information that may have revealed pre or post-market is traded
 on, before settling down for the rest of the day. Corporate events such as earnings 
-releases or macroeconomic events such as central bank interest rate decisions also 
-cause short-term spikes in trading volume. To incorporate this into our current model
-would require our Poisson intensity $\lambda$ to also be a function of time, which 
-would introduce extra complexity and potentially make it harder to solve. However, 
-a possible alternative model for incoming market orders would be the Hawkes process
+releases also cause short-term spikes in trading volume (\cite{EarningsPremium}). 
+
+To incorporate these exogenous events into our current model would require our Poisson 
+intensity $\lambda$ to be a function of both distance to the midprice and time, which 
+would introduce extra complexity and potentially make our problem harder to solve. 
+
+However, a possible alternative model for incoming market orders would be the Hawkes process
 (\cite{Hawkes}), a kind of self-exciting Poisson process where arrivals increase the 
 probability of more arrivals in the near future. This may be a more natural model for 
 market-order arrivals as trades beget more trades in reaction. \cite{Hawkes2}
-presents an application of the Hawkes process to model order arrivals.
+presents an application of the Hawkes process to model order arrivals. 
 
-% Show what new knowledge you have contributed to your field
-
-In chapter \ref{chap:1} we introduced the motivation for the market-making problem,
-that to ensure smooth operation and liquidity in quote driven markets, a dealer can 
-continuously quote bid and ask prices in a security in return for profiting the bid-
-ask spread mutliplied across a large volume of transactions. We then discussed how 
-financial markets are organised in the limit orderbook, which we illustrated in 
-\ref{fig:orderbook}. We presented the ideas that trading determines prices, and that 
-the dealer is incentivised to minimise their inventory both to avoid taking on 
-unecessary market risk and asymmetric information risk.
-
-Before moving on to discuss stochastic control, we first needed to acquire some 
-prerequisite knowledge from probability theory and analysis, including a formal 
-treatment of probability theory as a subset of measure theory, expectation as an
-application of the lebesgue integral, and conditional expectation in a measure-theoretic
-setting. We then recapped some basic definitions of stochastic processes in continuous
-time, before turning to the concept of stochastic integration given by It\^{o}.
-
-Next, we considered stochastic calculus in more depth, looking at It\^{o}'s lemma 
-and the concept of a stochastic differential equation and its solution, and saw a brief 
-example through the geometric Brownian motion.
-
-Chapter \ref{chap:2} extended our understanding of SDEs to controlled SDEs where we 
-have an auxiliary process $\alpha$ influencing the dynamics of our system. We then 
-introduced the setup of finite horizon stochastic control, where we wish to maximise 
-some function of our stochastic process over the space of possible control processes.
-
-The crucial part of this theory is the Dynamic Programming Principle, which simply states
-that our optimisation problem can be split up into an optimisation from time 0 to 
-some stopping time $\theta$, and then from $\theta$ to $T$, and that this process of 
-splitting can be repeated as many times as we would like. Continuing this line of reasoning
-to infinitessimal intervals of time gave us the Hamilton-Jacobi-Bellman equation for 
-our maximised gain function - the value function.
-
-In chapter \ref{chap:3}, we returned to the problem of the dealer, now with a clearer 
-idea of how we can formulate the behaviour of the dealer as a stochastic control problem:
-maximising expected utility of final wealth over the space of possible bid and ask quotes
-that the dealer can choose during $[0,T]$. However, we were faced with a potentially 
-very complex HJB equation, and so sought to obtain an approximate solution through 
-asymptotic approximations and an important simplifying ansatz. Utilising these tools 
-gave us a simple approximate solution in terms of our pre-determined model parameters.
-
-Chapter \ref{chap:5} then allowed us to demonstrate the performance of the derived 
-strategy against that of a simple benchmark strategy, comparing mean and standard 
-deviation of profit and final inventory over 10000 simulated trading sessions. We 
-managed to replicate the results of \cite{AS2008}, and compare the performance of the 
-strategy with different risk-aversion parameters $\gamma$. Finally, we illustrate 
-the approach of the model in the plots \ref{fig:sample-paths}, \ref{fig:inventory},
-and \ref{fig:pnl}.
+Therefore, we recommend that future research in this area attempts to incorporate 
+such self-exciting processes into the current stochastic control framework.
