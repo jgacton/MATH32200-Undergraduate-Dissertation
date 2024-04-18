@@ -10,8 +10,59 @@
 %\end{itemize}
 
 % Clearly state the answer to your main research question
+
+The main goal of this report was to clearly formulate and solve the problem of 
+market-making under inventory risk in the framework of stochastic optimal control.
+With the background material in stochastic calculus and stochastic differential 
+equations from chapter \ref{chap:1}, and our development of the theory of 
+stochastic optimal control in chapter \ref{chap:2}, we were then able to formulate 
+and prove the results of \cite{AS2008} concerning market-making under inventory 
+risk in chapter \ref{chap:3}. Indeed, we may even have corrected an error in their calculation
+of reservation prices in the infinite-horizon case, although this does not impact the 
+main result of the paper. We go on to perform the same numerical simulations as 
+in \cite{AS2008}, with a larger sample size, and replicate their results.
+
+Our conclusion is thus that under some potentially quite restrictive assumptions,
+we can formulate a general problem statement for the dealer operating in a limit 
+orderbook in terms of a value function to be optimised. We can then derive the 
+Hamilton-Jacobi-Bellman equation, which we may solve explicitly (if a solution exists),
+numerically (if this is computationally tractable), or in our case, approximately, using 
+an important ansatz and analytical approximations.
+
 % Summarise and reflect on your research process
 % Make recommendations for future work on your topic
+
+As mentioned previously, the assumptions under which we can formulate the general 
+problem of a dealer may not be the most realistic. On the finite time-horizon which
+we consider here, modelling the asset as a Brownian motion without drift may be valid,
+but if building a market-making model for an asset which is continuously traded 24/7
+such as currencies or cryptocurrencies, this may be invalid as over longer time horizons
+assets tent to exhibit drift (equities), mean-reversion (currencies), and fatter tails 
+to the distribution of returns than a normal or log-normal distribution would suggest.
+
+We also ignore transaction costs. Depending on the exact rules of the exchange running 
+the orderbook, market-makers may have to pay a small percentage fee every time their 
+limit orders are executed. On the other hand, some exchanges give rebates to market-
+makers, paying them a small percentage of their trading volume in exchange for the 
+liquidity the market-maker provides to other participants on the exchange.
+
+Another important factor is the fundamental physical constraints of market-making,
+particularly in developed, electronic markets with high trading volumes and lots of
+participants. Trades tend to be executed on millisecond timescales, so latency becomes
+an important factor, and many firms in this space have developed custom hardware (FPGAs)
+which they pay the exchange to plug directly into the exchange's servers. Simply put,
+there is a fundamental limit to the speed at which you can update your quotes to ensure 
+you are always at the head of the queue when market orders reach the market, and if 
+another market-maker is closer to that fundamental limit than you, then you won't be 
+able to trade optimally. 
+
+The constant arrival frequency of market orders is another potentially unrealistic 
+assumption. Trading volume tends to peak around the opening and closing bell of the 
+trading session as new information that may have revealed pre or post-market is traded
+on, before settling down for the rest of the day. Corporate events such as earnings 
+releases or macroeconomic events such as central bank interest rate decisions also 
+cause short-term spikes in trading volume. To mitigate this,
+
 % Show what new knowledge you have contributed to your field
 
 In chapter \ref{chap:1} we introduced the motivation for the market-making problem,
