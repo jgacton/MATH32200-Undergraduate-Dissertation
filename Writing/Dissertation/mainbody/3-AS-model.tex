@@ -78,7 +78,7 @@ We summarise our assumptions in the list below:
     \item The `true' price is given by the market mid-price
     \item The mid-price evolves according to a brownian motion with constant volatility $\sigma$
     \item The agent has no opinion on drift or autocorrelation of the stock price
-    \item The money-market pays no interest
+    \item The money-market pays no interest and the agent can borrow with no interest
     \item Limit orders can be continuously updated at no cost
     \item Limit orders are of fixed size 1
     \item The arrival frequency of market orders to the market is constant
@@ -247,17 +247,6 @@ and set
     \omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2
 \end{equation*}
 to ensure integrability.
-%\textbf{Probably don't include this last bit}\\
-%Using the correct values of the reservation prices obtained above, we can derive an
-%expression for the reservation price as we did before.
-%\begin{align*}
-%    r(s,q):=&\frac{r^a(s,q)+r^b(s,q)}{2}\\
-%    =&\frac{s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)+s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)}{2}\\
-%    =&s+\frac{1}{2\gamma}\left(\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)-\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)\right)\\
-%    =&s+\frac{1}{2\gamma}\log\left(\frac{1-\frac{(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}{1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}}\right)\\
-%    =&s+\frac{1}{2\gamma}\log\left(\frac{2\omega-\gamma^2q^2\sigma^2-(1+2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)\\
-%    =&s+\frac{1}{2\gamma}\log\left(1+\frac{4q\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2-(1-2q)\gamma^2\sigma^2}\right)
-%\end{align*}
 
 \section{Modelling Limit Orders}\label{sec:3.5}
 Now that we have defined and discussed the idea of a reservation price
