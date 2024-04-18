@@ -61,7 +61,14 @@ assumption. Trading volume tends to peak around the opening and closing bell of 
 trading session as new information that may have revealed pre or post-market is traded
 on, before settling down for the rest of the day. Corporate events such as earnings 
 releases or macroeconomic events such as central bank interest rate decisions also 
-cause short-term spikes in trading volume. To mitigate this,
+cause short-term spikes in trading volume. To incorporate this into our current model
+would require our Poisson intensity $\lambda$ to also be a function of time, which 
+would introduce extra complexity and potentially make it harder to solve. However, 
+a possible alternative model for incoming market orders would be the Hawkes process
+(\cite{Hawkes}), a kind of self-exciting Poisson process where arrivals increase the 
+probability of more arrivals in the near future. This may be a more natural model for 
+market-order arrivals as trades beget more trades in reaction. \cite{Hawkes2}
+presents an application of the Hawkes process to model order arrivals.
 
 % Show what new knowledge you have contributed to your field
 
