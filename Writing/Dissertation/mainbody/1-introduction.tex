@@ -140,7 +140,7 @@ will need to make use of some basic results from measure/probability theory and
 stochastic processes, which we will summarise below. We will also briefly introduce 
 some tools from stochastic calculus. Familiarity with standard results from a 
 first-year undergraduate level course in real analysis, probability, and statistics 
-is assumed. Most of the results in section \ref{sec:1.3} come from the third year
+is assumed. All of the results in section \ref{sec:1.3} come from the third year
 Measure Theory and Integration or Martingale Theory with Applications courses. Section
 \ref{sec:1.4} recaps content from Probability 2 and Martingale Theory, and also brings
 in some new material which is cited. Sections \ref{sec:1.5} and \ref{sec:1.6} contain 
@@ -430,6 +430,7 @@ process that we recieve over time.
     \begin{equation}
         \Lambda(B)=\int_B\lambda(x)\mathrm dx<\infty
     \end{equation}
+    In particular, the function $\Lambda$ is a measure.
     Then for every collection of disjoint bounded Borel-measurable sets
     $B_1,\dots,B_k$, an inhomogeneous \emph{Poisson Point Process} with
     \emph{intensity function} $\lambda$ has distribution
@@ -440,12 +441,13 @@ process that we recieve over time.
     \begin{equation}
         \mathbb{E}[N(B)]=\Lambda(B).
     \end{equation}
+    This comes from \cite{PointTheory}.
 \end{definition}
 
 \begin{definition}[Brownian Motion]
     Let $\mathcal{F}_t$ be a filtration. A stochastic process $W=(W_t)_{t\geq0}$
     is a standard one-dimensional \emph{Brownian Motion} or \emph{Wiener Process}
-    if it satisfies the following:
+    if it satisfies the following (\cite{BMSC}):
     \begin{itemize}
         \item $W_0=0$ a.s.,
         \item Independent increments: $W_{t+s}-W_t$ is independent of $\mathcal{F}_t\;\forall\;t,s\geq0$,
@@ -481,6 +483,8 @@ stopping time. We conclude this section with a few more technical definitions wh
 we will use only in the following Chapter on stochastic control.
 
 \begin{definition}[Progressive Measurability]
+    We use the definition given by \cite{Pham} for this and the last three definitions 
+    in this section.
     A continuous-time stochastic process $(X_t)$ is progressively measurable if
     for every time $t$, the map $[0,t]\times\Omega\rightarrow\mathbb{R}$ defined
     by $(s,\omega)\rightarrow X_s(\omega)$ is $\mathcal{B}(\mathbb{R})\times\mathcal{F}_t$-measurable.
@@ -493,13 +497,26 @@ we will use only in the following Chapter on stochastic control.
     limits. Acronym from the french ``continue \`{a} droite, limite \`{a} gauche''.
 \end{definition}
 
+\begin{definition}[Local Martingale]
+    Let $X$ be a c\`{a}dl\`{a}g and adapted process. We say that $X$ is a local martingale
+    if there exists a sequence of stopping times $(\tau_n)_{n\geq1}$ such that 
+    $\lim_{n\rightarrow\infty}\tau_n=\infty$ a.s. and the process $X_{\min\{t,\tau_n\}}$
+    is a martingale for all $n$.
+\end{definition}
+
 \begin{definition}[Semimartingale]
-    A real-valued process $X$ is called a \emph{semimartingale} if it can be decomposed as
+    A continuous real-valued process $X$ is called a \emph{semimartingale} if it can 
+    be decomposed as
     \begin{equation}
-        X_t = M_t + A_t
+        X_t = X_0 + M_t + A_t
     \end{equation}
-    where $M$ is a local martingale and $A$ is a c\`{a}dl\`{a}g, adapted process of locally
-    bounded variation.
+    where $M$ is a (continuous) local martingale and $A$ is a c\`{a}dl\`{a}g, adapted 
+    process of locally bounded variation: $\forall\;\omega,t$
+    \begin{equation*}
+        \sup\sum_{i=1}^n|A_{t_i}(\omega)-A_{t_i-1}(\omega)|<\infty
+    \end{equation*}
+    where the supremum is taken over all subdivisions $0=t_0<t_1<\dots<t_n=t$ of 
+    $[0,t]$.
 \end{definition}
 
 Now that we have seen an overview of many key definitions of stochastic processes 
@@ -510,19 +527,18 @@ at Stochastic Differential Equations and controlled diffusion.
 
 \section{Stochastic Integration}\label{sec:1.5}
 
-Here we follow \cite{SCfFII} in our construction of the It\^{o} integral.
-
-In order to make sense of the expression 
+Throughout this section we follow \cite{SCfFII} in our construction of the It\^{o} 
+integral. In order to make sense of the expression 
 \begin{equation*}
     \int H\mathrm dW_t
 \end{equation*}
 where $H$ is an adapted stochastic process and $W$ is a standard Brownian Motion or 
-Wiener Process, we turn to the trick used all the way back in section \ref{sec:1.3}
+Wiener Process, we turn to the idea we saw in section \ref{sec:1.3}
 for the construction of the Lebesgue integral: Approximation by simple functions.
 
 \begin{definition}[Stochastic Integral for Simple Processes]
     Suppose that $H$ is an adapted, simple process, in the sense that $\exists$ a 
-    partition of $[0,T]$, $\Pi=\{[t_0,t_1),[t_1,t_2),\dots,[t_{n-1},t_n),[t_n,T]\}$ where 
+    partition of $[0,T]$, $\Pi_n=\{[t_0,t_1),[t_1,t_2),\dots,[t_{n-1},t_n),[t_n,T]\}$ where 
     $H_t=c_i\;\forall\;t_i\leq t<t_{i+1}, i < n$ or $H_t=c_n$ for $t\in[t_n,T]$.
     Then we can define the stochastic integral as a sum:
     \begin{equation}
@@ -554,6 +570,8 @@ this report. We continue by stating some of the properties of the It\^{o} integr
 which we may need later on.
 
 \begin{remark}[Properties of the It\^{o} Integral]
+    Below we list some elementary properties of the stochastic integral we have
+    constructed:
     \begin{itemize}
         \item Continuity: As a function of the upper limit of integration $t$, the 
         paths of $I(t)$ are continuous.
@@ -715,3 +733,21 @@ context of stochastic control in finance, \cite{Pham} provides a recap in chapte
     and we arrive at the canonical formula for the GBM, where $S_0$ is the initial 
     value of the process.
 \end{definition}
+
+Now imagine again the position of a dealer in a financial market. Considering a dealer
+who is not trading and has a fixed position, and assuming that asset prices evolve
+according to an It\^{o} process $S$, their wealth will evolve according to the simple 
+SDE $\mathrm dX_t=q\mathrm dS_t$ where $q$ is the inventory. However, the dealer can 
+continuously update their bid and ask quotes, hence influencing the flow of orders 
+they receive. The dealer ``controls'' the process $\alpha=\begin{pmatrix}p^a\\p^b\end{pmatrix}$
+where $p^a$ and $p^b$ are the ask and bid quotes respectively, and this process 
+$\alpha$ should not be determined in advance, but be a function of arguments such 
+as time and the dealers current inventory, which itself is random as it depends on the 
+flow of market orders received by the dealer.
+Hence the dealers wealth evolves according to the \emph{controlled diffusion}
+\begin{equation*}
+    \mathrm dX_t=\beta(t,\alpha_t)\mathrm dS_t.
+\end{equation*}
+In chapter \ref{chap:2}, we will build up a general theory of how to deal with 
+such processes, with the goal of determining the \emph{optimal control} $\alpha^*$ with 
+respect to some particular criteria, such as maximising a particular expected utility.
