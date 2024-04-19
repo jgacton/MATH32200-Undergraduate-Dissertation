@@ -6,17 +6,26 @@ described at the end of section \ref{sec:3.8}, we can easily test
 the performance of our strategy using numerical simulation. We use the Python 
 programming language along with some third party but standard packages such as 
 numpy and matplotlib to implement our code, record our results and produce the 
-plots seen in this section. In what follows, we will replicate the results obtained 
+plots seen in this section. 
+
+In what follows, we will replicate the results obtained 
 by \cite{AS2008}, comparing and contrasting the results of the ``inventory'' strategy
 we derived in chapter \ref{chap:3} to those of a ``symmetric'' strategy that simply
 quotes the average spread of the inventory strategy at all times regardless of current
-inventory. Full Python code can be found in appendix \ref{app:B}.
+inventory. 
+
+The conclusions drawn from our results are much the same as those drawn 
+from the results presented by Avellaneda and Stoikov, seeing as we replicate their 
+results quite closely. However, they do not provide the code behind their numerical 
+simulations, so it is not possible to know if our methodology is exactly the same as 
+theirs. Our contribution to the literature then, for this chapter, is to provide in 
+full the Python code behind our results, which can be found in appendix \ref{app:B}.
 
 \section{Numerical Simulations - Avellaneda \& Stoikov}
 
 \begin{figure}[ht!]
     \centering
-        \includegraphics[width=0.5\linewidth]{sample-path.png}
+        \includegraphics[width=0.75\linewidth]{sample-path.png}
         \caption{Sample path for $\gamma=0.1$}
         \label{fig:sample-paths}
 \end{figure}
@@ -24,22 +33,6 @@ inventory. Full Python code can be found in appendix \ref{app:B}.
 In figures \ref{fig:sample-paths}, \ref{fig:inventory} and \ref{fig:pnl}, we can see 
 plotted the evolution of the mid-price and our agent's bid and ask quotes, inventory,
 cash flow and total portfolio value over time as incoming market-orders are sampled.
-
-\begin{figure}[ht!]
-    \centering
-    \begin{minipage}{.5\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{inventory.png}
-        \captionof{figure}{Sample inventory for $\gamma=0.1$}
-        \label{fig:inventory}
-    \end{minipage}%
-    \begin{minipage}{.5\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{wealth.png}
-        \captionof{figure}{Sample profit for $\gamma=0.1$}
-        \label{fig:pnl}
-    \end{minipage}
-\end{figure}
 
 We can identify the effect of varying levels of inventory on our bid 
 and ask quotes as we first discussed all the way back in chapter \ref{chap:1}: at 
@@ -61,6 +54,27 @@ paper, with the exception of the standard deviation of final inventory
 where my figure of 13.1 is 0.4 above the 12.7 reported by Avellaneda
 and Stoikov.
 
+The higher mean and larger variance of profits for the symmetric strategy is clearly
+visible in the PnL distribution. This can be explained by the fact that the symmetric 
+strategy on average receives more orders than the inventory strategy as it tends 
+to quote a tighter spread throughout the trading session, however, it also accumulates
+higher inventories and so the profits of the strategy are driven much more by the
+position accumulated in the asset than by the cash flow accumulated from the bid-ask
+spread.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[scale=0.75]{inventory.png}
+    \caption{Sample inventory for $\gamma=0.1$}
+    \label{fig:inventory}
+\end{figure}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[scale=0.75]{wealth.png}
+    \caption{Sample profit for $\gamma=0.1$}
+    \label{fig:pnl}
+\end{figure}
+
 \begin{figure}[ht!]
     \centering
         \begin{tabular}{ c c c c c c } 
@@ -71,18 +85,10 @@ and Stoikov.
             Symmetric & 1.49 & 68.2 & 13.1 & -0.1 & 8.3 \\
             \hline
         \end{tabular}
-        \includegraphics[scale=0.5]{gamma01.png}
+        \includegraphics[scale=0.75]{gamma01.png}
         \caption{Results for $\gamma=0.1$}
         \label{fig:results-gamma01}
 \end{figure}
-
-The higher mean and larger variance of profits for the symmetric strategy is clearly
-visible in the PnL distribution. This can be explained by the fact that the symmetric 
-strategy on average receives more orders than the inventory strategy as it tends 
-to quote a tighter spread throughout the trading session, however, it also accumulates
-higher inventories and so the profits of the strategy are driven much more by the
-position accumulated in the asset than by the cash flow accumulated from the bid-ask
-spread.
 
 In figure \ref{fig:results-gamma001} we present the results for 
 10000 simulations with $\gamma=0.01$. Again, all of our figures 
@@ -104,7 +110,7 @@ inventory strategy is almost \$5 lower.
             Symmetric & 1.35 & 68.6 & 13.8 & 0.04 & 8.6 \\
             \hline
         \end{tabular}
-        \includegraphics[scale=0.5]{gamma001.png}
+        \includegraphics[scale=0.75]{gamma001.png}
         \caption{Results for $\gamma=0.01$}
         \label{fig:results-gamma001}
 \end{figure}

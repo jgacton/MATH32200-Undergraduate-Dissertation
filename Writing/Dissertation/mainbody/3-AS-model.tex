@@ -33,6 +33,14 @@ price for the asset, given her current inventory. Second, she calibrates her bid
 quotes to the limit order book, by considering the probability with which her quotes will
 be executed as a function of their distance from the midpoint price.
 
+In the original paper, Avellaneda and Stoikov present the results obtained in this 
+chapter, but not the derivations. My contribution is to provide full and detailed 
+working and explanation behind every result, in the context of the general theory 
+that we have discussed in chapter \ref{chap:2}. Moreover, in section \ref{sec:3.4}
+where we derive some preliminary results in the infinite-horizon case, we obtain a 
+slightly different result to that of Avellaneda and Stoikov, potentially correcting 
+a calculation or typographical error in the original paper.
+
 \section{Model assumptions}\label{sec:3.2}
 
 The paper of \cite{AS2008} is closely related to that of \cite{HS1981}, with the 
@@ -429,25 +437,21 @@ problem was first studied by \cite{HS1981}, who use the Dynamic Programming
 Principle to show that $v$ satisfies the following HJB:
 \begin{theorem}[Ho and Stoll (1981) HJB]
     \begin{equation}\label{eq:3.17}
-        \left\{
             \begin{aligned}
                 v_t+\frac{1}{2}\sigma^2v_{ss}&+\max\limits_{\delta^b}\lambda^b(\delta^b)[v(s,x-s+\delta^b,q+1,t)-v(s,x,q,t)]\\
                 &+\max\limits_{\delta^a}\lambda^a(\delta^a)[v(s,x+s+\delta^a,q-1,t)-v(s,x,q,t)]=0,\\
                 &v(s,x,q,T)=-e^{-\gamma(x+qs)}.
             \end{aligned}
-        \right.
     \end{equation}
 \end{theorem}
 \begin{proof}
     Recall from chapter \ref{chap:2} that the value function in general follows the 
     form given in (\ref{eq:2.19}) and shown below:
     \begin{equation*}
-        \left\{
         \begin{aligned}
             &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R}\\
             &v(T,x)=g(x)\;\forall\;x\in\mathbb{R}.
         \end{aligned}
-        \right.
     \end{equation*}
     First, we will check our boundary condition. At time $T$, the trading period 
     has ended, and so in (\ref{eq:3.12}) we can ignore the maximisation over 
@@ -486,12 +490,10 @@ Principle to show that $v$ satisfies the following HJB:
     \end{equation*}
     equates to 
     \begin{equation*}
-        \left\{
             \begin{aligned}
                 v_t+\frac{1}{2}\sigma^2v_{ss}&+\max\limits_{\delta^b}\lambda^b(\delta^b)[v(s,x-s+\delta^b,q+1,t)-v(s,x,q,t)]\\
                 &+\max\limits_{\delta^a}\lambda^a(\delta^a)[v(s,x+s+\delta^a,q-1,t)-v(s,x,q,t)]=0
             \end{aligned}
-        \right.
     \end{equation*}
     for our particular value function $v$. 
 \end{proof}
@@ -526,14 +528,14 @@ By substitution of Avellaneda and Stoikov's ansatz (\ref{eq:3.18}) into
 Ho and Stoll's HJB (\ref{eq:3.17}) we obtain the following HJB equation
 for $\theta$:
 \begin{theorem}[Avellaneda and Stoikov (2008) HJB]\label{thm:3.7.2}
+    Under the ansatz (\ref{eq:3.18}), the value function (\ref{eq:3.12}) satisfies 
+    the following Hamilton-Jacobi-Bellman equation:
     \begin{equation}\label{eq:3.19}
-        \left\{
             \begin{aligned}
                 \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_{s}^2&+\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]\\
                 &+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a-r^a)})\right]=0,\\
                 &\theta(s,q,T)=qs.
             \end{aligned}
-        \right.
     \end{equation}
 \end{theorem}
 
@@ -598,12 +600,14 @@ the HJB equation given in theorem \ref{thm:3.7.2}.
     \end{align*}
     Next we consider the maximised terms:
     \begin{align*}
-        \lambda^b(\delta^b)[v(s,x-s+\delta^b,q+1,t)-v(s,x,q,t)]&=\lambda^b(\delta^b)[-e^{-\gamma (x-s+\delta^b)}e^{-\gamma\theta(s,q+1,t)}+e^{-\gamma x}e^{-\gamma\theta(s,q,t)}]\\
+        &\lambda^b(\delta^b)[v(s,x-s+\delta^b,q+1,t)-v(s,x,q,t)]\\
+        &=\lambda^b(\delta^b)[-e^{-\gamma (x-s+\delta^b)}e^{-\gamma\theta(s,q+1,t)}+e^{-\gamma x}e^{-\gamma\theta(s,q,t)}]\\
         &=\lambda^b(\delta^b)[e^{-\gamma x}e^{-\gamma\theta(s,q,t)}-e^{-\gamma x}e^{\gamma s}e^{-\gamma \delta^b}e^{-\gamma\theta(s,q+1,t)}]
     \end{align*}
     and
     \begin{align*}
-        \lambda^a(\delta^a)[v(s,x+s+\delta^a,q-1,t)-v(s,x,q,t)]&=\lambda^a(\delta^a)[-e^{-\gamma (x+s+\delta^a)}e^{-\gamma\theta(s,q-1,t)}+e^{-\gamma x}e^{-\gamma\theta(s,q,t)}]\\
+        &\lambda^a(\delta^a)[v(s,x+s+\delta^a,q-1,t)-v(s,x,q,t)]\\
+        &=\lambda^a(\delta^a)[-e^{-\gamma (x+s+\delta^a)}e^{-\gamma\theta(s,q-1,t)}+e^{-\gamma x}e^{-\gamma\theta(s,q,t)}]\\
         &=\lambda^a(\delta^a)[e^{-\gamma x}e^{-\gamma\theta(s,q,t)}-e^{-\gamma x}e^{-\gamma s}e^{-\gamma\delta^a}e^{-\gamma\theta(s,q-1,t)}].
     \end{align*}
     We note that since the R.H.S. of our equation is 0 and all of our 
@@ -665,7 +669,8 @@ Poisson intensity $\lambda$.
         e^{\gamma(s+\delta^a-r^a(s,q,t))}&=1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\\
         \gamma(s+\delta^a-r^a(s,q,t))&=\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
         s+\delta^a-r^a(s,q,t)&=\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
-        r^a(s,q,t)-s&=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).
+        r^a(s,q,t)-s&=\\
+        \delta^a-\frac{1}{\gamma}&\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).
     \end{align*}
 \end{proof}
 
@@ -711,10 +716,10 @@ exponential arrival rates (3.24), we see that
 \end{align*}
 which results in the simplified HJB equation below:
 \begin{equation}\label{eq:simp-hjb}
-    \begin{cases} 
-        \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta^2_s+\frac{A}{k+\gamma}(e^{-k\delta^a}+e^{-k\delta^b})=0\\
-        \theta(s,q,T)=qs.
-    \end{cases}
+    \begin{aligned} 
+        &\theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta^2_s+\frac{A}{k+\gamma}(e^{-k\delta^a}+e^{-k\delta^b})=0\\
+        &\theta(s,q,T)=qs.
+    \end{aligned}
 \end{equation}
 
 Next, we consider an asymptotic expansion of $\theta$ in the inventory variable $q$:
@@ -753,30 +758,50 @@ Now consider a first-order approximation of the order arrival term:
 \end{equation}
 where we notice that the linear term does not depend on the inventory $q$. Therefore,
 by substituting (\ref{eq:asymp}) and (\ref{eq:approx-arrival}) into (\ref{eq:simp-hjb}) 
-and grouping terms of order $q$ we obtain
+and grouping terms of order $q$ we obtain the linear second-order PDE
 \begin{equation}\label{eq:3.32}
-    \begin{cases} 
-        \theta^1_t+\frac{1}{2}\sigma^2\theta^1_{ss}=0\\
-        \theta^1(s,T)=s.
-    \end{cases}
+    \begin{aligned} 
+        &\theta^1_t+\frac{1}{2}\sigma^2\theta^1_{ss}=0\\
+        &\theta^1(s,T)=s.
+    \end{aligned}
 \end{equation}
-which admits the solution $\theta^1(s,t)=s$ by inspection. 
+which simply admits the solution $\theta^1(s,t)=s$. 
+
+We find this solution by noticing
+that since the RHS of the boundary condition is not a constant but a function of $s$,
+we can use this as a candidate solution. It's non-dependence on $t$ is irrelevant 
+because the RHS of the PDE itself is simply $0$, and both the first derivative w.r.t.
+$t$ and second derivative w.r.t. $s$ of the function $\theta^1(s,t)=s$ are $0$, hence 
+giving us a solution to the PDE (\ref{eq:3.32}). 
 
 Grouping terms of order $q^2$ yields
-\begin{equation}
-    \begin{cases}
-        \theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma(\theta^1_s)^2=0\\
-        \theta^2(s,T)=0
-    \end{cases}
+\begin{equation}\label{eq:3.33}
+    \begin{aligned}
+        &\theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma(\theta^1_s)^2=0\\
+        &\theta^2(s,T)=0
+    \end{aligned}
 \end{equation}
 which simplifies by our previous solution to (\ref{eq:3.32}) to
 \begin{equation*}
-    \begin{cases}
-        \theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma=0\\
-        \theta^2(s,T)=0
-    \end{cases}
+    \begin{aligned}
+        &\theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma=0\\
+        &\theta^2(s,T)=0
+    \end{aligned}
 \end{equation*}
-with solution $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$ by inspection.
+with solution $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$.
+
+The reservation price that we derived in section \ref{sec:3.3} for the inactive trader 
+depended on $s$ but also $t$, reflecting the fact that we are less certain about the 
+terminal midprice $S_T$ as tend towards it. Hence, since $\theta^1$ was solely a function
+of $s$, we may look for functions $\theta^2$ of the form $a(T-t)$ where the $T-t$ 
+term is required to satisfy our boundary condition. We then note that if $a$ does not 
+depend on $s$ and we have $\theta^2$ as a function solely of $t$, our PDE reduces to
+\begin{equation*}
+    \theta^2_t-\frac{1}{2}\sigma^2\gamma=0
+\end{equation*}
+which by differentiating $a(T-t)$ w.r.t. $t$ and subbing in to the PDE gives 
+$a=-\frac{1}{2}\sigma^2\gamma$, hence $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$
+and $\theta^1(s,t)=s$ is a solution to the PDE (\ref{eq:3.33}).
 
 Thus for this linear approximation of the order arrival term, we can substitute our
 solutions back into (\ref{eq:reserve-price}) to obtain the same indifference price

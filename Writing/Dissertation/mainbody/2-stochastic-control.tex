@@ -2,7 +2,9 @@
 In this chapter we introduce the idea of a stochastic control problem in one dimension, 
 and construct a theoretical framework for the resolution of a regular solution, 
 provided that such a solution exists, which is guarunteed under some conditions which
-we enumerate. We primarily follow the text of \cite{Pham}. In section \ref{sec:2.2} 
+we enumerate. This chapter is primarily expository with the goal of setting us up 
+to prove the results of \cite{AS2008} in chapter \ref{chap:3}, and we primarily follow 
+the text of \cite{Pham}. In section \ref{sec:2.2} 
 we introduce the notion of a controlled diffusion process and its solution. In section 
 \ref{sec:2.3} we consider a stochastic control problem over a finite time horizon, 
 before introducing the dynamic programming principle and Hamilton-Jacobi-Bellman 
@@ -76,9 +78,9 @@ some kind of bonus for good performance received at the end of the time period.
 We also denote by $\mathcal{A}(t,x)$ the subset of controls $\alpha\in\mathcal{A}$ 
 such that
 
-\begin{equation}
+\begin{equation*}
     \mathbb{E}\left[\int_t^T|f(s,X_x^{t,x},\alpha_s)|\mathrm ds\right]<\infty
-\end{equation}
+\end{equation*}
 
 for $(t,x)\in[0,T]\times\mathbb{R}$, and we assume that this set is not empty for all 
 $(t,x)\in[0,T]\times\mathbb{R}$. This integrability condition defines our set of 
@@ -112,9 +114,9 @@ the optimal $\alpha$.
 \begin{definition}[Optimal control]
     Given an initial condition $(t,x)\in[0,T]\times\mathbb{R}$, we say that $\hat{\alpha}\in\mathcal{A}(t,x)$
     is an optimal control if
-    \begin{equation}
+    \begin{equation*}
         v(t,x)=J(t,x,\hat{\alpha}).
-    \end{equation}
+    \end{equation*}
 \end{definition}
 
 \begin{remark}
@@ -132,15 +134,15 @@ the context of the finite-horizon problem described above.
     Let $(t,x)\in[0,T]\times\mathbb{R}.$ Then we have
     \begin{align}
         v(t,x)&=\sup_{\alpha\in\mathcal{A}(t,x)}\sup_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
-        &=\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
+        &=\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]
     \end{align}
 \end{theorem}
 \begin{proof}[Proof of the DPP]
     By pathwise uniqueness of the SDE for X, for any admissible control $\alpha\in\mathcal{A}(t,x)$,
     for any $\theta\in\mathcal{T}_{t,T}$ and for all $s\geq\theta$
-    \begin{equation}
+    \begin{equation*}
         X_s^{t,x}=X_s^{\theta,X_\theta^{t,x}}.
-    \end{equation}
+    \end{equation*}
     By the law of iterated expectations we then have
     \begin{align*}
         J(t,x,\alpha)&=\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})\right]\\
@@ -170,12 +172,12 @@ the context of the finite-horizon problem described above.
         v(\theta,X_{\theta(\omega)}^{t,x}(\omega))-\epsilon \leq J(\theta(\omega),X_{\theta(\omega)}^{t,x}(\omega),\alpha^{\epsilon,\omega}).
     \end{equation}
     We now define the process
-    \begin{equation}
+    \begin{equation*}
         \hat{\alpha}_s(\omega)=\begin{cases}
             &\alpha_s(\omega), s\in[0,\theta(\omega)],\\
             &\alpha_s^{\epsilon,\omega}(\omega),s\in[\theta(\omega),T].
         \end{cases}
-    \end{equation}
+    \end{equation*}
     It can be shown by the measurable selection theorem that the process 
     $\hat{\alpha}$ is progressively measurable, and so lies in $\mathcal{A}(t,x)$.
     This is well beyond the scope of this project, and so will not be done here, 
@@ -236,18 +238,16 @@ follows, we will use the HJB equation as follows:
     The dynamics of the value function $v(t,x)$ satisfy the following non-linear
     second-order partial differential equation:
     \begin{equation}\label{eq:2.19}
-        \left\{
         \begin{aligned}
             &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R}\\
             &v(T,x)=g(x)\;\forall\;x\in\mathbb{R}.
         \end{aligned}
-        \right.
     \end{equation}
     where $\mathcal{L}^a$ is the operator associated to the diffusion (\ref{eq:2.1})
-    and defined by (see Section \ref{sec:1.6})
-    \begin{equation}
+    and defined by (see (\ref{eq:1.14}) from section \ref{sec:1.6})
+    \begin{equation*}
         \mathcal{L}^av=b(t,x,a)v_x+\frac{1}{2}\sigma(t,x,a)^2v_{xx}.
-    \end{equation}
+    \end{equation*}
 \end{theorem}
 \begin{proof}
     Let us consider time $\theta=t+h$ and a constant control $\alpha_s=a$ for some arbitrary
@@ -257,17 +257,17 @@ follows, we will use the HJB equation as follows:
     \end{equation}
     By assuming that $v$ is smooth enough, we can apply It\^{o}'s formula between
     $t$ and $t+h$:
-    \begin{equation}
+    \begin{equation*}
         v(t+h,X_{t+h}^{t,x})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})\mathrm ds +\textrm{(local) martingale}.
-    \end{equation}
+    \end{equation*}
     We can then substitute back into (\ref{eq:2.21}) to obtain
-    \begin{equation}
+    \begin{equation*}
         0\geq\mathbb{E}\left[\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})+f(s,X_s^{t,x},a)\mathrm ds\right]
-    \end{equation}
+    \end{equation*}
     which if we divide by $h$ and send $h\rightarrow0$ we yield
-    \begin{equation}
+    \begin{equation*}
         0\geq\frac{\partial v}{\partial t}(t,x)+\mathcal{L}^av(t,x)+f(t,x,a)
-    \end{equation}
+    \end{equation*}
     by the mean-value theorem. Since this holds true for any $a\in A$, we obtain the
     inequality
     \begin{equation}\label{eq:2.25}
@@ -280,24 +280,24 @@ follows, we will use the HJB equation as follows:
     \end{equation}
     where $X^*$ is the solution to (\ref{eq:2.1}) starting from state $x$ at time $t$
     with control $\alpha^*.$ Again by It\^{o}'s formula we have that 
-    \begin{equation}
+    \begin{equation*}
         v(t+h,X^*_{t+h})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)\mathrm ds +\textrm{(local) martingale}
-    \end{equation}
+    \end{equation*}
     which we can again substitute back into (\ref{eq:2.26}) to obtain
-    \begin{equation}
+    \begin{equation*}
         0=\mathbb{E}\left[\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)+f(s,X_s*,a)\mathrm ds\right]
-    \end{equation}
+    \end{equation*}
     and hence once again we divide by $h$ and send $h\rightarrow0$ yielding
-    \begin{equation}
+    \begin{equation*}
         -\frac{\partial v}{\partial t}(t,x)-\mathcal{L}^{\alpha^*_t}v(t,x)-f(t,x,\alpha_t^*)=0.
-    \end{equation}
+    \end{equation*}
     Combining this with (\ref{eq:2.25}), $v$ should satisfy
     \begin{equation}
         -\frac{\partial v}{\partial t}(t,x)-\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R},
     \end{equation}
-    if the above supremum in $a$ is finite. This may arise when the control space $A$
-    is unbounded, and we will see how to deal with this later on. We can also obtain
-    the terminal condition associated to this PDE:
+    if the above supremum in $a$ is finite. For the purpose of this report, we will 
+    assume that this is always true for the scenarios we will deal with. We can also 
+    obtain the terminal condition associated to this PDE:
     \begin{equation}
         v(T,x)=g(x)\;\forall\;x\in\mathbb{R}
     \end{equation}
@@ -381,14 +381,12 @@ form
 \end{equation*}
 for some positive function $\phi$. By substituting into (\ref{eq:2.33})-(\ref{eq:2.34}),
 we derive that $\phi$ should satisfy the ODE
-\begin{equation*}
-    \left\{
+\begin{equation}
     \begin{aligned}
         &\phi^\prime(t)+\rho\phi(t)=0\\
         &\phi(T)=1
     \end{aligned}
-    \right.
-\end{equation*}
+\end{equation}
 where 
 \begin{equation*}
     \rho=p\sup_{a\in A}\{a(\mu-r)+r-\frac{1}{2}a^2(1-p)\sigma^2\}.
@@ -416,9 +414,9 @@ in $a$ we obtain that
     \hat a=\frac{\mu-r}{(1-p)\sigma^2}
 \end{equation}
 and 
-\begin{equation*}
+\begin{equation}
     \rho=\frac{(\mu-r)^2}{2\sigma^2}\frac{p}{1-p}+rp.
-\end{equation*}
+\end{equation}
 
 After walking through this short example, we hopefully have a little bit more understanding
 of how to apply stochastic control theory to problems in finance. In chapter \ref{chap:3},
