@@ -1,18 +1,20 @@
 \section{Introduction}
-This section aims to equip the reader with both the motivation and mathematical 
-tools to begin to formalise problems in mathematical finance. In section \ref{sec:1.2},
+This chapter aims to equip the reader with both the motivation and mathematical 
+tools to begin to formalise the market-making problem. In section \ref{sec:1.2},
 we will introduce the concepts of financial markets, order books, and dealers, and 
 qualitatively describe how a dealer may wish to behave to optimise their revenue. We
 will then use section \ref{sec:1.3} to briefly recap some basic measure and probability 
 theory, before turning to stochastic processes in continuous time in section 
 \ref{sec:1.4}. In sections \ref{sec:1.5} and \ref{sec:1.6}, we introduce stochastic 
 calculus, looking at stochastic integration, It\^{o}'s lemma, and finally stochastic 
-differential equations and the existence and uniqueness of their solutions.
+differential equations and the existence and uniqueness of their solutions. A brief 
+outline of the rest of this report is given at the end of section \ref{sec:1.2},
+once we have described the problem we will be aiming to solve.
 
 \section{Financial Markets}\label{sec:1.2}
-A market is simply some social structure that attempts to match those who want to 
+A market is simply some structure that attempts to match those who want to 
 sell a good or service to those who want to buy it. Modern financial markets, 
-thanks to recent innovations such as the internet, satellite communication, and 
+thanks to innovations such as the internet, satellite communication, and 
 fibre-optic cables, are perhaps the most interconnected and widespread markets in 
 human history. 
 
@@ -24,27 +26,27 @@ precious metals, live cattle and more), bonds (pieces of government or corporate
 debt, where the holder receives fixed interest payments), currencies (including 
 cryptocurrencies), and derivatives which are legal contracts whose value is some 
 function of the price of a specified underlying asset. In total, on an average day, 
-tens of trillions of US dollars worth of assets change hands.
+tens of trillions of US dollars worth of assets change hands (\cite{ADV}).
 
 All markets, whatever the good or service being exchanged, have something in common: 
-Every seller needs a buyer, and every buyer needs a seller. But this raises some 
+Every seller needs a buyer, and every buyer needs a seller. This raises some 
 natural questions: What happens if no-one wants to sell (or buy)? What happens if 
 the only prices at which people are willing to sell is far out of reach of those 
 who want to buy? Enter the \textit{dealer}: An entity who provides \textit{liquidity} 
 (ease of exchange) to market participants. A dealer does this by simultaneously 
 offering to both buy and sell the particular asset, offering to buy at a slightly 
-lower price than they offer to sell. This known as ``making a market'', and dealers 
+lower price than they offer to sell. This is known as ``making a market'', and dealers 
 in modern parlance may also be called ``market-makers''.
 
 \subsection*{Dealers}
 Dealers provide a crucial service in financial markets: By providing these quotes, 
 they narrow the \textit{spread} - the difference between the prices at which one can 
-buy or sell an asset in the market. Hence, entities who may need to trade even in 
-adverse market scenarios (such as companies needing to buy foreign currency to pay 
+buy or sell an asset in the market. Hence, entities who may need to trade even when 
+it is disadvantageous for them to do so (such as companies needing to buy foreign currency to pay 
 workers abroad, or oil producers seeking to hedge their production) know that they 
 can reliably find a buyer or seller, regardless of the uncertainty of other market 
 participants such as \textit{speculators} - those believe that a certain asset is 
-under or overvalued, and trade it with the sole motive of making money buy selling 
+under or overvalued, and trade it with the sole motive of making money by selling 
 it for more than they bought it or vice-versa.
 
 Of course, there is no free lunch. Dealers do not provide this service to the market 
@@ -65,7 +67,7 @@ types of orders: a \textit{limit order} or a \textit{market order} depending on 
 needs. Limit orders specify a side (bid or ask, buying or selling), a quantity (how 
 many units of the asset to buy/sell), and a price at which the order should be 
 executed. These enter a queue of limit orders at the particular price level. Market 
-orders specify a side and a quantity, but not a price: The exchange operates a 
+orders specify a side and a quantity, but not a price. The exchange operates a 
 \textit{matching engine} which takes incoming market orders and attempts to match 
 them to the existing limit orders, and if two orders match, they are executed and a 
 trade occurs. 
@@ -125,15 +127,15 @@ market prices reflect the consensus opinion of market participants about the val
 traded assets. The spread exists because people would only want to sell for slightly 
 more than something is worth, and buy it for slightly less. Hence, if you really want 
 to buy an asset you have to pay a premium to ``\textit{cross the spread}'' to acquire 
-it. From this we can determine that the true price of the asset at a point in time 
+it. From this we can determine that the true price of the asset at a given point in time 
 lies somewhere in between the maximum bid price and the minimum ask price for the asset 
 at that time. The most common estimator in the literature and in practice is simply 
-the average of these two values - the mid-market price, but other estimators do exist 
+the average of these two values - the mid-market price, or mid-price, but other estimators do exist 
 such as the volume-weighted average price (VWAP) which takes into account the volume 
 of the bids vs asks. For the rest of this report we will use the mid-price as our 
 estimator for the ``true'' value of an asset.
 
-The aim for the rest of this report is to build up a model of how a dealer should 
+The aim for subsequent chapters is to build up a model of how a dealer should 
 behave to maximise their returns in the presence of uncertainty: namely, uncertainty 
 about the path that the true value of the stock might take. In order to do this, we 
 will need to make use of some basic results from measure/probability theory and 
@@ -152,7 +154,8 @@ and readability, they are not the point of this project.
 
 We begin by formalising the notion of what ``events'' in a probability space are.
 In elementary treatments of probability theory, the set of events is given no particular 
-structure, but, especially with uncountable sample spaces, this can lead to inconsistencies.
+structure, but this is not sufficient for dealing rigorously with uncountable sample 
+spaces, such as we will be doing with random variables taking values in $\mathbb{R}$.
 
 \begin{definition}[$\sigma$-algebra]
     A family $\mathcal{F}\subseteq\mathcal{P}(\Omega)$ of sets is called a $\sigma$-algebra if 

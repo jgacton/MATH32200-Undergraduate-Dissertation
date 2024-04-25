@@ -249,8 +249,8 @@ user-specified parameter $\omega$ must satisfy
 \end{equation*}
 where the only variable quantity on the RHS is the inventory variable $q$. Therefore,
 if we want to ensure that these reserve prices always exist, we should bound the maximum
-inventory our agent can build up on either side. Hence, we set some $q_{\textrm{max}}>0$
-and set
+inventory our agent can build up on either side. Hence, we set some $q_{\textrm{max}}>0$,
+ensuring that our agent maintains $|q|\leq q_{\textrm{max}}$ during trading, and set
 \begin{equation*}
     \omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2
 \end{equation*}
@@ -416,7 +416,6 @@ integrating the density of the orderbook as described in \cite{Weber2005}
 and \cite{Smith2003}. However, this leads to a function which is highly dependent
 on the orderbook in question, so in the interest of obtaining a more general result
 in the following sections, we will not cover this method here.
-%\textbf{Include discussion and explanation of this method and derived form of $\lambda$}
 
 \newpage
 \section{The Hamilton-Jacobi-Bellman Equation}\label{sec:3.7}
