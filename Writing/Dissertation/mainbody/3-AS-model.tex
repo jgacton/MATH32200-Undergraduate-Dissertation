@@ -3,7 +3,7 @@
 In this chapter, we can finally return to the market-making problem introduced in
 Chapter \ref{chap:1}, fully armed with the theory of stochastic optimal control 
 that we have built up in Chapter \ref{chap:2}. We will formulate the problem and our
-assumptions in the framework of \cite{AS2008}, and walk through
+assumptions in the framework of \textcite{AS2008}, and walk through
 their methodology and theoretical results. 
 
 We begin in section \ref{sec:3.2} by setting out our assumptions our assumptions about 
@@ -43,7 +43,7 @@ a calculation or typographical error in the original paper.
 
 \section{Model assumptions}\label{sec:3.2}
 
-The paper of \cite{AS2008} is closely related to that of \cite{HS1981}, with the 
+The paper of \textcite{AS2008} is closely related to that of \textcite{HS1981}, with the 
 crucial difference being that while Ho and Stoll consider a monopolistic dealer,
 Avellaneda and Stoikov consider a dealer who is potentially one of many dealers 
 and many other market participants who may set limit orders. 
@@ -113,12 +113,12 @@ write this in a more convenient form as follows:
     v(x,s,q,t)&=\mathbb{E}\left[-e^{-\gamma(x+qS_T)}|\mathcal{F}_t\right]\\
     &=-e^{-\gamma x}\mathbb{E}\left[e^{-\gamma q S_T}|\mathcal{F}_t\right]\\
     &=-e^{-\gamma x}e^{-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
-    &=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}
+    &=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}.
 \end{align*}
 
 \subsection*{Reservation prices}
 
-Following \cite{AS2008}, we can now use our value function to define the agents 
+Following \textcite{AS2008}, we can now use our value function to define the agents 
 reservation bid and ask prices.
 The reservation bid and reservation ask prices are simply the prices at which the agent
 is indifferent between buying/selling and doing nothing. In other words, the reservation
@@ -139,18 +139,18 @@ and her current portfolio $\pm$ one stock and $\mp$ the cash price.
 \end{definition}
 
 We can determine an exact expression for $r^b(s,q,t)$ by plugging our prior definition
-for the value function, (\ref{eq:3.1}), in to our relation (\ref{eq:3.2}) as follows:
+for the value function, \eqref{eq:3.1}, in to our relation \eqref{eq:3.2} as follows:
 \begin{align*}
     v(x-r^b(s,q,t),s,q+1,t)&=v(x,s,q,t)\\
     -e^{-\gamma(x-r^b(s,q,t))}e^{-\gamma s(q+1)}e^{\frac{\gamma^2(q+1)^2\sigma^2(T-t)}{2}}&=-e^{-\gamma x}e^{-\gamma q s}e^{\frac{\gamma^2q^2\sigma^2(T-t)}{2}}\\
     -\gamma(x-r^b(s,q,t))-\gamma s(q+1) + \frac{\gamma^2(q+1)^2\sigma^2(T-t)}{2} &= -\gamma x-\gamma q s + \frac{\gamma^2q^2\sigma^2(T-t)}{2}\\
     \gamma r^b(s,q,t)-\gamma s + \frac{\gamma^2(1+2q)\sigma^2(T-t)}{2} &=0,
 \end{align*}
-
 dividing by $\gamma$ and rearranging to obtain
 \begin{equation}
-    r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}
+    r^b(s,q,t)=s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}.
 \end{equation}
+
 Similarly for $r^a(s,q,t)$:
 \begin{align*}
     v(x+r^a(s,q,t),s,q-1,t)&=v(x,s,q,t)\\
@@ -160,15 +160,16 @@ Similarly for $r^a(s,q,t)$:
 \end{align*}
 again dividing by $\gamma$ and rearranging to obtain
 \begin{equation}
-    r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}
+    r^a(s,q,t)=s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}.
 \end{equation}
+
 We define the \emph{reservation} or \emph{indifference} price to be the average of 
 these two \textit{given} that the agent currently holds q stocks:
 \begin{align*}
     r(s,q,t)&=\frac{r^a(s,q,t)+r^b(s,q,t)}{2}\\
     &=\frac{s+(1-2q)\frac{\gamma\sigma^2(T-t)}{2}+s+(-1-2q)\frac{\gamma\sigma^2(T-t)}{2}}{2}\\
     &=\frac{2s-2q\gamma\sigma^2(T-t)}{2}\\
-    &=s-q\gamma\sigma^2(T-t)
+    &=s-q\gamma\sigma^2(T-t).
 \end{align*}
 This price is nothing more than an adjustment to the mid-price which accounts for the 
 effect of the inventory held by the agent on the agents preference to buy or sell. It
@@ -199,13 +200,13 @@ We consider an infinite-horizon value function of the form
 \end{equation*}
 where $\omega$ is our discount factor. An interpretation of $\omega$ is that it
 represents an upper bound on the absolute inventory position that the agent is allowed
-to build up. A natural choice is to take $\omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2$
-, this will be justified shortly. 
+to build up. A natural choice is to take $\omega=\frac{1}{2}\gamma^2\sigma^2(q_{\textrm{max}}+1)^2$, 
+this will be justified shortly. 
 
 Using the definition of reservation bid and ask 
 prices given above in section \ref{sec:3.3}, we can attain stationary versions of the 
 reservation prices $r^b$ and $r^a$ with much the same method as before, only relying on
-slightly more advanced theory, appealing to Tonelli's theorem (\ref{eq:1.13}) which 
+slightly more advanced theory, appealing to Tonelli's theorem \eqref{eq:1.13} which 
 allows us to swap the expectation and integral in the value function. For $r^b$, we 
 have the following:
 \begin{align*}
@@ -222,7 +223,7 @@ have the following:
     \bar{r}^b(s,q) &= s+\frac{1}{\gamma}\log\left(1+\frac{(-1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
 which is valid for $\omega>\frac{1}{2}\gamma^2\sigma^2q^2$ and agrees exactly with
-the result presented in \cite{AS2008}. We can now perform the same procedure for the
+the result presented in \textcite{AS2008}. We can now perform the same procedure for the
 reservation ask price $r^a$:
 \begin{align*}
     \bar{v}(x+r^a(s,q),s,q-1)&=\bar{v}(x,s,q)\\
@@ -238,9 +239,9 @@ reservation ask price $r^a$:
     r^a(s,q) &= s-\frac{1}{\gamma}\log\left(1-\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
 \end{align*}
 which is again valid for $\omega>\frac{1}{2}\gamma^2\sigma^2q^2$. However, this differs
-from the result presented in \cite{AS2008}, which they give to be:
+from the result presented in \textcite{AS2008}, which they give to be
 \begin{equation*}
-    r^a(s,q)=s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right)
+    r^a(s,q)=s+\frac{1}{\gamma}\log\left(1+\frac{(1-2q)\gamma^2\sigma^2}{2\omega-\gamma^2q^2\sigma^2}\right).
 \end{equation*}
 From our derivations, we can see that to ensure integrability in both cases, the 
 user-specified parameter $\omega$ must satisfy
@@ -326,7 +327,7 @@ well as the mid-price itself. Hence, our value function becomes
 the following:
 \begin{definition}[Value function of Market-Making Agent]
     \begin{equation}\label{eq:3.12}
-        u(s,x,q,t):=\max\limits_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
+        v(s,x,q,t):=\max\limits_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right].
     \end{equation}
 \end{definition}
 
@@ -366,9 +367,9 @@ power law:
     \begin{equation}\label{eq:3.13}
         f^{Q}(x)\propto x^{-1-\alpha}
     \end{equation}
-    for large $x$, with $\alpha=1.53$ in \cite{Gopi2000} for US stocks,
-    $\alpha=1.4$ in \cite{Maslov2001} for shares traded on the NASDAQ
-    and $\alpha=1.5$ in \cite{Gabaix2006} for shares on the Paris Bourse.
+    for large $x$, with $\alpha=1.53$ in \textcite{Gopi2000} for US stocks,
+    $\alpha=1.4$ in \textcite{Maslov2001} for shares traded on the NASDAQ
+    and $\alpha=1.5$ in \textcite{Gabaix2006} for shares on the Paris Bourse.
 \end{theorem}
 
 \subsection*{Modelling market impact}
@@ -380,12 +381,12 @@ $Q$ is described well by
 \begin{equation}\label{eq:3.14}
     \Delta p\propto Q^\beta
 \end{equation}
-with $\beta=0.5$ in \cite{Gabaix2006} and $\beta=0.76$ in \cite{Weber2005},
-while \cite{Potters2003} find a better fit to the relationship
+with $\beta=0.5$ in \textcite{Gabaix2006} and $\beta=0.76$ in \textcite{Weber2005},
+while \textcite{Potters2003} find a better fit to the relationship
 \begin{equation}\label{eq:3.15}
     \Delta p\propto\log(Q).
 \end{equation}
-Using (\ref{eq:3.13}) and (\ref{eq:3.15}) we can derive the poisson 
+Using \eqref{eq:3.13} and \eqref{eq:3.15} we can derive the poisson 
 intensity as follows:
 \begin{align*}
     \lambda(\delta)&=\Lambda\mathbb{P}(\delta<\Delta p)\\
@@ -397,10 +398,10 @@ intensity as follows:
     &=\Lambda\left(\lim_{t\rightarrow\infty}\frac{-t^{-\alpha}}{\alpha}+\frac{e^{-K\delta\alpha}}{\alpha}\right)\\
     &=\frac{\Lambda}{\alpha}\left(e^{-K\delta\alpha}-\lim_{t\rightarrow\infty}\frac{1}{t^\alpha}\right)\\
     &=\frac{\Lambda}{\alpha}e^{-\alpha K\delta}\\
-    &=Ae^{-k\delta}
+    &=Ae^{-k\delta}.
 \end{align*}
 where $A=\frac{\Lambda}{\alpha}$ and $k=\alpha K$. 
-On the other hand, (\ref{eq:3.13}) and (\ref{eq:3.14}) yield:
+On the other hand, \eqref{eq:3.13} and \eqref{eq:3.14} yield:
 \begin{align*}
     \lambda(\delta)&=\Lambda\mathbb{P}(\delta<\Delta p)\\
     &=\Lambda\mathbb{P}(\delta<kQ^\beta)\\
@@ -408,12 +409,12 @@ On the other hand, (\ref{eq:3.13}) and (\ref{eq:3.14}) yield:
     &=\Lambda\int_{\left(\frac{\delta}{k}\right)^{-\beta}}^\infty x^{-1-\alpha}dx\\
     &=\Lambda\left[\lim_{t\rightarrow\infty}\frac{-t^{-\alpha}}{\alpha}+\frac{\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}\right]\\
     &=\frac{\Lambda\left(\frac{\delta}{k}\right)^{-\frac{\alpha}{\beta}}}{\alpha}\\
-    &=B\delta^{-\frac{\alpha}{\beta}}
+    &=B\delta^{-\frac{\alpha}{\beta}}.
 \end{align*}
 where $B=\frac{\Lambda}{k\alpha}$.
 Alternatively, we could derive the price impact function $\Delta p$ directly by 
-integrating the density of the orderbook as described in \cite{Weber2005}
-and \cite{Smith2003}. However, this leads to a function which is highly dependent
+integrating the density of the orderbook as described in \textcite{Weber2005}
+and \textcite{Smith2003}. However, this leads to a function which is highly dependent
 on the orderbook in question, so in the interest of obtaining a more general result
 in the following sections, we will not cover this method here.
 
@@ -425,14 +426,14 @@ some empirical results on the form of the Poisson intensity $\lambda$,
 we turn to the solution of the problem at hand. Following on from our 
 discussion of the theory of stochastic control in Chapter \ref{chap:2},
 our first goal will be to formulate the Hamilton-Jacobi-Bellman PDE
-associated to our value function which we defined in (\ref{eq:3.12}).
+associated to our value function which we defined in \eqref{eq:3.12}.
 Recall that this is given by
 \begin{equation}
     v(s,x,q,t)=\max\limits_{\delta^a,\delta^b}\mathbb{E}\left[-e^{-\gamma(X_T+q_TS_T)}|\mathcal{F}_t\right]
 \end{equation}
 where our optimal control processes $\delta^a$ and $\delta^b$ will
 turn out to be time and state dependent. This type of optimal dealer 
-problem was first studied by \cite{HS1981}, who use the Dynamic Programming 
+problem was first studied by \textcite{HS1981}, who use the Dynamic Programming 
 Principle to show that $v$ satisfies the following HJB:
 \begin{theorem}[Ho and Stoll (1981) HJB]
     \begin{equation}\label{eq:3.17}
@@ -445,15 +446,15 @@ Principle to show that $v$ satisfies the following HJB:
 \end{theorem}
 \begin{proof}
     Recall from chapter \ref{chap:2} that the value function in general follows the 
-    form given in (\ref{eq:2.19}) and shown below:
+    form given in \eqref{eq:2.19} and shown below:
     \begin{equation*}
         \begin{aligned}
-            &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R}\\
+            &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R},\\
             &v(T,x)=g(x)\;\forall\;x\in\mathbb{R}.
         \end{aligned}
     \end{equation*}
     First, we will check our boundary condition. At time $T$, the trading period 
-    has ended, and so in (\ref{eq:3.12}) we can ignore the maximisation over 
+    has ended, and so in \eqref{eq:3.12} we can ignore the maximisation over 
     controles $\delta^a$ and $\delta^b$ when evaluating $v$ at $T$. Moreover,
     $X_T$, $q_T$ and $S_T$ are all adapted and hence measurable with respect to 
     $\mathcal{F}_T$, and we can remove the expectation. Hence we find that 
@@ -498,7 +499,7 @@ Principle to show that $v$ satisfies the following HJB:
 \end{proof}
 
 \begin{remark}
-    \cite{AS2008} throughout their paper refer to maxima, rather than suprema, over
+    \textcite{AS2008} throughout their paper refer to maxima, rather than suprema, over
     the value functions. This is justified because although the optimal quotes 
     are real-valued, modern electronic markets typically trade in integer amounts 
     of fractions of pennies, restricting dealers to a countable set of possible quotes.
@@ -507,7 +508,7 @@ Principle to show that $v$ satisfies the following HJB:
 \end{remark}
 
 In order to simplify the problem before turning to look at its solution, 
-\cite{AS2008} argue that due to our choice of exponential 
+\textcite{AS2008} argue that due to our choice of exponential 
 utility, we can introduce the following ansatz:
 \begin{equation}\label{eq:3.18}
     v(s,x,q,t)=-e^{-\gamma x}e^{-\gamma\theta(s,q,t)}
@@ -521,13 +522,13 @@ dependent and hence encapsulated by some function $\theta$ of $s$, $q$
 and $t$. Moreover, thanks to the properties of the exponential function, 
 the expectation of the utility of our future wealth can also be 
 written in an exponential form. Finally, we also assume that the function
-$\theta$ factors in our optimal control $\alpha^*=\begin{pmatrix}\delta^{a*}\\\delta^{b*}\end{pmatrix}$
+$\theta$ factors in our optimal control $\alpha^*=\begin{pmatrix}\delta^{a*}\\\delta^{b*}\end{pmatrix}$.
 
-By substitution of Avellaneda and Stoikov's ansatz (\ref{eq:3.18}) into 
-Ho and Stoll's HJB (\ref{eq:3.17}) we obtain the following HJB equation
+By substitution of Avellaneda and Stoikov's ansatz \eqref{eq:3.18} into 
+Ho and Stoll's HJB \eqref{eq:3.17} we obtain the following HJB equation
 for $\theta$:
 \begin{theorem}[Avellaneda and Stoikov (2008) HJB]\label{thm:3.7.2}
-    Under the ansatz (\ref{eq:3.18}), the value function (\ref{eq:3.12}) satisfies 
+    Under the ansatz \eqref{eq:3.18}, the value function \eqref{eq:3.12} satisfies 
     the following Hamilton-Jacobi-Bellman equation:
     \begin{equation}\label{eq:3.19}
             \begin{aligned}
@@ -546,7 +547,7 @@ of the dealer's reservation bid and ask prices in section \ref{sec:3.3} to our n
 function $\theta$. We find that we can express $r^b$ and $r^a$ directly in terms of 
 $\theta$ as follows:
 \begin{lemma}\label{lem:3.7.3}
-    We have using the ansatz \ref{eq:3.18} that the reservation bid and ask prices
+    We have using the ansatz \eqref{eq:3.18} that the reservation bid and ask prices
     defined in definition \ref{def:3.3.1} are given by
     \begin{equation}
         r^b(s,q,t)=\theta(s,q+1,t)-\theta(s,q,t)
@@ -576,14 +577,14 @@ $\theta$ as follows:
     \end{align*}
 \end{proof}
 
-Using this result, we can check that the ansatz \ref{eq:3.18} allows us to derive 
+Using this result, we can check that the ansatz \eqref{eq:3.18} allows us to derive 
 the HJB equation given in theorem \ref{thm:3.7.2}.
 
 \begin{proof}[Proof of Theorem \ref{thm:3.7.2}]
     First we check the terminal condition:
     \begin{align*}
-        v(s,x,q,T)&=-e^{-\gamma(x+qs)}\textrm{ from (\ref{eq:3.17})}\\
-        &=-e^{-\gamma x}e^{-\gamma\theta(s,q,T)}\textrm{ from (\ref{eq:3.18})}\\
+        v(s,x,q,T)&=-e^{-\gamma(x+qs)}\textrm{ from \eqref{eq:3.17}}\\
+        &=-e^{-\gamma x}e^{-\gamma\theta(s,q,T)}\textrm{ from \eqref{eq:3.18}}\\
         &=-e^{-\gamma(x+\theta(s,q,T))}\\
         \implies \theta(s,q,T)&=qs.
     \end{align*}
@@ -612,7 +613,7 @@ the HJB equation given in theorem \ref{thm:3.7.2}.
     We note that since the R.H.S. of our equation is 0 and all of our 
     expressions contain $e^{-\gamma x}$, we can mutliply by this term.
     We can remove all $e^{-\gamma \theta}$ terms similarly. Dividing 
-    all expressions by $\gamma$ and substituting into (\ref{eq:3.17})
+    all expressions by $\gamma$ and substituting into \eqref{eq:3.17}
     yields a L.H.S. of
     \begin{align*}
         \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_s^2&+\max\limits_{\delta^b}\frac{\lambda^b(\delta^b)}{\gamma}[1-e^{\gamma s}e^{-\gamma \delta^b}e^{-\gamma(\theta(s,q+1,t)-\theta(s,q,t))}]\\
@@ -623,14 +624,14 @@ the HJB equation given in theorem \ref{thm:3.7.2}.
         \theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_s^2&+\max\limits_{\delta^b}\frac{\lambda^b(\delta^b)}{\gamma}[1-e^{\gamma s}e^{-\gamma \delta^b}e^{-\gamma r^b(s,q,t)}]\\
         &+\max\limits_{\delta^a}\frac{\lambda^a(\delta^a)}{\gamma}[1-e^{-\gamma s}e^{-\gamma\delta^a}e^{\gamma r^a(s,q,t)}]\\
         =\theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta_s^2&+\max\limits_{\delta^b}\frac{\lambda^b(\delta^b)}{\gamma}[1-e^{\gamma (s-\delta^b-r^b(s,q,t))}]\\
-        &+\max\limits_{\delta^a}\frac{\lambda^a(\delta^a)}{\gamma}[1-e^{-\gamma (s+\delta^a-r^a(s,q,t))}]
+        &+\max\limits_{\delta^a}\frac{\lambda^a(\delta^a)}{\gamma}[1-e^{-\gamma (s+\delta^a-r^a(s,q,t))}].
     \end{align*}
 \end{proof}
 
 \subsection*{Implicit relations for the optimal spreads $\delta^a$ and $\delta^b$}
 
 We can derive some relations for the optimal distances $\delta^a$ and $\delta^b$
-that are implicit in our slightly simplified HJB equation (\ref{eq:3.19}). Inspecting
+that are implicit in our slightly simplified HJB equation \eqref{eq:3.19}. Inspecting
 the maximised terms in the HJB, we can invoke a first-order optimality condition to
 find an expression involving the optimal spreads, the reservation prices, and our 
 Poisson intensity $\lambda$. 
@@ -641,11 +642,11 @@ Poisson intensity $\lambda$.
     \end{equation}
     while for $\delta^a$ we have
     \begin{equation}\label{eq:3.23}
-        r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)
+        r^a(s,q,t)-s=\delta^a-\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right).
     \end{equation}
 \end{theorem}
 \begin{proof}
-    Taking the derivative of the term in \ref{eq:3.19} that we maximise w.r.t. $\delta^b$
+    Taking the derivative of the term in \eqref{eq:3.19} that we maximise w.r.t. $\delta^b$
     and setting it equal to 0, we find:
     \begin{align*}
         \frac{\partial}{\partial\delta}\left[\frac{\lambda^b(\delta)}{\gamma}(1-e^{\gamma(s-\delta-r^b(s,q,t))})\right](\delta^b)&=0\\
@@ -664,7 +665,9 @@ Poisson intensity $\lambda$.
         \frac{1}{\gamma}\left[\frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial}{\partial\delta}\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}\right]&=0\\
         \frac{\partial\lambda^a}{\partial\delta}(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}+\gamma\lambda^a(\delta^a)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=0\\
         \left(\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{-\gamma(s+\delta^a-r^a(s,q,t))}&=-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
-        -\left(\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{\gamma(s+\delta^a-r^a(s,q,t))}&=\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\\
+        -\left(\frac{\partial\lambda^a}{\partial\delta}(\delta^a)\right)e^{\gamma(s+\delta^a-r^a(s,q,t))}&=\gamma\lambda^a(\delta^a)-\frac{\partial\lambda^a}{\partial\delta}(\delta^a)
+    \end{align*}
+    \begin{align*}
         e^{\gamma(s+\delta^a-r^a(s,q,t))}&=1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\\
         \gamma(s+\delta^a-r^a(s,q,t))&=\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
         s+\delta^a-r^a(s,q,t)&=\frac{1}{\gamma}\log\left(1-\gamma\frac{\lambda^a(\delta^a)}{\frac{\partial\lambda^a}{\partial\delta}(\delta^a)}\right)\\
@@ -674,23 +677,23 @@ Poisson intensity $\lambda$.
 \end{proof}
 
 To briefly summarise, the optimal bid and ask spreads $\delta^a$ and $\delta^a$ are
-derived in an intuitive two-step procedure. First, we solve the HJB PDE (\ref{eq:3.19})
-to obtain the reservation bid and ask prices. Then, we use the relations (\ref{eq:3.22})
-and (\ref{eq:3.23}) to find the optimal bid and ask spreads $\delta^b(s,q,t)$ and 
+derived in an intuitive two-step procedure. First, we solve the HJB PDE \eqref{eq:3.19}
+to obtain the reservation bid and ask prices. Then, we use the relations \eqref{eq:3.22}
+and \eqref{eq:3.23} to find the optimal bid and ask spreads $\delta^b(s,q,t)$ and 
 $\delta^a(s,q,t)$ between the mid-price and obtimal bid and ask quotes respectively.
 
 \section{Asymptotic Expansion in q}\label{sec:3.8}
 
-The main computational difficulty in this advance is solving equation \ref{eq:3.19}
+The main computational difficulty in this advance is solving equation \eqref{eq:3.19}
 due to the order-arrival terms (the terms to be maximised) being highly nonlinear and
-dependent on the inventory variable $q$. To get around this, \cite{AS2008} suggest
+dependent on the inventory variable $q$. To get around this, \textcite{AS2008} suggest
 an asymptotic expansion of $\theta$ in the inventory variable $q$, and a linear 
 approximation of the order arrival terms. 
 
 Following on from our work in section \ref{sec:3.6}, we will assume that our arrival 
 rates are symmetric and exponential given by 
 \begin{equation}\label{eq:3.24}
-    \lambda^a(\delta)+\lambda^b(\delta)=Ae^{-k\delta}
+    \lambda^a(\delta)+\lambda^b(\delta)=Ae^{-k\delta},
 \end{equation}
 in which case, our agents indifference prices $r^a(s,q,t)$ and $r^b(s,q,t)$
 coincide with their frozen inventory values given in section \ref{sec:3.3}.
@@ -700,8 +703,8 @@ the following property:
 \begin{equation*}
     \frac{\lambda(\delta)}{\frac{\partial\lambda}{\partial\delta}(\delta)}=\frac{Ae^{-k\delta}}{-kAe^{-k\delta}}=-\frac{1}{k}.
 \end{equation*}
-Hence by plugging in the relations (\ref{eq:3.22}) and (\ref{eq:3.23}) into the 
-maximised terms in the HJB equation (\ref{eq:3.19}) under the assumption of symmetric
+Hence by plugging in the relations \eqref{eq:3.22} and \eqref{eq:3.23} into the 
+maximised terms in the HJB equation \eqref{eq:3.19} under the assumption of symmetric
 exponential arrival rates (3.24), we see that
 \begin{align*}
     &\max\limits_{\delta^b}\left[\frac{\lambda^b(\delta^b)}{\gamma}(1-e^{\gamma(s-\delta^b-r^b)})\right]+\max\limits_{\delta^a}\left[\frac{\lambda^a(\delta^a)}{\gamma}(1-e^{-\gamma(s+\delta^a-r^a)})\right]\\
@@ -716,7 +719,7 @@ exponential arrival rates (3.24), we see that
 which results in the simplified HJB equation below:
 \begin{equation}\label{eq:simp-hjb}
     \begin{aligned} 
-        &\theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta^2_s+\frac{A}{k+\gamma}(e^{-k\delta^a}+e^{-k\delta^b})=0\\
+        &\theta_t+\frac{1}{2}\sigma^2\theta_{ss}-\frac{1}{2}\sigma^2\gamma\theta^2_s+\frac{A}{k+\gamma}(e^{-k\delta^a}+e^{-k\delta^b})=0,\\
         &\theta(s,q,T)=qs.
     \end{aligned}
 \end{equation}
@@ -732,7 +735,7 @@ The exact relations for the reserve bid and ask prices obtained in lemma \ref{le
 yield
 \begin{gather}
     r^b(s,q,t)=\theta^1(s,t)+(1+2q)\theta^2(s,t)+...\\
-    r^a(s,q,t)=\theta^1(s,t)+(-1-2q)\theta^2(s,t)+...\;.
+    r^a(s,q,t)=\theta^1(s,t)+(-1-2q)\theta^2(s,t)+...
 \end{gather}
 Then our reservation price
 \begin{equation}\label{eq:reserve-price}
@@ -740,7 +743,7 @@ Then our reservation price
 \end{equation}
 follows immediately. We can interpret this expression nicely: $\theta^1$ is the reserve
 price when the inventory is 0, and $\theta^2$ is our agent's sensitivity to changes in 
-inventory. We might then expect that $\theta^2 < 0\;\forall(s,t)$, since then a long 
+inventory. We might then expect that $\theta^2 < 0\;\forall\;(s,t)$, since then a long 
 position will result in lower quotes (more willing to sell) and vice-versa. We also 
 have that
 \begin{equation}\label{eq:spread}
@@ -750,17 +753,17 @@ have that
         &=-2\theta^2(s,t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
     \end{aligned}
 \end{equation}
-through our approximation and the relations (\ref{eq:3.22}) and (\ref{eq:3.23}).
+through our approximation and the relations \eqref{eq:3.22} and \eqref{eq:3.23}.
 Now consider a first-order approximation of the order arrival term:
 \begin{equation}\label{eq:approx-arrival}
     \frac{A}{k+\gamma}(e^{-\gamma\delta^a}+e^{-\gamma\delta^b})=\frac{A}{k+\gamma}(2-k(\delta^a+\delta^b)+...)
 \end{equation}
 where we notice that the linear term does not depend on the inventory $q$. Therefore,
-by substituting (\ref{eq:asymp}) and (\ref{eq:approx-arrival}) into (\ref{eq:simp-hjb}) 
+by substituting \eqref{eq:asymp} and \eqref{eq:approx-arrival} into \eqref{eq:simp-hjb} 
 and grouping terms of order $q$ we obtain the linear second-order PDE
 \begin{equation}\label{eq:3.32}
     \begin{aligned} 
-        &\theta^1_t+\frac{1}{2}\sigma^2\theta^1_{ss}=0\\
+        &\theta^1_t+\frac{1}{2}\sigma^2\theta^1_{ss}=0,\\
         &\theta^1(s,T)=s.
     \end{aligned}
 \end{equation}
@@ -771,16 +774,16 @@ that since the RHS of the boundary condition is not a constant but a function of
 we can use this as a candidate solution. It's non-dependence on $t$ is irrelevant 
 because the RHS of the PDE itself is simply $0$, and both the first derivative w.r.t.
 $t$ and second derivative w.r.t. $s$ of the function $\theta^1(s,t)=s$ are $0$, hence 
-giving us a solution to the PDE (\ref{eq:3.32}). 
+giving us a solution to the PDE \eqref{eq:3.32}. 
 
 Grouping terms of order $q^2$ yields
 \begin{equation}\label{eq:3.33}
     \begin{aligned}
-        &\theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma(\theta^1_s)^2=0\\
-        &\theta^2(s,T)=0
+        &\theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma(\theta^1_s)^2=0,\\
+        &\theta^2(s,T)=0.
     \end{aligned}
 \end{equation}
-which simplifies by our previous solution to (\ref{eq:3.32}) to
+which simplifies by our previous solution to \eqref{eq:3.32} to
 \begin{equation*}
     \begin{aligned}
         &\theta^2_t+\frac{1}{2}\sigma^2\theta^2_{ss}-\frac{1}{2}\sigma^2\gamma=0\\
@@ -800,18 +803,18 @@ depend on $s$ and we have $\theta^2$ as a function solely of $t$, our PDE reduce
 \end{equation*}
 which by differentiating $a(T-t)$ w.r.t. $t$ and subbing in to the PDE gives 
 $a=-\frac{1}{2}\sigma^2\gamma$, hence $\theta^2(s,t)=-\frac{1}{2}\sigma^2\gamma(T-t)$
-and $\theta^1(s,t)=s$ is a solution to the PDE (\ref{eq:3.33}).
+and $\theta^1(s,t)=s$ is a solution to the PDE \eqref{eq:3.33}.
 
 Thus for this linear approximation of the order arrival term, we can substitute our
-solutions back into (\ref{eq:reserve-price}) to obtain the same indifference price
+solutions back into \eqref{eq:reserve-price} to obtain the same indifference price
 \begin{equation}\label{eq:3.34}
     r(s,t)=s-q\gamma\sigma^2(T-t)
 \end{equation}
 as in the case where no trading is allowed. We quote a bid-ask spread that is symmetric
 about this reservation price and is given by the below expression, which is again acquired
-through subsituting our solutions for $\theta^1$ and $\theta^2$ back into (\ref{eq:spread}).
+through subsituting our solutions for $\theta^1$ and $\theta^2$ back into \eqref{eq:spread}:
 \begin{equation}\label{eq:3.35}
-    \delta^a+\delta^b=\gamma\sigma^2(T-t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right)
+    \delta^a+\delta^b=\gamma\sigma^2(T-t)+\frac{2}{\gamma}\log\left(1+\frac{\gamma}{k}\right).
 \end{equation}
 
 \section{Summary}\label{sec:3.9}
@@ -820,13 +823,13 @@ In the above section, we have seen how the problem of finding the optimal behavi
 of a dealer in a limit orderbook, which we introduced in chapter \ref{chap:1}, can be
 formulated as a stochastic control problem using the theoretical framework we built up
 in chapter \ref{chap:2}. We have also noted a possible miscalculation or typographical
-error in the short section of the original paper of \cite{AS2008} on the infinite-horizon
-agent, which we address in section \ref{sec:3.4}. 
+error in the short section of the original paper of \textcite{AS2008} on the infinite-horizon
+agent, which we addressed in section \ref{sec:3.4}. 
 
-We then provide full derivations of all of the results presented in \cite{AS2008},
-explain the use of the ansatz (\ref{eq:3.18}) as a key simplifying assumption, and walk
+We then provided full derivations of all of the results presented in \textcite{AS2008},
+explained the use of the ansatz \eqref{eq:3.18} as a key simplifying assumption, and walked
 through the asymptotic approximation used to yield the final results that Avellaneda
-and Stoikov present. 
+and Stoikov have presented. 
 
 In the next chapter, we will provide code and results for the
 numerical simulation results that Avellaneda and Stoikov describe, attaining results 

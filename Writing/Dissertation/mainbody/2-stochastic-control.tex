@@ -2,15 +2,23 @@
 In this chapter we introduce the idea of a stochastic control problem in one dimension, 
 and construct a theoretical framework for the resolution of a regular solution, 
 provided that such a solution exists, which is guarunteed under some conditions which
-we enumerate. This chapter is entirely expository with the goal of setting us up 
-to prove the results of \cite{AS2008} in chapter \ref{chap:3}, and we primarily follow 
-the text of \cite{Pham}. In section \ref{sec:2.2} 
+we enumerate. 
+
+This chapter is mainly expository with the goal of setting us up 
+to prove the results of \textcite{AS2008} in chapter \ref{chap:3}, and we primarily follow 
+the text of \textcite{Pham}. However, it is not a regurgitation of Pham's work. In particular,
+for the proofs of key results such as the Dynamic Programming Principle (theorem \ref{thm:2.4.1})
+and Hamiltoj-Jacobi-Bellman equation (theorem \ref{thm:2.5.1}) we fill in some of the jumps 
+left by \textcite{Pham} with extra lines of working and more intuitive explanations. 
+
+In section \ref{sec:2.2} 
 we introduce the notion of a controlled diffusion process and its solution. In section 
 \ref{sec:2.3} we consider a stochastic control problem over a finite time horizon, 
 before introducing the dynamic programming principle and Hamilton-Jacobi-Bellman 
-equation in sections \ref{sec:2.4} and \ref{sec:2.5} respectively. Finally, in section 
-\ref{sec:2.6}, we put these tools to use through a worked example in a financial 
-context, setting us up to tackle the Avellaneda-Stoikov model in Chapter \ref{chap:3}.
+equation in their finite-horizon variants in sections \ref{sec:2.4} and \ref{sec:2.5} 
+respectively. Finally, in section \ref{sec:2.6}, we put these tools to use through a worked 
+example in a financial context, setting us up to tackle the Avellaneda-Stoikov model in 
+Chapter \ref{chap:3}.
 
 \section{Controlled Diffusion Processes}\label{sec:2.2}
 
@@ -58,8 +66,8 @@ processes $\alpha$ such that for any arbitrary $x\in\mathbb{R},$
 \begin{equation}\label{eq:2.3}
     \mathbb{E}\left[\int_0^T|b(x,\alpha_t)|^2+|\sigma(x,\alpha_t)|^2\mathrm dt\right]<\infty.
 \end{equation}
-From Chapter \ref{chap:1} (theorem \ref{thm:1.6.1}), conditions (\ref{eq:2.2}) and (\ref{eq:2.3}) ensure the existence
-and uniqueness of a strong solution to the SDE (\ref{eq:2.1}) starting from any initial
+From Chapter \ref{chap:1} (theorem \ref{thm:1.6.1}), conditions \eqref{eq:2.2} and \eqref{eq:2.3} ensure the existence
+and uniqueness of a strong solution to the SDE \eqref{eq:2.1} starting from any initial
 condition $(t,x)\in[0,T]\times\mathbb{R}$ and with any control process $\alpha\in\mathcal{A}$.
 We denote this unique strong solution with almost surely continuous sample paths by 
 $\{X_s^{t,x},t\leq s\leq T\}$.\\
@@ -130,11 +138,11 @@ The Dynamic Programming Principle (DPP) is the fundamental tool upon which much 
 theory of stochastic control relies. We formulate it as follows, considering only
 the context of the finite-horizon problem described above.
 
-\begin{theorem}[Dynamic Programming Principle]
+\begin{theorem}[Dynamic Programming Principle]\label{thm:2.4.1}
     Let $(t,x)\in[0,T]\times\mathbb{R}.$ Then we have
     \begin{align}
         v(t,x)&=\sup_{\alpha\in\mathcal{A}(t,x)}\sup_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
-        &=\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]
+        &=\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
     \end{align}
 \end{theorem}
 \begin{proof}[Proof of the DPP]
@@ -149,16 +157,16 @@ the context of the finite-horizon problem described above.
         &=\mathbb{E}\left[\mathbb{E}\left[\int_t^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})|\mathcal{F}_\theta\right]\right]\\
         &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+\mathbb{E}\left[\int_\theta^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})|\mathcal{F}_\theta\right]\right]\\
         &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+\mathbb{E}\left[\int_\theta^Tf(s,X_s^{t,x},\alpha_s)\mathrm ds+g(X_T^{t,x})\right]\right]\\
-        &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha)\right]
+        &=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha)\right].
     \end{align*}
-    and since $J(.,.,\alpha)\leq v$ and $\theta$ is arbitrary in $\mathcal{T}_{t,T}$
+    Since $J(.,.,\alpha)\leq v$ and $\theta$ is arbitrary in $\mathcal{T}_{t,T}$,
     we obtain
     \begin{align*}
         J(t,x,\alpha)&\leq\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
         &\leq\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]\\
-        &\leq\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]
+        &\leq\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
     \end{align*}
-    and by taking the supremum over $\alpha$ in the left hand side, we obtain the second
+    By taking the supremum over $\alpha$ in the left hand side, we obtain the second
     of the desired inequalities:
     \begin{equation}
         v(t,x)\leq\sup_{\alpha\in\mathcal{A}(t,x)}\inf_{\theta\in\mathcal{T}_{t,T}}\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
@@ -174,15 +182,15 @@ the context of the finite-horizon problem described above.
     We now define the process
     \begin{equation*}
         \hat{\alpha}_s(\omega)=\begin{cases}
-            &\alpha_s(\omega), s\in[0,\theta(\omega)],\\
-            &\alpha_s^{\epsilon,\omega}(\omega),s\in[\theta(\omega),T].
+            &\alpha_s(\omega), s\in[0,\theta(\omega)]\\
+            &\alpha_s^{\epsilon,\omega}(\omega),s\in[\theta(\omega),T]
         \end{cases}
     \end{equation*}
     It can be shown by the measurable selection theorem that the process 
     $\hat{\alpha}$ is progressively measurable, and so lies in $\mathcal{A}(t,x)$.
     This is well beyond the scope of this project, and so will not be done here, 
-    however one example of this can be found in Chapter 7 of \cite{BeSh78}.
-    Again by the law of iterated expectations and (\ref{eq:2.13}) we get 
+    however one example of this can be found in Chapter 7 of \textcite{BeSh78}.
+    Again by the law of iterated expectations and \eqref{eq:2.13} we get 
     \begin{align*}
         v(t,x)\geq J(t,x,\hat{\alpha})=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha^\epsilon)\right]\\
         \geq\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right]-\epsilon.
@@ -213,7 +221,7 @@ the context of the finite-horizon problem described above.
 The idea behind the DPP is that we do not have to solve for the optimal control over 
 the entire time interval in one go: We can split the problem into two, first finding 
 an optimal control from $\theta$ to $T$, and finding the optimal control from $t$ up
-to $\theta$, as given in (\ref{eq:2.16}). The magic in this is that we are not limited 
+to $\theta$, as given in \eqref{eq:2.16}. The magic in this is that we are not limited 
 to two sub-problems: We can continue splitting up our interval of time into increasingly 
 small chunks, hopefully making each subproblem more tractable.
 
@@ -234,33 +242,33 @@ follows, we will use the HJB equation as follows:
     \item As a byproduct, we obtain an optimal feedback control.
 \end{itemize}
 
-\begin{theorem}[Hamilton-Jacobi-Bellman Equation]
+\begin{theorem}[Hamilton-Jacobi-Bellman Equation]\label{thm:2.5.1}
     The dynamics of the value function $v(t,x)$ satisfy the following non-linear
     second-order partial differential equation:
     \begin{equation}\label{eq:2.19}
         \begin{aligned}
-            &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R}\\
+            &\frac{\partial v}{\partial t}(t,x)+\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R},\\
             &v(T,x)=g(x)\;\forall\;x\in\mathbb{R}.
         \end{aligned}
     \end{equation}
-    where $\mathcal{L}^a$ is the operator associated to the diffusion (\ref{eq:2.1})
-    and defined by (see (\ref{eq:1.14}) from section \ref{sec:1.6})
+    where $\mathcal{L}^a$ is the operator associated to the diffusion \eqref{eq:2.1}
+    and defined by (see \eqref{eq:1.14}) from section \ref{sec:1.6}
     \begin{equation*}
         \mathcal{L}^av=b(t,x,a)v_x+\frac{1}{2}\sigma(t,x,a)^2v_{xx}.
     \end{equation*}
 \end{theorem}
 \begin{proof}
     Let us consider time $\theta=t+h$ and a constant control $\alpha_s=a$ for some arbitrary
-    $a\in A$, in our slightly stronger variant of the DPP (\ref{eq:2.17}):
+    $a\in A$, in our slightly stronger variant of the DPP \eqref{eq:2.17}:
     \begin{equation}\label{eq:2.21}
         v(t,x)\geq\mathbb{E}\left[\int_{t}^{t+h} f(s,X_s^{t,x},a)\mathrm ds+v(t+h,X_{t+h}^{t,x})\right].
     \end{equation}
     By assuming that $v$ is smooth enough, we can apply It\^{o}'s formula between
     $t$ and $t+h$:
     \begin{equation*}
-        v(t+h,X_{t+h}^{t,x})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})\mathrm ds +\textrm{(local) martingale}.
+        v(t+h,X_{t+h}^{t,x})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})\mathrm ds.
     \end{equation*}
-    We can then substitute back into (\ref{eq:2.21}) to obtain
+    We can then substitute back into \eqref{eq:2.21} to obtain
     \begin{equation*}
         0\geq\mathbb{E}\left[\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^{t,x})+f(s,X_s^{t,x},a)\mathrm ds\right]
     \end{equation*}
@@ -273,17 +281,17 @@ follows, we will use the HJB equation as follows:
     \begin{equation}\label{eq:2.25}
         -\frac{\partial v}{\partial t}(t,x)-\sup_{a\in A}[\mathcal{L}^av(t,x)+f(t,x,a)]\geq0.
     \end{equation}
-    On the other hand, suppose that $\alpha^*$ is an optimal control. Then in (\ref{eq:2.16})
+    On the other hand, suppose that $\alpha^*$ is an optimal control. Then in \eqref{eq:2.16}
     we have
     \begin{equation}\label{eq:2.26}
         v(t,x)=\mathbb{E}\left[\int_t^{t+h}f(s,X_s^*,\alpha_s^*)\mathrm ds+v(t+h,X_{t+h}^*)\right],
     \end{equation}
-    where $X^*$ is the solution to (\ref{eq:2.1}) starting from state $x$ at time $t$
+    where $X^*$ is the solution to \eqref{eq:2.1} starting from state $x$ at time $t$
     with control $\alpha^*.$ Again by It\^{o}'s formula we have that 
     \begin{equation*}
-        v(t+h,X^*_{t+h})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)\mathrm ds +\textrm{(local) martingale}
+        v(t+h,X^*_{t+h})=v(t,x)+\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)\mathrm ds
     \end{equation*}
-    which we can again substitute back into (\ref{eq:2.26}) to obtain
+    which we can again substitute back into \eqref{eq:2.26} to obtain
     \begin{equation*}
         0=\mathbb{E}\left[\int_t^{t+h}\left(\frac{\partial v}{\partial t}+\mathcal{L}^av\right)(s,X_s^*)+f(s,X_s*,a)\mathrm ds\right]
     \end{equation*}
@@ -291,7 +299,7 @@ follows, we will use the HJB equation as follows:
     \begin{equation*}
         -\frac{\partial v}{\partial t}(t,x)-\mathcal{L}^{\alpha^*_t}v(t,x)-f(t,x,\alpha_t^*)=0.
     \end{equation*}
-    Combining this with (\ref{eq:2.25}), $v$ should satisfy
+    Combining this with \eqref{eq:2.25}, $v$ should satisfy
     \begin{equation}
         -\frac{\partial v}{\partial t}(t,x)-\sup_{a\in A}\left[\mathcal{L}^av(t,x)+f(t,x,a)\right]=0\;\forall\;(t,x)\in[0,T)\times\mathbb{R},
     \end{equation}
@@ -301,7 +309,7 @@ follows, we will use the HJB equation as follows:
     \begin{equation}
         v(T,x)=g(x)\;\forall\;x\in\mathbb{R}
     \end{equation}
-    which results immediately from the definition in (\ref{eq:2.6}) of the value function
+    which results immediately from the definition in \eqref{eq:2.6} of the value function
     considered at the horizon time $T$.
 \end{proof}
 
@@ -326,7 +334,7 @@ to our value function for the market-making problem in chapter \ref{chap:3}, how
 the theorem and it's proof is included in appendix \ref{app:A}.
 
 To finish off chapter \ref{chap:2}, we will work through a famous example, given 
-by \cite{MER69}, of portfolio allocation over a finite time horizon in a 
+by \textcite{MER69}, of portfolio allocation over a finite time horizon in a 
 Black-Scholes-Merton Model.
 
 \section{Finite-Horizon Merton Portfolio Allocation Problem}\label{sec:2.6}
@@ -374,12 +382,12 @@ Constant Relative Risk Aversion (CRRA) type, taking the form
     U(x)=\frac{x^p}{p},\;x\geq0,p<1,p\neq0.
 \end{equation*}
 It turns out that explicit smooth solutions do exist for the problem given by 
-(\ref{eq:2.33})-(\ref{eq:2.34}). We are looking for a candidate solution of the 
+\eqref{eq:2.33}-\eqref{eq:2.34}. We are looking for a candidate solution of the 
 form 
 \begin{equation*}
     v(t,x)=\phi(t)U(x)
 \end{equation*}
-for some positive function $\phi$. By substituting into (\ref{eq:2.33})-(\ref{eq:2.34}),
+for some positive function $\phi$. By substituting into \eqref{eq:2.33}-\eqref{eq:2.34},
 we derive that $\phi$ should satisfy the ODE
 \begin{equation}
     \begin{aligned}
@@ -403,8 +411,8 @@ process associated to the constant control $\hat a$
     \mathrm dX_t=X_t(\hat a\mu+(1-\hat a)r)\mathrm dt+X_t\hat a\sigma\mathrm dW_t
 \end{equation*}
 admits a unique solution given an initial condition. We can also use the verification 
-theorem in appendix \ref{app:A} to prove that the value function in problem (\ref{eq:2.33})
-is equal to (\ref{eq:2.35}), and the optimal proportion of wealth to invest is given 
+theorem in appendix \ref{app:A} to prove that the value function in problem \eqref{eq:2.33}
+is equal to \eqref{eq:2.35}, and the optimal proportion of wealth to invest is given 
 by $\hat a$. Finally, using the concavity of 
 \begin{equation*}
     a(\mu-r)+r-\frac{1}{2}a^2(1-p)\sigma^2
@@ -421,4 +429,4 @@ and
 After walking through this short example, we hopefully have a little bit more understanding
 of how to apply stochastic control theory to problems in finance. In chapter \ref{chap:3},
 we will put this to the test by returning to the market-making problem introduced in
-section \ref{sec:1.2}, and building up the model given by \cite{AS2008}.
+section \ref{sec:1.2}, and building up the model given by \textcite{AS2008}.
