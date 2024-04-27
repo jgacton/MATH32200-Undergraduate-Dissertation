@@ -1,102 +1,97 @@
 \section{Introduction}
 This chapter aims to equip the reader with both the motivation and mathematical 
-tools to begin to formalise the market-making problem. In section \ref{sec:1.2},
-we will introduce the concepts of financial markets, order books, and dealers, and 
+tools to begin to formalise the market-making problem. In section \ref{sec:1.2}
+we will introduce the concepts of financial markets, order books and dealers, and 
 qualitatively describe how a dealer may wish to behave to optimise their revenue. We
 will then use section \ref{sec:1.3} to briefly recap some basic measure and probability 
-theory, before turning to stochastic processes in continuous time in section 
-\ref{sec:1.4}. In sections \ref{sec:1.5} and \ref{sec:1.6}, we introduce stochastic 
+theory before turning to stochastic processes in continuous time in section 
+\ref{sec:1.4}. In sections \ref{sec:1.5} and \ref{sec:1.6} we introduce stochastic 
 calculus, looking at stochastic integration, It\^{o}'s lemma, and finally stochastic 
 differential equations and the existence and uniqueness of their solutions. A brief 
-outline of the rest of this report is given at the end of section \ref{sec:1.2},
+outline of the rest of this report is given at the end of section \ref{sec:1.2}
 once we have described the problem we will be aiming to solve.
 
 \section{Financial Markets}\label{sec:1.2}
-A market is simply some structure that attempts to match those who want to 
-sell a good or service to those who want to buy it. Modern financial markets, 
+A market is some structure that attempts to match those who want to 
+sell a good or service to those who want to buy it. Modern financial markets 
 thanks to innovations such as the internet, satellite communication, and 
-fibre-optic cables, are perhaps the most interconnected and widespread markets in 
+fibre-optic cables are perhaps the most interconnected and widespread markets in 
 human history. 
 
 Most people may have heard of the New York Stock Exchange, London Stock Exchange, 
 or NASDAQ, but these are only one type of exchange for one type of financial asset, 
-namely equity (part ownership of a corporate entity, individually called ``stocks'' 
-or ``shares'').There are also markets for commodities (oil, gas, industrial metals, 
-precious metals, live cattle and more), bonds (pieces of government or corporate 
-debt, where the holder receives fixed interest payments), currencies (including 
-cryptocurrencies), and derivatives which are legal contracts whose value is some 
-function of the price of a specified underlying asset. In total, on an average day, 
-tens of trillions of US dollars worth of assets change hands (\cite{ADV}).
+namely equities, individually called ``stocks'' 
+or ``shares''. There are also markets for commodities such as oil, gas, and metals, bonds, 
+which are pieces of government or corporate 
+debt where the holder receives fixed interest payments, currencies, including 
+cryptocurrencies, and derivatives, which are legal contracts whose value is some 
+function of the price of a specified underlying asset. On an average day
+trillions of US dollars worth of assets change hands (\cite{ADV}).
 
 All markets, whatever the good or service being exchanged, have something in common: 
 Every seller needs a buyer, and every buyer needs a seller. This raises some 
 natural questions: What happens if no-one wants to sell (or buy)? What happens if 
 the only prices at which people are willing to sell is far out of reach of those 
-who want to buy? Enter the \textit{dealer}: An entity who provides \textit{liquidity} 
-(ease of exchange) to market participants. A dealer does this by simultaneously 
-offering to both buy and sell the particular asset, offering to buy at a slightly 
-lower price than they offer to sell. This is known as ``making a market'', and dealers 
-in modern parlance may also be called ``market-makers''.
+who want to buy? 
 
-\subsection*{Dealers}
-Dealers provide a crucial service in financial markets: By providing these quotes, 
-they narrow the \textit{spread} - the difference between the prices at which one can 
-buy or sell an asset in the market. Hence, entities who may need to trade even when 
-it is disadvantageous for them to do so (such as companies needing to buy foreign currency to pay 
-workers abroad, or oil producers seeking to hedge their production) know that they 
-can reliably find a buyer or seller, regardless of the uncertainty of other market 
-participants such as \textit{speculators} - those believe that a certain asset is 
-under or overvalued, and trade it with the sole motive of making money by selling 
-it for more than they bought it or vice-versa.
+\subsection*{Dealers} 
+The solution is the \textit{dealer}, which is an entity who provides \textit{liquidity}
+(ease of exchange) to market participants (\cite{trading}). A dealer does this by 
+simultaneously offering to both buy and sell the particular asset, offering to buy at a 
+slightly lower price than they offer to sell. This is known as ``making a market'', and 
+dealers in modern parlance may also be called ``market-makers''.
 
-Of course, there is no free lunch. Dealers do not provide this service to the market 
-out of the goodness of their own hearts - they too have a profit motive. While the 
-presence of dealers in the market narrows the spread, it does not eliminate it. 
-The dealers aim is to be constantly selling the asset for a slightly higher price 
-than it is buying it, and taking the spread as profit. In modern electronic markets 
+By providing these bid and ask quotes, they narrow the \textit{spread}, the difference 
+between the prices at which one can buy or sell an asset in the market. 
+Of course, there is no free lunch. Dealers do not provide this service for free as they 
+too have a profit motive. While the presence of dealers in the market narrows the spread, 
+it does not eliminate it (\cite{trading}). 
+The dealer's aim is to be continuously selling assets for a slightly higher price 
+than it is buying them, and taking the spread as profit. In modern electronic markets 
 with very high trading volumes, even in heavily traded assets with very narrow 
 spreads, a spread of only 0.01\$ multiplied across millions or billions of trades 
 can be very lucrative for the dealers who are fast enough.
 
 \subsection*{The Limit Orderbook}
-So far we have discussed markets as an abstract concept, but in order to build a 
+So far we have discussed markets conceptually, but in order to build a 
 mathematical model of the dealer, we need to specify the framework under which the 
-market operates. Most modern electronic exchanges, including those mentioned above, 
+market operates. Most modern electronic exchanges 
 operate some version of a \textit{limit orderbook} where participants can place two 
-types of orders: a \textit{limit order} or a \textit{market order} depending on their 
-needs. Limit orders specify a side (bid or ask, buying or selling), a quantity (how 
+types of orders, \textit{limit orders} or \textit{market orders}. 
+Limit orders specify a side (bid or ask, buying or selling), a quantity (how 
 many units of the asset to buy/sell), and a price at which the order should be 
 executed. These enter a queue of limit orders at the particular price level. Market 
 orders specify a side and a quantity, but not a price. The exchange operates a 
 \textit{matching engine} which takes incoming market orders and attempts to match 
 them to the existing limit orders, and if two orders match, they are executed and a 
-trade occurs. 
+trade occurs (\cite{trading}). 
 
-For an example, consider the orderbook illustrated by figure \ref{fig:orderbook}, and
+For an example, consider the orderbook illustrated by Figure \ref{fig:orderbook}, and
 suppose that individual limit orders may only be placed for 1-share lots. If a market 
 order is placed to buy 10 lots, then the trade will occur at \$1.01, the dealer/s will 
 sell and the placer of the market order will buy, and both the market order and the 10
-lowest limit ask orders will be removed from the market. So immediately after this 
-trade, there will be 20 shares left available to be sold at the \$1.01 price level. 
+lowest limit ask orders will be removed from the market. Immediately after this 
+trade there will be 20 shares left available to be sold at the \$1.01 price level. 
 However, suppose that a market order is placed to buy 30 units. In this case, the 
 orders will still be matched, the buyer will buy 30 units for \$1.01 apiece but all of 
 the limit orders at \$1.01 will be taken off the exchange, and the market mid-point 
-price has now moved up from \$1.00 to \$1.005. If a market order is placed to buy 100
+price will move up from \$1.00 to \$1.005. If a market order is placed to buy 100
 shares, since there are only 80 shares available to be sold, only these 80 will be 
-bought for an average price of $\frac{30\times1.01\$+50\times1.02\$}{80}=1.01625\$.$
-On the other hand, if a market order is placed and there are no limit orders to match 
-it against, the market order would not be executed at all and be voided.
+bought for an average price of $\frac{30\times1.01\$+50\times1.02\$}{80}=1.01625\$$
+and the remaining 20 shares of the market order will be void.
+Moreover, if a market order is placed and there are no limit orders to match 
+it against, the market order would not be executed at all and be voided (\cite{trading}).
 
 Finally, suppose we place a limit 
 order into this market to buy 10 shares for \$0.90. Thus, for our order to ever be 
 executed, a market order or sequence of market orders would have to come in and move
-the market mid-price by $\approx10\%$ in order for our order to be touched. Hence in a 
-given (small) interval of time, it is intuitively very unlikely that our order will
-be executed, especially when you consider that a move of $10\%$ is roughly how 
-much you might expect a stock to move over a year, let alone over a fraction of a 
-trading day. This is one of the fundamental ideas that we will employ to model our 
+the market mid-price by $\approx10\%$. Hence in a 
+given, small interval of time, it is very unlikely that our order will
+be executed, especially when we consider that a move of $10\%$ is roughly how 
+much we might expect a stock to move over a year (\cite{SP500}). This is one of the fundamental 
+ideas that we will employ to model our 
 dealing agent: The probability that a limit order will execute is a decreasing 
-function of its distance from the mid-price.
+function of its distance from the mid-price (\cite{AS2008}).
 
 \begin{figure}
 \centering
@@ -120,42 +115,42 @@ orders guarantee price, but do not guarantee that all or any of the order will b
 filled. Market orders guarantee that as much of the order as possible will be filled, 
 but they do not guarantee the price at which the trade will occur.
 
-We can also observe that the market provides us with a way to estimate the true value 
-of the asset. Classical economic theory dictates that in aggregate, market participants 
-react quickly and rationally to new information about a particular asset, meaning that 
-market prices reflect the consensus opinion of market participants about the value of 
-traded assets. The spread exists because people would only want to sell for slightly 
-more than something is worth, and buy it for slightly less. Hence, if you really want 
+We can also observe that the orderbook provides us with a way to estimate the true value 
+of the asset. We notice that there are in fact two prices for the asset depending on whether 
+you are buying or selling. If you are buying, you pay the ask price, if you are selling,
+the bid price. The spread is determined by the dealers in the market, and exists to compensate 
+them for both their operational costs such as salaries and electricity, and their inventory 
+costs since they service both sides of the market and thus hold inventories of risky
+securities (\cite{trading}). Hence, if you want 
 to buy an asset you have to pay a premium to ``\textit{cross the spread}'' to acquire 
-it. From this we can determine that the true price of the asset at a given point in time 
-lies somewhere in between the maximum bid price and the minimum ask price for the asset 
-at that time. The most common estimator in the literature and in practice is simply 
-the average of these two values - the mid-market price, or mid-price, but other estimators do exist 
-such as the volume-weighted average price (VWAP) which takes into account the volume 
-of the bids vs asks. For the rest of this report we will use the mid-price as our 
-estimator for the ``true'' value of an asset.
+it. Due to these facts, most models assume that the true value of the asset either 
+coincides with or is tending towards some value in between the highest bid and lowest ask
+over time, and the most commonly used estimator in the literature and in practice is 
+the mid-market price or mid-price, $\frac{p^a+p^b}{2}$ (\cite{trading}). In chapter \ref{chap:3}
+when discussing the model of \textcite{AS2008}, we will use the mid-price as our reference 
+price around which to make a market.
 
 The aim for subsequent chapters is to build up a model of how a dealer should 
-behave to maximise their returns in the presence of uncertainty: namely, uncertainty 
-about the path that the true value of the stock might take. In order to do this, we 
-will need to make use of some basic results from measure/probability theory and 
-stochastic processes, which we will summarise below. We will also briefly introduce 
-some tools from stochastic calculus. Familiarity with standard results from a 
+behave to maximise their returns in the presence of uncertainty about the path that 
+the true value of the stock might take. To do this, we 
+will need to make use of some basic results from measure \& probability theory and 
+stochastic processes, which we will summarise in sections \ref{sec:1.3} and \ref{sec:1.4}. 
+We will also briefly introduce some tools from stochastic calculus in sections \ref{sec:1.5} 
+and \ref{sec:1.6}. Familiarity with standard results from a 
 first-year undergraduate level course in real analysis, probability, and statistics 
-is assumed. All of the results in section \ref{sec:1.3} come from the third year
-Measure Theory and Integration or Martingale Theory with Applications courses. Section
-\ref{sec:1.4} recaps content from Probability 2 and Martingale Theory, and also brings
-in some new material which is cited. Sections \ref{sec:1.5} and \ref{sec:1.6} contain 
-mostly new material, although some was covered towards the end of the Financial 
-Mathematics unit. We skip the vast majority of proofs in the interest of brevity 
-and readability, they are not the point of this project. 
+is assumed. We skip the vast majority of proofs in this chapter in the interest of 
+brevity and readability.
 
 \section{Measure Theory and Probability}\label{sec:1.3}
 
 We begin by formalising the notion of what ``events'' in a probability space are.
 In elementary treatments of probability theory, the set of events is given no particular 
-structure, but this is not sufficient for dealing rigorously with uncountable sample 
-spaces, such as we will be doing with random variables taking values in $\mathbb{R}$.
+structure, but this is not sufficient for a rigorous treatment of uncountable sample 
+spaces. 
+
+All of the results in this section come from the third year Bristol Measure Theory and Integration
+and Martingale Theory with Applications courses, with the exception of the Fubini-Tonelli
+theorem which is a slight generalisation of the one given in the Martingales course.
 
 \begin{definition}[$\sigma$-algebra]
     A family $\mathcal{F}\subseteq\mathcal{P}(\Omega)$ of sets is called a $\sigma$-algebra if 
@@ -171,10 +166,11 @@ spaces, such as we will be doing with random variables taking values in $\mathbb
     is called $\mathcal{F}$-\emph{measurable} or simply \emph{measurable}.
 \end{remark}
 
-A measure, which we define next, is simply a function that assigns a magnitude 
-to a measurable set. In $\mathbb{R}^n$, the canonical measure is the Lebesgue 
-measure, which in one dimension is also called length, in two area, in three volume,
-and so on. In the context of probability theory, the ``magnitude'' of an event is 
+A measure is a function that provides a notion of magnitude to a measurable set. 
+In $\mathbb{R}^n$, the canonical measure is the Lebesgue measure, which generalises the 
+notions of length, area, and volume to sets in $\mathbb{R}$, $\mathbb{R}^2$, and $\mathbb{R}^n:n\geq3$
+respectively.
+In the context of probability theory, the magnitude or measure of a set or event is 
 simply the likelihood that it will occur.
 
 \begin{definition}[Measure]
@@ -193,20 +189,18 @@ simply the likelihood that it will occur.
     \emph{probability space}.
 \end{remark}
 
-Next we see that we can generate $\sigma$-algebras from sets of sets, and use 
+Next we see that we can generate $\sigma$-algebras from sets of sets and use 
 this to construct the Borel $\sigma$-algebra on $\mathbb{R}$. This is the canonical
-$\sigma$-algebra for use over $\mathbb{R}$ as it contains all Lebesgue-measurable 
-sets, and hence almost all interesting sets, except those that are interesting 
-precisely because they are not Lebesgue-measurable, such as the Vitali set.
-
+$\sigma$-algebra for use over $\mathbb{R}$, containing all open intervals and hence all 
+open sets as well as all closed intervals, semi-open intervals and singletons.
 \begin{lemma}
     Let $\mathcal{A}\subseteq\mathcal{P}(\Omega)$ Then $\exists$ a smallest $\sigma$-algebra 
     $\sigma(\mathcal{A})$ that contains all sets from $\mathcal{A}.$
 \end{lemma}
 \begin{proof}
-    The intersection of $\sigma$-algebras is a $\sigma$-algebra, so to find the 
-    smallest containing some collection of sets, take the intersection of all $\sigma$-
-    algebras containing those sets.
+    The intersection of $\sigma$-algebras is a $\sigma$-algebra. Thus to find the 
+    smallest $\sigma$-algebra containing some collection of sets, we take the intersection
+    of all $\sigma$-algebras containing those sets.
 \end{proof}
 
 \begin{remark}
@@ -228,7 +222,8 @@ precisely because they are not Lebesgue-measurable, such as the Vitali set.
 Next we turn to functions whose domain is a measurable space. We also look at simple 
 functions, define the integral of a simple function, approximate non-negative measurable
 functions by simple functions and arrive at the notion of the Lebesgue integral, a slightly
-stronger integral than the Riemann or Regulated integral studied in a first year course.
+stronger integral than the Riemann or Regulated integral studied in a first-year analysis 
+course.
 
 \begin{definition}[Measurable functions]
     Let $(\Omega,\mathcal{F})$ be a measurable space. A function $f:\Omega\rightarrow\mathbb{R}$
@@ -303,15 +298,14 @@ stronger integral than the Riemann or Regulated integral studied in a first year
 \end{definition}
 
 \begin{remark}
-    All of the standard properties of integrals that one would expect
-    to hold such as linearity are also true for the Lebesgue integral 
-    defined above. The Lebesgue integral also coincides with the Riemann
+    The standard property of linearity of integrals also holds for the Lebesgue 
+    integral, following from the linearity of the summation used in the integration of 
+    simple functions. The Lebesgue integral also coincides with the Riemann
     and Regulated integrals for all Riemann-integrable and regulated functions respectively.
 \end{remark}
 
-Now we have seen a brief introduction to measure theory and integration, we turn to 
-probability theory. As it turns out, probability theory is almost entirely a special
-case of measure theory, where, as mentioned above, the measure of the full space is one.
+Now that we have seen a brief introduction to measure theory and integration, we turn to 
+probability theory.
 
 \begin{definition}[Random variables]
     Recall from above that a probability space \\$(\Omega,\mathcal{F},\mathbb{P})$
@@ -323,7 +317,7 @@ case of measure theory, where, as mentioned above, the measure of the full space
 \begin{definition}[Expectation]
     The notion of the \emph{expectation} of a \textbf{random variable} is exactly equivalent
     to the notion of the \emph{integral} of a \textbf{measurable function}.
-    To be precise,
+    We have
     \begin{equation*}
         \mathbb{E}[X]:=\int X\mathrm d\mathbb{P}
     \end{equation*}
@@ -364,10 +358,11 @@ case of measure theory, where, as mentioned above, the measure of the full space
     \end{equation*}
 \end{theorem}
 
-All of these results are slight generalisations of results encountered in school or 
-a first year course. We now turn to a useful theorem from measure theory concering 
+We now turn to a useful theorem from measure theory concerning 
 the swapping of integrals (or integral and expectation, since expectation is 
-equivalent to integration in the probability space).
+equivalent to integration in the probability space). This a slight generalisation 
+of the version of the theorem encountered in the Bristol Martingale Theory course,
+we use the version given by \textcite{tao}.
 
 \begin{theorem}[Fubini-Tonelli]
     Let $(\Omega,\mathcal{F},\mathbb{P})$ and $(\mathbb{R},\mathcal{B},\lambda)$
@@ -398,12 +393,15 @@ equivalent to integration in the probability space).
 
 \section{Stochastic Processes}\label{sec:1.4}
 
-Next we move on to look at Stochasic Processes, which are nothing more than sequences
-of random variables, typically viewed as moving through time. Going forward, we will 
+Next we move on to look at Stochasic Processes, which are sequences
+of random variables, typically viewed as moving through time. Going forward we will 
 need a few properties regarding measurability and some common examples of widely used 
 stochastic processes for modelling real-world phenomena. Firstly, we need to introduce 
 some extra structure to our probability space, representing the information about the 
-process that we recieve over time.
+process that we receive over time.
+
+This section recaps some content from the Bristol Probability 2 and Martingale Theory
+courses, and also brings in some new material which is cited when introduced.
 
 \begin{definition}[Filtrations \& Adaptedness]
     A \emph{filtered space} is $(\Omega,\mathcal{F},(\mathcal{F}_n)_{n=0}^\infty,\mathbb{P})$
@@ -413,8 +411,8 @@ process that we recieve over time.
     $\mathcal{F}_\infty:=\sigma(\cup_n\mathcal{F}_n)\subseteq\mathcal{F}.$ 
     
     We say a stochastic process or sequence of random variables $X_n$ is adapted to
-    the filtration $(\mathcal{F}_n)_{n\geq0}$ if for every $n$, $X_n$ is $\mathcal{F}_n$
-    -measurable. 
+    the filtration $(\mathcal{F}_n)_{n\geq0}$ if for every $n$, $X_n$ is 
+    $\mathcal{F}_n$-measurable. 
 \end{definition}
 
 \begin{definition}[Martingales]
@@ -469,7 +467,7 @@ process that we recieve over time.
     measurable with respect to the $\sigma$-algebra generated by all left-continuous
     adapted processes. 
     
-    This includes all left-continuous stochastic processes, 
+    This includes all left-continuous stochastic processes
     since we can find $X_t$ by finding $\lim_{s\rightarrow t^-}X_s$ without needing 
     to observe $X$ at time $t$.
 \end{definition}
@@ -485,21 +483,21 @@ process that we recieve over time.
 This concept will be very useful later on when we look at the dynamic programming 
 principle. In particular, any random time equal to a positive constant $t$ is a 
 stopping time. We conclude this section with a few more technical definitions which 
-we will use only in the following Chapter on stochastic control.
+we will use only in the subsequent chapter 2 on stochastic control.
 
 \begin{definition}[Progressive Measurability]
-    We use the definition given by \textcite{Pham} for this and the last three definitions 
-    in this section.
+    We use the definition given by \textcite{Pham} for this and for the next 
+    three definitions in this section.
     A continuous-time stochastic process $(X_t)$ is progressively measurable if
     for every time $t$, the map $[0,t]\times\Omega\rightarrow\mathbb{R}$ defined
     by $(s,\omega)\rightarrow X_s(\omega)$ is $\mathcal{B}(\mathbb{R})\times\mathcal{F}_t$-measurable.
-    This is a slightly stronger condition than adaptedness, indeed, all progressively
+    This is a slightly stronger condition than adaptedness since all progressively
     measurable processes are adapted but the converse is not true. 
 \end{definition}
 
 \begin{definition}[C\`{a}dl\`{a}g process]
     A stochastic process is called c\`{a}dl\`{a}g if it is right continuous with left 
-    limits. Acronym from the french ``continue \`{a} droite, limite \`{a} gauche''.
+    limits. This acronym from the french ``continue \`{a} droite, limite \`{a} gauche''.
 \end{definition}
 
 \begin{definition}[Local Martingale]
@@ -515,7 +513,7 @@ we will use only in the following Chapter on stochastic control.
     \begin{equation}
         X_t = X_0 + M_t + A_t
     \end{equation}
-    where $M$ is a (continuous) local martingale and $A$ is a c\`{a}dl\`{a}g, adapted 
+    where $M$ is a continuous local martingale and $A$ is an adapted c\`{a}dl\`{a}g 
     process of locally bounded variation: $\forall\;\omega,t$
     \begin{equation*}
         \sup\sum_{i=1}^n|A_{t_i}(\omega)-A_{t_i-1}(\omega)|<\infty
@@ -524,8 +522,8 @@ we will use only in the following Chapter on stochastic control.
     $[0,t]$.
 \end{definition}
 
-Now that we have seen an overview of many key definitions of stochastic processes 
-that will be of great utility when modelling financial markets, we turn to the 
+Now that we have seen an overview of key definitions of stochastic processes 
+that will be helpful when modelling financial markets, we turn to the 
 theory of stochastic calculus. We specifically make use of It\^{o} calculus, 
 which focuses on integration, as this will be most useful when we come to looking 
 at Stochastic Differential Equations and controlled diffusion.
@@ -537,8 +535,8 @@ integral. In order to make sense of the expression
 \begin{equation*}
     \int H\mathrm dW_t
 \end{equation*}
-where $H$ is an adapted stochastic process and $W$ is a standard Brownian Motion or 
-Wiener Process, we turn to the idea we saw in section \ref{sec:1.3}
+where $H$ is an adapted stochastic process and $W$ is a standard Wiener Process, 
+we turn to the idea we saw in section \ref{sec:1.3}
 for the construction of the Lebesgue integral: Approximation by simple functions.
 
 \begin{definition}[Stochastic Integral for Simple Processes]
@@ -563,16 +561,14 @@ integral.
     \end{equation*}
     If $\{\Pi_n\}$ is a sequence of partitions on $[0,t]$ with mesh width decreasing
     to $0$, $t_0=0$, and $t_n=t$, then the \emph{It\^{o} integral} of $H$
-    w.r.t. $W$ is the random variable
+    with respect to $W$ is the random variable
     \begin{equation}
         I(t)=\int_0^tH\mathrm dW:=\lim_{n\rightarrow\infty}\sum_{[t_{i-1},t_i]\in\pi_n}H_{t_{i-1}}(W_{t_i}-W_{t_{i-1}}).
     \end{equation}
 \end{definition}
 
-It is possible to generalise this notion of stochastic integration to integration 
-w.r.t. a continuous semimartingale, however this is not necessary for the content of 
-this report. We continue by stating some of the properties of the It\^{o} integral
-which we may need later on.
+We continue by stating some of the properties of the It\^{o} integral
+which we will need later on.
 
 \begin{remark}[Properties of the It\^{o} Integral]
     Below we list some elementary properties of the stochastic integral we have
@@ -589,11 +585,11 @@ which we may need later on.
 
 \begin{definition}[It\^{o} Processes]
     An It\^{o} process is any adapted stochastic process that can be written as the sum of a 
-    deterministic integral w.r.t. time and a stochastic integral w.r.t. Brownian motion:
+    deterministic integral with respect to time and a stochastic integral with respect to Brownian motion:
     \begin{equation}
         X_t=X_0+\int_0^t\mu_s\mathrm ds+\int_0^t\sigma_s\mathrm dW
     \end{equation}
-    where $W$ is a standard Wiener process, $\sigma$ is predictable and integrable w.r.t. $W$,
+    where $W$ is a standard Wiener process, $\sigma$ is predictable and integrable with respect to $W$,
     and $\mu$ is predictable and Lebesgue integrable. Equivalently, in differential form, we 
     may also write
     \begin{equation}
@@ -624,18 +620,18 @@ which we may need later on.
 \begin{proof}
     We present here a brief and informal proof. Suppose $X_t$ is an It\^{o} process
     as previously defined. If $f:[0,T]\times\mathbb{R}\rightarrow\mathbb{R}$ is a 
-    twice differentiable scalar function, then it has the Taylor expansion
+    twice differentiable scalar function then it has the Taylor expansion
     \begin{equation*}
         \mathrm df = \frac{\partial f}{\partial t}\mathrm dt+\frac{1}{2}\frac{\partial^2f}{\partial t^2}\mathrm dt^2+\dots+\frac{\partial f}{\partial x}\mathrm dx+\frac{1}{2}\frac{\partial^2f}{\partial x^2}\mathrm dx^2+\dots
     \end{equation*}
-    Substituting $X_t$ for $x$ and therefore $\mu_t\mathrm dt + \sigma_t\mathrm dW_t$
+    Substituting $X_t$ for $x$ and, therefore, $\mu_t\mathrm dt + \sigma_t\mathrm dW_t$
     for $\mathrm dx$ gives
     \begin{align*}
         \mathrm df &= \frac{\partial f}{\partial t}\mathrm dt+\frac{1}{2}\frac{\partial^2f}{\partial t^2}\mathrm dt^2+\dots\\
         &+\frac{\partial f}{\partial x}(\mu_t\mathrm dt + \sigma_t\mathrm dW_t)+\frac{1}{2}\frac{\partial^2f}{\partial x^2}(\mu_t^2(\mathrm dt)^2 + 2\mu_t\sigma_t\mathrm dt\mathrm dW_t+ \sigma_t^2(\mathrm dW_t)^2)+\dots
     \end{align*}
     As $\mathrm dt\rightarrow0$, the terms $\mathrm dt^2$ and $\mathrm dt\mathrm dW_t$ 
-    tend to 0 faster than $\mathrm dW_t^2$ which is $\mathcal{o}(\mathrm dt)$ due to
+    tend to 0 faster than $\mathrm dW_t^2$ which is $\textrm{o}(\mathrm dt)$ due to
     the quadratic variation of the Wiener process. Thus setting the $\mathrm dt^2$ 
     and $\mathrm dt\mathrm dW_t$ terms as well as terms with an order $>2$ to 0
     and setting $\mathrm dW_t^2=\mathrm dt$ we obtain the required expression.
@@ -643,21 +639,18 @@ which we may need later on.
 
 \section{Stochastic Differential Equations}\label{sec:1.6}
 
-Next, we investigate the concept of a Stochastic Differential Equation. Again, as 
-with this entire chapter, the content here is a short overview largely without proof.
-A good introductory textbook for this content is \textcite{ASDEs}. From a financial 
-perspective, chapter 6 of \textcite{SCfFII} provides a useful introduction, and in the 
-context of stochastic control in finance, \textcite{Pham} provides a recap in chapter 1.
+Next, we investigate the concept of a Stochastic Differential Equation, following chapter 
+1 of \textcite{Pham}.
 
 \begin{definition}[Stochastic Differential Equation]
     A \emph{stochastic differential equation} (SDE) is an equation of the form
     \begin{equation}\label{eq:1.28}
         \mathrm dX_u=b(u,X_u)\mathrm du+\sigma(u,X_u)\mathrm dW_u.
     \end{equation}
-    $b$ and $\sigma$ are given, Borel-measurable functions, called the
+    $b$ and $\sigma$ are given and Borel-measurable functions, called the
     \emph{drift} and \emph{diffusion} respectively. We also specify an initial condition
-    of the form $X_t=x$, where $t\geq0$ and $x\in\mathbb{R}$ are specified. The problem
-    then is to find a stochastic process $X_s$ defined for $s\geq t$, such that
+    of the form $X_t=x$ where $t\geq0$ and $x\in\mathbb{R}$ are specified. The problem
+    then is to find a stochastic process $X_s$ defined for $s\geq t$ such that
     \begin{align*}
         X_t&=x,\\
         X_s&=X_t+\int_t^sb(u,X_u)\mathrm du+\int_t^s\sigma(u,X_u)\mathrm dW_u.
@@ -670,8 +663,14 @@ context of stochastic control in finance, \textcite{Pham} provides a recap in ch
     $$X_s=X_t+\int_{t}^{s}b(X_u,\alpha_u)\mathrm du+\int_t^s\sigma(X_u,\alpha_u)\mathrm dW_u$$
     and
     $$\int_t^s|b(X_u,\alpha_u)|\mathrm du+\int_t^s|\sigma(X_u,\alpha_u)|^2\mathrm du<\infty$$
-    a.s.
+    almost surely.
 \end{definition}
+
+\begin{remark}[Almost sure statements]
+    Let $(X,\mathbb{X},\mu)$ be a measure space. A proposition $P$ holds $\mu$-almost-everywhere,
+    if $\exists$ a set $N\in\mathbb{X}$ such that $\mu(N)=0$ and $P$ holds on $X\setminus N$.
+    In a probability space with a given $\mathbb{P}$, we say the result holds almost surely (a.s.).
+\end{remark}
 
 \begin{theorem}\label{thm:1.6.1}
     Suppose there exists a deterministic constant $K$ and an $\mathbb{R}$-valued process
@@ -681,7 +680,7 @@ context of stochastic control in finance, \textcite{Pham} provides a recap in ch
         |b(t,x,\omega)+\sigma(t,x,\omega)|&\leq k_t(\omega)+K|x|,\textrm{ with}\\
         \mathbb{E}\left[\int_0^tk_u^2\mathrm du\right]&<\infty\;\forall\;t\in[0,T].
     \end{align*}
-    Then under these conditions, there exists for all $t\in[0,T]$ a strong solution 
+    Then under these conditions there exists for all $t\in[0,T]$ a strong solution 
     to the SDE \eqref{eq:1.28} starting at time $t$ with initial condition $X_t=x$.
     
     Moreover, this solution is pathwise unique, meaning that if $X$ and $Y$ are two
@@ -691,12 +690,12 @@ context of stochastic control in finance, \textcite{Pham} provides a recap in ch
     \begin{equation*}
         \mathbb{E}\left[\sup_{t\leq s\leq T}|X_s|^p\right]\leq C_t(1+|x|^p).
     \end{equation*}
-    The proof of this is pages long and quite dry, so we skip it here. It can be found
-    in Chapter 6 of \textcite{Krylov}.
+    We will skip this proof, but it can be found in chapter 6 of \textcite{Krylov}.
 \end{theorem}
 
 \begin{definition}[Infinitessimal Generator]
-    A useful concept is that of the generator of a diffusion process governed by 
+    A concept that we will make use of when discussing the Hamilton-Jacobi-Bellman equation
+    in chapter \ref{chap:2} is that of the generator of a diffusion process governed by 
     an SDE. We define it as follows:
     \begin{equation}\label{eq:1.14}
         \mathcal{L}_t(\omega)f(t,x):=b(t,x,\omega)\frac{\partial f}{\partial x}(t,x)+\frac{1}{2}\sigma^2\frac{\partial^2f}{\partial x^2}(t,x)
@@ -721,9 +720,9 @@ context of stochastic control in finance, \textcite{Pham} provides a recap in ch
         \mathrm dS_t=\mu S_t\mathrm dt + \sigma S_t\mathrm dW_t
     \end{equation}
     for $\mu,\sigma\in\mathbb{R}$ and where $W$ is a standard Wiener process. This
-    is an example of an SDE with an explicit (strong) solution: In general, this 
+    is an example of an SDE with an strong solution. In general this 
     is not the case, but one-dimensional linear SDEs all have this property.
-    By It\^{o}'s formula \eqref{eq:1.25} with $f(t,S_t)=\log S_t$, we can write
+    By It\^{o}'s formula \eqref{eq:1.25} with $f(t,S_t)=\log S_t$ we can write
     \begin{align*}
         \mathrm df&=\left(\mu S_t\frac{\partial f}{\partial x}+\frac{\sigma^2S_t^2}{2}\frac{\partial^2f}{\partial x^2}\right)\mathrm dt +\sigma S_t\frac{\partial f}{\partial x}\mathrm dS_t\\
         &=\left(\mu S_t\frac{1}{S_t}-\frac{\sigma^2S_t^2}{2}\frac{1}{S_t^2}\right)\mathrm dt+\frac{\sigma S_t}{S_t}\mathrm dW_t\\
@@ -735,24 +734,26 @@ context of stochastic control in finance, \textcite{Pham} provides a recap in ch
         &=\log S_0+\left(\mu-\frac{\sigma^2}{2}\right)t+\sigma(W_t-W_0)\\
         S_t&=S_0e^{\left(\mu-\frac{\sigma^2}{2}\right)t+\sigma W_t}.
     \end{align*}
-    and we arrive at the canonical formula for the GBM, where $S_0$ is the initial 
+    and we arrive at the canonical formula for the GBM where $S_0$ is the initial 
     value of the process.
 \end{definition}
 
 Now imagine again the position of a dealer in a financial market. Considering a dealer
-who is not trading and has a fixed position, and assuming that asset prices evolve
+who is not trading, and assuming that asset prices evolve
 according to an It\^{o} process $S$, their wealth will evolve according to the simple 
-SDE $\mathrm dX_t=q\mathrm dS_t$ where $q$ is the inventory. However, the dealer can 
-continuously update their bid and ask quotes, hence influencing the flow of orders 
-they receive. The dealer ``controls'' the process $\alpha=\begin{pmatrix}p^a\\p^b\end{pmatrix}$
+SDE $\mathrm dX_t=q\mathrm dS_t$ where $q$ is their inventory. However, when the dealer
+is trading they can 
+continuously update their bid and ask quotes, influencing the flow of orders 
+they receive. The dealer ``controls'' their wealth over time through the process $\alpha=\begin{pmatrix}p^a\\p^b\end{pmatrix}$
 where $p^a$ and $p^b$ are the ask and bid quotes respectively, and this process 
 $\alpha$ should not be determined in advance, but be a function of arguments such 
-as time and the dealers current inventory, which itself is random as it depends on the 
+as time and the dealers current inventory so that the dealer can react to changing 
+market conditions. Thus $\alpha$ itself is random as it depends on the 
 flow of market orders received by the dealer.
-Hence the dealers wealth evolves according to the \emph{controlled diffusion}
+Hence, the dealers wealth evolves according to the \emph{controlled diffusion}
 \begin{equation*}
     \mathrm dX_t=\beta(t,\alpha_t)\mathrm dS_t.
 \end{equation*}
-In chapter \ref{chap:2}, we will build up a general theory of how to deal with 
-such processes, with the goal of determining the \emph{optimal control} $\alpha^*$ with 
+In chapter \ref{chap:2} we will construct a general theory of how to deal with 
+such processes with the goal of determining the \emph{optimal control} $\alpha^*$ with 
 respect to some particular criteria, such as maximising a particular expected utility.

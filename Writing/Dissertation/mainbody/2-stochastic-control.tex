@@ -2,10 +2,10 @@
 In this chapter we introduce the idea of a stochastic control problem in one dimension, 
 and construct a theoretical framework for the resolution of a regular solution, 
 provided that such a solution exists, which is guarunteed under some conditions which
-we enumerate. 
+we enumerate in section \ref{sec:2.2}.
 
 This chapter is mainly expository with the goal of setting us up 
-to prove the results of \textcite{AS2008} in chapter \ref{chap:3}, and we primarily follow 
+to prove the results of \textcite{AS2008} in chapter \ref{chap:3}, and we follow 
 the text of \textcite{Pham}. However, it is not a regurgitation of Pham's work. In particular,
 for the proofs of key results such as the Dynamic Programming Principle (theorem \ref{thm:2.4.1})
 and Hamiltoj-Jacobi-Bellman equation (theorem \ref{thm:2.5.1}) we fill in some of the jumps 
@@ -13,31 +13,34 @@ left by \textcite{Pham} with extra lines of working and more intuitive explanati
 
 In section \ref{sec:2.2} 
 we introduce the notion of a controlled diffusion process and its solution. In section 
-\ref{sec:2.3} we consider a stochastic control problem over a finite time horizon, 
+\ref{sec:2.3} we consider a stochastic control problem over a finite time horizon 
 before introducing the dynamic programming principle and Hamilton-Jacobi-Bellman 
 equation in their finite-horizon variants in sections \ref{sec:2.4} and \ref{sec:2.5} 
 respectively. Finally, in section \ref{sec:2.6}, we put these tools to use through a worked 
 example in a financial context, setting us up to tackle the Avellaneda-Stoikov model in 
-Chapter \ref{chap:3}.
+chapter \ref{chap:3}.
 
 \section{Controlled Diffusion Processes}\label{sec:2.2}
 
-In the previous chapter we have considered It\^{o} processes that are governed either by constants or by
-functions of time and/or state. Using this, we could for example model a stock price, the movement of a particle,
-or any other system with the kinds of properties that we study above. If we have a portfolio of cash 
-and an asset, we can model our wealth through time as a stochastic differential equation governed by the 
-risk-free rate at which we earn returns on our cash, and the random fluctuations of the stock price. 
+In the previous chapter we have considered It\^{o} processes that are governed either by 
+constants or by functions of time and/or state. Using this, we could for example model a 
+stock price, the movement of a particle, or any other system with the kinds of properties 
+that we study above. If we have a portfolio consiting of some cash and a position in an asset, 
+we can model our wealth through time as a stochastic differential equation governed by the 
+interest rate at which we deterministically earn returns on our cash, and the random 
+fluctuations of the stock price. 
 
-For the market-maker however, this is insufficient. We described intuitively at the beginning of chapter \ref{chap:1}
-how a market maker might be able to influence the flow of orders they recieve over time, and hence their 
-cash flow over time, by adjusting the limit bid and ask quotes that they send to the market. Hence,
-the market makers portfolio value is governed by not only the fluctuations of the stock and the risk-free
-rate, but also (stochastically) by the spread that they set. We thus need a model that allows our diffusion
-process to be governed by not only functions of time and state, but also of some other process which we 
-will call $\alpha$.
+For the market-maker, however, this is insufficient. We described in section \ref{sec:1.2}
+how a market maker might be able to influence the flow of orders they recieve over time, 
+and hence their cash flow, by adjusting the limit bid and ask quotes that they send to the 
+market. Hence, the market maker's portfolio value is governed by not only the fluctuations 
+of the stock and the risk-free interest rate, but also (stochastically) by the spread that they set. 
+We thus need a model that allows our diffusion process to be governed by not only functions 
+of time and state, but also of some other process which we 
+will call $\alpha$. 
 
 Throughout this chapter we will assume the background of a standard continuous and filtered probability space
-$(\Omega,\mathcal{F},(\mathcal{F}_t)_{t\geq0},\mathbb{P})$ as defined above in chapter \ref{chap:1}.
+$(\Omega,\mathcal{F},(\mathcal{F}_t)_{t\geq0},\mathbb{P})$ as defined above in section \ref{sec:1.3}.
 
 \begin{definition}[Controlled Diffusion Process]
     We consider a control model where the state of the system is governed by 
@@ -66,7 +69,7 @@ processes $\alpha$ such that for any arbitrary $x\in\mathbb{R},$
 \begin{equation}\label{eq:2.3}
     \mathbb{E}\left[\int_0^T|b(x,\alpha_t)|^2+|\sigma(x,\alpha_t)|^2\mathrm dt\right]<\infty.
 \end{equation}
-From Chapter \ref{chap:1} (theorem \ref{thm:1.6.1}), conditions \eqref{eq:2.2} and \eqref{eq:2.3} ensure the existence
+From theorem \ref{thm:1.6.1}, conditions \eqref{eq:2.2} and \eqref{eq:2.3} ensure the existence
 and uniqueness of a strong solution to the SDE \eqref{eq:2.1} starting from any initial
 condition $(t,x)\in[0,T]\times\mathbb{R}$ and with any control process $\alpha\in\mathcal{A}$.
 We denote this unique strong solution with almost surely continuous sample paths by 
@@ -92,8 +95,8 @@ such that
 
 for $(t,x)\in[0,T]\times\mathbb{R}$, and we assume that this set is not empty for all 
 $(t,x)\in[0,T]\times\mathbb{R}$. This integrability condition defines our set of 
-\emph{admissible} controles, control processes which we may find it easy to work 
-with mathematically. We now define the \emph{gain function} to be the expected value
+\emph{admissible} controls, the set of possible values for the control that we will 
+choose from. We now define the \emph{gain function} to be the expected value
 of our cumulative rolling reward $f$ and terminal payoff $g$ under a particular 
 control process $\alpha$:
 
@@ -113,8 +116,8 @@ and to do this we introduce the associated \emph{value function}:
     \end{equation}
 \end{definition}
 
-Hence, it is easy to see that the value function simply represents the best possible 
-value function that we could achieve under what we will come to call an \emph{optimal}
+The value function represents the best possible 
+gain function that we could achieve under what we will come to call an \emph{optimal}
 control process $\alpha$. The concept behind much of stochastic control is that if 
 we can find what this value function $v$ should be, then we can work backwards to determine 
 the optimal $\alpha$.
@@ -188,8 +191,7 @@ the context of the finite-horizon problem described above.
     \end{equation*}
     It can be shown by the measurable selection theorem that the process 
     $\hat{\alpha}$ is progressively measurable, and so lies in $\mathcal{A}(t,x)$.
-    This is well beyond the scope of this project, and so will not be done here, 
-    however one example of this can be found in Chapter 7 of \textcite{BeSh78}.
+    A proof of this can be found in chapter 7 of \textcite{BeSh78}.
     Again by the law of iterated expectations and \eqref{eq:2.13} we get 
     \begin{align*}
         v(t,x)\geq J(t,x,\hat{\alpha})=\mathbb{E}\left[\int_t^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+J(\theta,X_\theta^{t,x},\alpha^\epsilon)\right]\\
@@ -207,7 +209,7 @@ the context of the finite-horizon problem described above.
     \begin{equation}\label{eq:2.16}
         v(t,x)=\sup_{\alpha\in\mathcal{A}(t,x)}\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right],
     \end{equation}
-    however it is sometimes useful to use the following equivalent formulation of the DPP:\\
+    however, it is sometimes useful to use the following equivalent formulation of the DPP:\\
     (i) For all $\alpha\in\mathcal{A}(t,x)$ and $\theta\in\mathcal{T}_{t,T}$:
     \begin{equation}\label{eq:2.17}
         v(t,x)\geq\mathbb{E}\left[\int_{t}^\theta f(s,X_s^{t,x},\alpha_s)\mathrm ds+v(\theta,X_\theta^{t,x})\right].
@@ -219,10 +221,10 @@ the context of the finite-horizon problem described above.
 \end{remark}
 
 The idea behind the DPP is that we do not have to solve for the optimal control over 
-the entire time interval in one go: We can split the problem into two, first finding 
-an optimal control from $\theta$ to $T$, and finding the optimal control from $t$ up
-to $\theta$, as given in \eqref{eq:2.16}. The magic in this is that we are not limited 
-to two sub-problems: We can continue splitting up our interval of time into increasingly 
+the entire time interval in one go. We can split the problem into two, firstly finding 
+an optimal control from $\theta$ to $T$, and secondly finding the optimal control from $t$ up
+to $\theta$, as given in \eqref{eq:2.16}. The important fact here is that we are not limited 
+to two sub-problems. We can continue splitting up our interval of time into increasingly 
 small chunks, hopefully making each subproblem more tractable.
 
 \section{Hamilton-Jacobi-Bellman Equation}\label{sec:2.5}
@@ -313,25 +315,25 @@ follows, we will use the HJB equation as follows:
     considered at the horizon time $T$.
 \end{proof}
 
-So the general process for solving a stochastic optimal control problem is the 
+W general process of solving a stochastic optimal control problem is the 
 following:
 \begin{enumerate}
     \item Formulate the problem in terms of a controlled diffusion process
     \item Define the value function 
-    \item Formulate the Hamilton-Jacobi-Bellman equation that describes the dynamics 
+    \item Formulate the HJB equation that describes the dynamics 
     of the value function
     \item Solve the HJB equation to obtain an exact form or approximation for the 
     value function
     \item Utilise the resolved value function to find the optimal control process
 \end{enumerate}
 
-There is an extra step that we have not covered here in chapter \ref{chap:2},
+There is an extra step that we have not covered in chapter \ref{chap:2},
 namely the \emph{verification theorem}. This theorem provides necessary and sufficient 
 conditions for the candidate value function found in step 4. and candidate optimal 
 control found in step 5. to constitute the full solution to the problem. For simplicity,
-we do not include it here as we will not be explicitly solving the HJB-equation associated 
+we do not include it here as we will not be explicitly solving the HJB equation associated 
 to our value function for the market-making problem in chapter \ref{chap:3}, however,
-the theorem and it's proof is included in appendix \ref{app:A}.
+the theorem and its proof is included in appendix \ref{app:A}.
 
 To finish off chapter \ref{chap:2}, we will work through a famous example, given 
 by \textcite{MER69}, of portfolio allocation over a finite time horizon in a 
@@ -426,7 +428,6 @@ and
     \rho=\frac{(\mu-r)^2}{2\sigma^2}\frac{p}{1-p}+rp.
 \end{equation}
 
-After walking through this short example, we hopefully have a little bit more understanding
-of how to apply stochastic control theory to problems in finance. In chapter \ref{chap:3},
-we will put this to the test by returning to the market-making problem introduced in
-section \ref{sec:1.2}, and building up the model given by \textcite{AS2008}.
+Having now concretely demonstrated an application of stochastic optimal control to a financial 
+problem, we will return in chapter \ref{chap:3} to the market-making problem introduced in
+section \ref{sec:1.2}, and constructing the model given by \textcite{AS2008}.

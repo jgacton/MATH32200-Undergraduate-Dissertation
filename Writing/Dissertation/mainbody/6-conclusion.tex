@@ -6,25 +6,26 @@ stochastic optimal control in chapter \ref{chap:2}, we were then able to formula
 and prove the results of \textcite{AS2008} concerning market-making under inventory 
 risk in chapter \ref{chap:3}. Indeed, we may even have corrected an error in their calculation
 of reservation prices in the infinite-horizon case, although this does not impact the 
-main result of their paper. We go on to perform the same numerical simulations as 
-in \textcite{AS2008}, with a larger sample size, and replicate their results.
+main result of their paper. We go on in chapter \ref{chap:5} to perform a similar  
+numerical simulation procedure asin \textcite{AS2008}, with a larger sample size, 
+and replicate their results.
 
 Our conclusion is thus that under some potentially quite restrictive assumptions,
 we can formulate a general problem statement for the dealer operating in a limit 
 orderbook in terms of a value function to be optimised. We can then derive the 
-Hamilton-Jacobi-Bellman equation, which we may solve explicitly (if a solution exists),
+HJB equation, which we may solve explicitly (if a solution exists),
 numerically (if this is computationally tractable), or in our case, approximately, using 
 an important ansatz and analytical approximations.
 
 As mentioned above, the assumptions under which we can formulate the general 
 problem of a dealer may not be the most realistic. One particular example of this 
 is that we assume the arrival frequency of market orders to be constant. Trading volume 
-tends to peak around the opening and closing bell of the trading session (
-\cite{volume}) as new information that may have revealed pre or post-market is traded
+tends to peak around the opening and closing bell of the trading session 
+(\cite{volume}) as new information that may have revealed pre or post-market is traded
 on, before settling down for the rest of the day. Corporate events such as earnings 
 releases also cause short-term spikes in trading volume (\cite{EarningsPremium}). 
 
-To incorporate these exogenous events into our current model would require our Poisson 
+To incorporate these facts into our current model would require our Poisson 
 intensity $\lambda$ to be a function of both distance to the midprice and time, which 
 would introduce extra complexity and potentially make our problem harder to solve. 
 
@@ -34,5 +35,5 @@ probability of more arrivals in the near future. This may be a more natural mode
 market-order arrivals as trades beget more trades in reaction. \textcite{Hawkes2}
 presents an application of the Hawkes process to model order arrivals. 
 
-Therefore, we recommend that future research in this area attempts to incorporate 
+Therefore, I recommend that future research in this area attempts to incorporate 
 such self-exciting processes into the current stochastic control framework.
