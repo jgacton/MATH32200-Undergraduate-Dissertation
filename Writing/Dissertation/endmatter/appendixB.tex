@@ -1,24 +1,35 @@
+The following code imports our required third-party packages, and defines some 
+auxiliary functions which we need to call upon later. These compute our reserve 
+price, spread, order arrival rate $\lambda(\delta)$, and sample path for the mid-price
+respectively.
+
 \begin{lstlisting}[language=Python, caption=Auxiliary Functions]
-    import numpy as np
-    import matplotlib as plt
-        
-    def computeReservePrice(s,q,gamma,sigma,t,T):
-        return s-q*gamma*(sigma**2)*(T-t)
+import numpy as np
+import matplotlib.pyplot as plt
+    
+def computeReservePrice(s,q,gamma,sigma,t,T):
+    return s-q*gamma*(sigma**2)*(T-t)
 
-    def computeSpread(gamma,sigma,t,T,k):
-        return (gamma * (sigma ** 2) * (T-t)) + ((2 / gamma) * 
-            np.log(1 + (gamma / k)))
+def computeSpread(gamma,sigma,t,T,k):
+    return (gamma * (sigma ** 2) * (T-t)) + ((2 / gamma) * 
+        np.log(1 + (gamma / k)))
 
-    def computeRate(A,k,delta):
-        return A*np.exp(-k*delta)
+def computeRate(A,k,delta):
+    return A*np.exp(-k*delta)
 
-    def computeSamplePath(S0, sigma, dt, T):
-        return np.insert(S0 + np.cumsum(sigma * np.sqrt(dt) * 
-            np.random.choice([1,-1], int(T/dt))), 0, S0)
+def computeSamplePath(S0, sigma, dt, T):
+    return np.insert(S0 + np.cumsum(sigma * np.sqrt(dt) * 
+        np.random.choice([1,-1], int(T/dt))), 0, S0)
 \end{lstlisting}
 
+Next we define a function that will, with respect to some fixed model parameters, 
+generate a sample path for the mid-price using the function given above and then 
+sample and keep track of the performance of both the inventory and symmetric strategy.
+If the plots argument is set to true, the sample paths of the mid-price, bid level, ask
+level, inventory, and wealth will all be plotted, as seen in chapter \ref{chap:5}.
+
 \begin{lstlisting}[language=Python, caption=Avellaneda-Stoikov Model]
-    def simulateBothStrategies(gamma, plots=False):
+def simulateBothStrategies(gamma, plots=False):
     # Initialise model parameters
     S0 = 100
     T = 1
@@ -39,8 +50,6 @@
     # Initialise variables to keep track of symmetric strategy
     sym_q = 0 
     sym_X = 0
-    sym_bids=[]
-    sym_asks=[]
     sym_wealth = []
     sym_adj_wealth = []
     sym_inventory = []
@@ -54,8 +63,6 @@
         sym_spread += computeSpread(gamma, sigma, i, T, k)
         av_sym_spread = (sym_spread / (T / dt))
         sym_prob = min(A*np.exp(-k*av_sym_spread / 2) * dt, 1)
-        sym_bids = price_process - av_sym_spread/2
-        sym_asks = price_process + av_sym_spread/2
 
     # iterate through price process
     for step, s in enumerate(price_process):
@@ -98,13 +105,13 @@
         if p <= sym_prob:
             sym_q += 1
             sym_X -= (s-av_sym_spread/2)
-    
+
     if plots==True:
         t = np.arange(0, T+dt, dt)
         plt.plot(t, price_process, 'black', linewidth = 1.0, 
             label = "S")
-        plt.plot(t, asks, 'green', linewidth=1.0,label="p_a")
-        plt.plot(t, bids, 'red',linewidth=1.0,label="p_b")
+        plt.plot(t, inv_asks, 'green',linewidth=1.0,label="p_a")
+        plt.plot(t, inv_bids, 'red',linewidth=1.0,label="p_b")
         ax = plt.gca()
         ax.set_facecolor((0.9,0.9,0.9,1))
         plt.xlabel("t")
@@ -112,7 +119,7 @@
         plt.legend()
         plt.show()
 
-        plt.plot(t, inventory, 'purple', linewidth = 1.0, 
+        plt.plot(t, inv_inventory, 'purple', linewidth = 1.0, 
             label = "q")
         ax = plt.gca()
         ax.set_facecolor((0.9,0.9,0.9,1))
@@ -121,8 +128,8 @@
         plt.legend()
         plt.show()
 
-        plt.plot(t, wealth, "red", linewidth=1.0,label="X")
-        plt.plot(t, adj_wealth, "blue", linewidth = 1.0, 
+        plt.plot(t, inv_wealth, "red", linewidth=1.0,label="X")
+        plt.plot(t, inv_adj_wealth, "blue", linewidth = 1.0, 
             label = "X+q*S")
         ax = plt.gca()
         ax.set_facecolor((0.9,0.9,0.9,1))
@@ -130,56 +137,60 @@
         plt.ylabel("X")
         plt.legend()
         plt.show()
-    
+
     # Return final performance of both strategies
     return((inv_wealth[-1], inv_inventory[-1], 
         price_process[-1], sym_wealth[-1], 
         sym_inventory[-1], av_sym_spread))
 \end{lstlisting}
 
+Finally, we call the above function 10000 times in a loop, and wrangle the output 
+results into new lists before reporting values and creating the histogram plots 
+seen in chapter \ref{chap:5}.
+
 \begin{lstlisting}[language=Python, caption=Run and report results]
-    series = []
-    for i in range(10000):
-        series.append(simulateBothStrategies(0.1))
-    
-    series = np.array(series)
-    inv_final_inv = series[:,1]
-    inv_adj_wealth = series[:,0]+inv_final_inv*series[:,2]
-    print("Inventory strat mean PNL: {}".format(
-        np.mean(inv_adj_wealth)))
-    print("Inventory strat PNL stdev: {}".format(
-        np.std(inv_adj_wealth)))
-    print("Inventory strat final q mean: {}".format(
-        np.mean(inv_final_inv)))
-    print("Inventory strat final q stdev: {}".format(
-        np.std(inv_final_inv)))
-    
-    sym_final_inv = series[:,4]
-    sym_adj_wealth = series[:,3]+sym_final_inv*series[:,2]
-    print("Symmetric strat mean PNL: {}".format(
-        np.mean(sym_adj_wealth)))
-    print("Symmetric strat PNL stdev: {}".format(
-        np.std(sym_adj_wealth)))
-    print("Symmetric strat final q mean: {}".format(
-        np.mean(sym_final_inv)))
-    print("Symmetric strat final q stdev: {}".format(
-        np.std(sym_final_inv)))
-    
-    print("Average spread: {}".format(np.mean(series[:,5])))
-    
-    bins = np.histogram(
-        np.hstack((inv_adj_wealth,sym_adj_wealth)), 
-        bins=100)[1] 
-    plt.hist(inv_adj_wealth, bins, alpha = 1, 
-        label = "Inventory strategy", edgecolor = "white", 
-        color = "red")
-    plt.hist(sym_adj_wealth, bins, label = "Symmetric strategy", 
-        edgecolor = "black", color = "white", fc = (1,0,1,0))
-    plt.legend()
-    plt.ylim((0,1200))
-    plt.xlabel("PnL")
-    plt.ylabel("# of runs")
-    ax = plt.gca()
-    ax.set_facecolor((0.9,0.9,0.9,1))
-    plt.show()
+series = []
+for i in range(10000):
+    series.append(simulateBothStrategies(0.1))
+
+series = np.array(series)
+inv_final_inv = series[:,1]
+inv_adj_wealth = series[:,0]+inv_final_inv*series[:,2]
+print("Inventory strat mean PNL: {}".format(
+    np.mean(inv_adj_wealth)))
+print("Inventory strat PNL stdev: {}".format(
+    np.std(inv_adj_wealth)))
+print("Inventory strat final q mean: {}".format(
+    np.mean(inv_final_inv)))
+print("Inventory strat final q stdev: {}".format(
+    np.std(inv_final_inv)))
+
+sym_final_inv = series[:,4]
+sym_adj_wealth = series[:,3]+sym_final_inv*series[:,2]
+print("Symmetric strat mean PNL: {}".format(
+    np.mean(sym_adj_wealth)))
+print("Symmetric strat PNL stdev: {}".format(
+    np.std(sym_adj_wealth)))
+print("Symmetric strat final q mean: {}".format(
+    np.mean(sym_final_inv)))
+print("Symmetric strat final q stdev: {}".format(
+    np.std(sym_final_inv)))
+
+print("Average spread: {}".format(np.mean(series[:,5])))
+
+bins = np.histogram(
+    np.hstack((inv_adj_wealth,sym_adj_wealth)), 
+    bins=100)[1] 
+plt.hist(inv_adj_wealth, bins, alpha = 1, 
+    label = "Inventory strategy", edgecolor = "white", 
+    color = "red")
+plt.hist(sym_adj_wealth, bins, label = "Symmetric strategy", 
+    edgecolor = "black", color = "white", fc = (1,0,1,0))
+plt.legend()
+plt.ylim((0,1200))
+plt.xlabel("PnL")
+plt.ylabel("# of runs")
+ax = plt.gca()
+ax.set_facecolor((0.9,0.9,0.9,1))
+plt.show()
 \end{lstlisting}

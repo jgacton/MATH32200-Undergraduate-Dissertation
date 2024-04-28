@@ -1,5 +1,5 @@
 Here we state and prove the verification theorem mentioned in chapter \ref{chap:2},
-as given by \cite{Pham}.
+as given by \textcite{Pham}.
 \begin{theorem}[Verification Theorem]
     Let $w:[0,T]\times\mathbb{R}\rightarrow\mathbb{R}$ be a continuous function which
     is continuously differentiable at least once in its first argument and twice
@@ -46,7 +46,7 @@ as given by \cite{Pham}.
     \begin{equation*}
         \mathbb{E}[w(s\wedge\tau_n,X_{s\wedge\tau_n}^{t,x})]=w(t,x)+\mathbb{E}\left[\int_t^{s\wedge\tau_n}\frac{\partial w}{\partial t}(u,X_u^{t,x})+\mathcal{L}^{\alpha_u}w(u,X_u^{t,x})\mathrm du\right].
     \end{equation*}
-    Since $w$ satisfies (\ref{eq:A.1}), we have
+    Since $w$ satisfies \eqref{eq:A.1}, we have
     \begin{equation*}
         \frac{\partial w}{\partial t}(u,X_u^{t,x})+\mathcal{L}^{\alpha_u}w(u,X_u^{t,x})+f(X_u^{t,x},\alpha_u)\leq0,\;\forall\;\alpha\in\mathcal{A}(t,x)
     \end{equation*}
@@ -68,13 +68,13 @@ as given by \cite{Pham}.
         \mathbb{E}\left[\sup_{t\leq s\leq T}|X_s^{t,x}|^2\right]<\infty.
     \end{equation*}
     We can then apply the dominated convergence theorem, and send $n$ to infinity
-    in (\ref{eq:A.4}):
+    in \eqref{eq:A.4}:
     \begin{equation*}
         \mathbb{E}[w(s,X_s^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_s^tf(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).
     \end{equation*}
     Since $w$ is continuous on $[0,T]\times\mathbb{R}^n$, by taking the limit as $s
     \rightarrow T$,
-    we obtain by the dominated convergence theorem and by (\ref{eq:A.2})
+    we obtain by the dominated convergence theorem and by \eqref{eq:A.2}
     \begin{equation*}
         \mathbb{E}[g(X_T^{t,x})]\leq w(t,x)-\mathbb{E}\left[\int_t^Tf(X_u^{t,x},\alpha_u)\mathrm du\right],\;\forall\;\alpha\in\mathcal{A}(t,x).
     \end{equation*}
